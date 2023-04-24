@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity
 @Configuration
-class ApplicationSecurityConfig {
+class SecurityConfig {
 
     @Bean
     fun passwordEncoder(): PasswordEncoder? {

@@ -1,5 +1,6 @@
-package com.finapp.api.security
+package com.finapp.api.user.repository
 
+import com.finapp.api.user.data.User
 import com.mongodb.client.result.DeleteResult
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
@@ -15,17 +16,18 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 class UserRepositoryImpl(
     private val template: ReactiveMongoTemplate
 ): UserRepository {
-    override fun saveUser(user: User): Mono<User> =
-        template.save(user)
 
-    override fun deleteUser(user: User): Mono<DeleteResult> =
-        template.remove(user)
-
-    override fun getUser(userId: ObjectId): Mono<User> =
+    override fun findUserById(userId: ObjectId): Mono<User> =
         template.findById(userId, User::class.java)
 
     override fun findUserByEmail(email: String): Mono<User> =
         template.findOne(getUserQueryByField(User.EMAIL_FIELD, email), User::class.java)
+
+    override fun findUserByUsername(username: String): Mono<User> =
+        template.findOne(getUserQueryByField(User.USERNAME_FIELD, username), User::class.java)
+
+    override fun findAllUsers(): Flux<User> =
+        template.findAll(User::class.java)
 
     override fun existsByUsername(username: String): Mono<Boolean> =
         template.findOne(getUserQueryByField(User.USERNAME_FIELD, username), User::class.java)
@@ -37,12 +39,11 @@ class UserRepositoryImpl(
             .map { it is User }
             .switchIfEmpty { Mono.just(false) }
 
-    override fun findUserByUsername(username: String): Mono<User> =
-        template.findOne(getUserQueryByField(User.USERNAME_FIELD, username), User::class.java)
+    override fun saveUser(user: User): Mono<User> =
+        template.save(user)
 
-    override fun getAllUsers(): Flux<User> =
-        template
-            .findAll(User::class.java)
+    override fun deleteUser(user: User): Mono<DeleteResult> =
+        template.remove(user)
 
     private fun <T>getUserQueryByField(field: String, value: T): Query =
         Query(

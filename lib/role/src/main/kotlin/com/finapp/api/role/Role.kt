@@ -1,4 +1,4 @@
-package com.finapp.api.security
+package com.finapp.api.role
 
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.mapping.Field

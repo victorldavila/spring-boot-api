@@ -8,5 +8,10 @@ pluginManagement {
 }
 
 rootProject.name = "finapp"
+
+include("feature:auth")
+
 include("lib:security")
-findProject(":lib:security")?.name = "security"
+include("lib:user")
+include("lib:token")
+include("lib:role")

@@ -1,11 +1,10 @@
-package com.finapp.api.security
+package com.finapp.api.user
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import org.springframework.boot.autoconfigure.security.SecurityProperties
+import com.finapp.api.user.data.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import java.util.stream.Collectors
 
 
 data class UserDetailsImpl(

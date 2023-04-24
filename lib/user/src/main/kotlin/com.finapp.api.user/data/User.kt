@@ -1,5 +1,7 @@
-package com.finapp.api.security
+package com.finapp.api.user.data
 
+import com.finapp.api.role.Role
+import com.finapp.api.token.data.Token
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field

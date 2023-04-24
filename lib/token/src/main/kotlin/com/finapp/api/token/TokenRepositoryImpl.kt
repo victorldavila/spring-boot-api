@@ -1,5 +1,6 @@
-package com.finapp.api.security
+package com.finapp.api.token
 
+import com.finapp.api.token.data.Token
 import com.mongodb.client.result.DeleteResult
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria

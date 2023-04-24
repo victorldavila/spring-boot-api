@@ -1,4 +1,4 @@
-package com.finapp.api.security
+package com.finapp.api.token.data
 
 import org.springframework.data.mongodb.core.mapping.Field
 

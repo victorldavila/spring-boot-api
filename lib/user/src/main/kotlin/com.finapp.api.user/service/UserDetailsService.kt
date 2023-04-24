@@ -1,4 +1,4 @@
-package com.finapp.api.security
+package com.finapp.api.user.service
 
 import org.springframework.security.core.userdetails.UserDetails
 import reactor.core.publisher.Mono
