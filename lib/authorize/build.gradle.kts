@@ -28,6 +28,7 @@ tasks.bootJar {
 
 
 dependencies {
+    implementation(project(":lib:core"))
     implementation(project(":lib:security"))
 
     securityLibImplementation()

@@ -1,4 +1,4 @@
-package com.finapp.api.security.model
+package com.finapp.api.core.model
 
 object Security {
     object Header {

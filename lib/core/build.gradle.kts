@@ -28,6 +28,7 @@ tasks.bootJar {
 
 
 dependencies {
+    springBootSecurityImplementation()
     springBootImplementation()
     kotlinImplementation()
 }

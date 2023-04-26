@@ -40,7 +40,9 @@ class SecurityConfig {
             setServerAuthenticationConverter(authConverter)
         }
 
-        http.cors().and().csrf().disable()
+        http
+            .cors().disable()
+            .csrf().disable()
             .formLogin().disable()
             .httpBasic().disable()
             .logout().disable()

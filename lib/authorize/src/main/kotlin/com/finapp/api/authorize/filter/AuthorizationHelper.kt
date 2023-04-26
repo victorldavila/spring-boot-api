@@ -1,7 +1,7 @@
 package com.finapp.api.authorize.filter
 
-import com.finapp.api.security.model.ProfilePermissionType
-import com.finapp.api.security.model.Security
+import com.finapp.api.core.model.ProfilePermissionType
+import com.finapp.api.core.model.Security
 import com.finapp.api.security.jwt.JwtHelper
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus

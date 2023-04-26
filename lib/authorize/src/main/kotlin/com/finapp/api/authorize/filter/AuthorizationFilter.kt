@@ -1,6 +1,6 @@
 package com.finapp.api.authorize.filter
 
-import com.finapp.api.security.model.ProfilePermissionType
+import com.finapp.api.core.model.ProfilePermissionType
 import org.springframework.web.reactive.function.server.HandlerFilterFunction
 import org.springframework.web.reactive.function.server.ServerResponse
 

@@ -1,6 +1,6 @@
 package com.finapp.api.security.filter
 
-import com.finapp.api.security.model.Security
+import com.finapp.api.core.model.Security
 import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -22,5 +22,6 @@ class AuthenticationConverter : ServerAuthenticationConverter {
     private fun getAuthorizationHeader(exchange: ServerWebExchange?) =
         Mono.justOrEmpty(exchange?.request?.headers?.getFirst(HttpHeaders.AUTHORIZATION))
 
-    private fun isBearerToken(header: String?) = header?.trim()?.isNotEmpty() == true && header.trim().startsWith(Security.Header.AUTH_PREFIX)
+    private fun isBearerToken(header: String?) = header?.trim()?.isNotEmpty() == true && header.trim().startsWith(
+        Security.Header.AUTH_PREFIX)
 }

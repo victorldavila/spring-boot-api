@@ -1,4 +1,4 @@
-package com.finapp.api.security.model
+package com.finapp.api.core.model
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority

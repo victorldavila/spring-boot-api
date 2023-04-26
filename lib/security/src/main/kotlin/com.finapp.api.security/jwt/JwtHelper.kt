@@ -1,6 +1,6 @@
 package com.finapp.api.security.jwt
 
-import com.finapp.api.security.model.ProfilePermissionType
+import com.finapp.api.core.model.ProfilePermissionType
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SignatureException
