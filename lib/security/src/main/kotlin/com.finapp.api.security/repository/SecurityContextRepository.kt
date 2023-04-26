@@ -23,6 +23,6 @@ class SecurityContextRepository(
         jwtServerAuthenticationConverter.convert(swe)
             .flatMap {
                 authenticationManager.authenticate(it)
-                    .map { SecurityContextImpl() }
+                    .map { authenticate -> SecurityContextImpl(authenticate) }
             }
 }

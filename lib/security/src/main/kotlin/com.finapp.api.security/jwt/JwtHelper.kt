@@ -1,12 +1,14 @@
-package com.finapp.api.security
+package com.finapp.api.security.jwt
 
+import com.finapp.api.security.model.ProfilePermissionType
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SignatureException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component
 import java.util.*
 import javax.crypto.SecretKey
@@ -22,31 +24,29 @@ class JwtHelper {
 
     private val key: SecretKey? by lazy { Keys.hmacShaKeyFor(jwtSecret?.toByteArray()) }
 
-    fun generateJwtToken(authentication: Authentication): String {
-        val userPrincipal = authentication.principal as UserDetailsImpl
+    fun generateToken(roles: List<String>, username: String, isRefreshToken: Boolean = false): String = generateJwtToken(username, hashMapOf("roles" to roles), isRefreshToken)
 
-        return Jwts.builder()
-            .setSubject(userPrincipal.getUsername())
+    private fun generateJwtToken(username: String, claims: Map<String, Any>, isRefreshToken: Boolean): String {
+        val jwt = Jwts.builder()
+            .setClaims(claims)
+            .setSubject(username)
             .setIssuedAt(Date())
-            .setExpiration(Date(Date().time + jwtExpirationMs))
-            .signWith(SignatureAlgorithm.HS512, jwtSecret)
-            .compact()
+            .signWith(key)
+
+        return if (!isRefreshToken) {
+            jwt.setExpiration(Date(Date().time + jwtExpirationMs))
+        } else {
+            jwt
+        }.compact()
     }
 
-    fun getUserNameFromJwtToken(token: String?): String? {
-        return getAllClaimsFromToken(token)?.subject
+    fun getUserNameFromJwtToken(token: String?): String {
+        return getAllClaimsFromToken(token)?.subject ?: ""
     }
 
     /**
      * Validate the JWT where it will throw an exception if it isn't valid.
      */
-    fun validateJwt(authToken: String?): Jws<Claims> {
-        return Jwts.parserBuilder()
-            .setSigningKey(key)
-            .build()
-            .parseClaimsJws(authToken)
-    }
-
     fun getAllClaimsFromToken(token: String?): Claims? {
         return Jwts
             .parserBuilder()
@@ -68,7 +68,7 @@ class JwtHelper {
 
     private fun isTokenExpired(token: String): Boolean = getExpirationDateFromToken(token)?.before(Date()) == true
 
-    //private fun getPermissionName(permissionName: String) = ProfilePermissionType.getPermissionByName(permissionName)?.permissionName
+    private fun getPermissionName(permissionType: String) = ProfilePermissionType.getPermissionByType(permissionType).permissionName
 
     fun validateJwtToken(authToken: String?): Boolean {
         try {
@@ -83,6 +83,18 @@ class JwtHelper {
             logger.error("JWT claims string is empty: {}", e.message)
         }
         return false
+    }
+
+    fun getRoles(token: String?): MutableList<GrantedAuthority>? {
+        val claims = getAllClaimsFromToken(token)
+        val roles = (claims?.get("roles") as? List<*>)
+
+        return roles
+            ?.asSequence()
+            ?.map { it.toString() }
+            ?.map { getPermissionName(it) }
+            ?.map { SimpleGrantedAuthority(it) }
+            ?.toMutableList()
     }
 
     companion object {

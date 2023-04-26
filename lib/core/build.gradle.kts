@@ -1,7 +1,5 @@
+import com.finapp.buildsrc.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import com.finapp.buildsrc.ApiGroup
-import com.finapp.buildsrc.ApiVersion
-import com.finapp.buildsrc.userLibImplementation
 
 plugins {
     id("org.springframework.boot")
@@ -11,9 +9,8 @@ plugins {
     kotlin("plugin.spring")
 }
 
-group = ApiGroup.Feature.auth
-version = ApiVersion.Feature.auth
-
+group = ApiGroup.Lib.core
+version = ApiVersion.Lib.core
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 
@@ -31,9 +28,8 @@ tasks.bootJar {
 
 
 dependencies {
-    implementation(project(":lib:user-api"))
-
-    userLibImplementation()
+    springBootImplementation()
+    kotlinImplementation()
 }
 
 tasks.withType<KotlinCompile> {

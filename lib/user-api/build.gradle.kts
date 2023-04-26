@@ -11,8 +11,8 @@ plugins {
     kotlin("plugin.spring")
 }
 
-group = ApiGroup.Feature.auth
-version = ApiVersion.Feature.auth
+group = ApiGroup.Lib.userInterface
+version = ApiVersion.Lib.user
 
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -31,8 +31,6 @@ tasks.bootJar {
 
 
 dependencies {
-    implementation(project(":lib:user-api"))
-
     userLibImplementation()
 }
 
