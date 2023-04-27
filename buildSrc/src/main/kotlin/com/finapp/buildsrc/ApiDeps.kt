@@ -2,6 +2,7 @@ package com.finapp.buildsrc
 
 object ApiDeps {
     object SpringBoot {
+        val validation by lazy { "org.springframework.boot:spring-boot-starter-validation" }
         val webFlux by lazy { "org.springframework.boot:spring-boot-starter-webflux" }
         val reactiveMongoDb by lazy { "org.springframework.boot:spring-boot-starter-data-mongodb-reactive" }
         val security by lazy { "org.springframework.boot:spring-boot-starter-security" }

@@ -10,4 +10,7 @@ import reactor.core.publisher.Mono
 class AuthHandler {
     fun signIn(serverRequest: ServerRequest): Mono<ServerResponse> =
         ServerResponse.ok().body(BodyInserters.fromValue(""))
+
+    fun signUp(serverRequest: ServerRequest): Mono<ServerResponse> =
+        ServerResponse.ok().body(BodyInserters.fromValue(""))
 }

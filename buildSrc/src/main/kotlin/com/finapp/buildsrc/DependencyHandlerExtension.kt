@@ -15,6 +15,7 @@ fun DependencyHandler.kotlinImplementation() {
 }
 
 fun DependencyHandler.springBootImplementation() {
+    this.add("implementation", ApiDeps.SpringBoot.validation)
     this.add("implementation", ApiDeps.SpringBoot.webFlux)
     this.add("implementation", ApiDeps.SpringBoot.reactiveMongoDb)
 }
@@ -24,11 +25,11 @@ fun DependencyHandler.springBootSecurityImplementation() {
 }
 
 fun DependencyHandler.projectReactorImplementation() {
-    this.add("implementation", ApiDeps.SpringBoot.security)
+    this.add("implementation", ApiDeps.Reactor.projectReactor)
 }
 
 fun DependencyHandler.jacksonImplementation() {
-    this.add("implementation", ApiDeps.SpringBoot.security)
+    this.add("implementation", ApiDeps.Json.jackson)
 }
 
 fun DependencyHandler.securityLibImplementation() {
