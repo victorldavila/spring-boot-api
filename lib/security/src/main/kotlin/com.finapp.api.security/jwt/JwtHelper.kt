@@ -37,7 +37,7 @@ class JwtHelper {
             .signWith(key)
 
         return if (!isRefreshToken) {
-            jwt.setExpiration(Date(Date().time + jwtExpirationMs))
+            jwt.setExpiration(Date(Date().time + jwtExpirationMs * 1000))
         } else {
             jwt
         }.compact()
@@ -75,7 +75,8 @@ class JwtHelper {
 
     fun validateJwtToken(authToken: String?): Boolean {
         try {
-            return validateToken(authToken)
+            val validated = validateToken(authToken)
+            return validated
         } catch (e: MalformedJwtException) {
             logger.error("Invalid JWT token: {}", e.message)
         } catch (e: ExpiredJwtException) {

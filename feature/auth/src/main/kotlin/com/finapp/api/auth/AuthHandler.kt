@@ -1,7 +1,7 @@
 package com.finapp.api.auth
 
 import com.finapp.api.auth.model.CredentialRequest
-import com.finapp.api.auth.model.SignOutRequest
+import com.finapp.api.auth.model.TokenRequest
 import com.finapp.api.auth.model.SignUpRequest
 import com.finapp.api.auth.server.AuthServer
 import com.finapp.api.core.error.BadRequestError
@@ -31,10 +31,16 @@ class AuthHandler(
             .onErrorResume { errorResponse(it) }
 
     fun signOut(serverRequest: ServerRequest): Mono<ServerResponse> =
-        serverRequest.bodyToMono(SignOutRequest::class.java)
+        serverRequest.bodyToMono(TokenRequest::class.java)
             .flatMap { authServer.signOut(it) }
             .filter { it }
             .flatMap { ServerResponse.ok().build() }
             .switchIfEmpty(Mono.error(BadRequestError("invalid token")))
+            .onErrorResume { errorResponse(it) }
+
+    fun refresh(serverRequest: ServerRequest): Mono<ServerResponse> =
+        serverRequest.bodyToMono(TokenRequest::class.java)
+            .flatMap { authServer.refresh(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
             .onErrorResume { errorResponse(it) }
 }

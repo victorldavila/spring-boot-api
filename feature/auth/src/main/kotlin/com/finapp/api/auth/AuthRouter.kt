@@ -13,6 +13,6 @@ class AuthRouter(private val authHandler: AuthHandler) {
     fun authRoutes(): RouterFunction<ServerResponse> =
         route(ApiRouter.apiPOST("/v1/auth/signin"), authHandler::signIn)
             .andRoute(ApiRouter.apiPOST("/v1/auth/signup"), authHandler::signUp)
-            .andRoute(ApiRouter.apiPOST("/v1/auth/refresh"), authHandler::signIn)
+            .andRoute(ApiRouter.apiPOST("/v1/auth/refresh"), authHandler::refresh)
             .andRoute(ApiRouter.apiDELETE("/v1/auth/signout"), authHandler::signOut)
 }

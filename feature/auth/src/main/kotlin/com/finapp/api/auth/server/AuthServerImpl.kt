@@ -3,9 +3,9 @@ package com.finapp.api.auth.server
 import com.finapp.api.auth.model.SignUpRequest
 import com.finapp.api.auth.mapper.AuthMapper
 import com.finapp.api.auth.model.CredentialRequest
-import com.finapp.api.auth.model.SignOutRequest
+import com.finapp.api.auth.model.TokenRequest
 import com.finapp.api.core.error.BadRequestError
-import com.finapp.api.core.error.NotFoundError
+import com.finapp.api.user_api.TokenResponse
 import com.finapp.api.user_api.UserResponse
 import com.finapp.api.user_api.data.User
 import com.finapp.api.user_api.repository.UserRepository
@@ -37,15 +37,20 @@ class AuthServerImpl(
             .flatMap { tokenService.generateNewToken(it) }
             .map { authMapper.userToUserResponse(it, hasTokenInfo = true) }
 
-    override fun signOut(signOutRequest: SignOutRequest): Mono<Boolean> =
-        Mono.just(signOutRequest)
-            .flatMap { tokenService.deleteToken(it.accessToken) }
+    override fun signOut(tokenRequest: TokenRequest): Mono<Boolean> =
+        Mono.just(tokenRequest)
+            .flatMap { tokenService.deleteToken(it.token) }
             .map { it.token }
             .flatMapIterable { it }
-            .filter { it.access == signOutRequest.accessToken }
+            .filter { it.access == tokenRequest.token }
             .collectList()
-            .map { false }
-            .switchIfEmpty(Mono.just(true))
+            .map { it.size == 0 }
+
+    override fun refresh(tokenRequest: TokenRequest): Mono<TokenResponse> =
+        Mono.just(tokenRequest)
+            .flatMap { tokenService.generateNewTokenByRefreshToken(it.token) }
+            .map { authMapper.userToUserResponse(it, true) }
+            .map { it.token }
 
     private fun getUserByUsername(username: String): Mono<User> =
         userRepository.findUserByUsername(username)

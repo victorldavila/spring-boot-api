@@ -9,6 +9,7 @@ import com.finapp.api.user_api.token.repository.TokenRepository
 import com.finapp.api.user_api.token.repository.TokenService
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.switchIfEmpty
 
 @Component
 class TokenServiceImpl(
@@ -44,6 +45,7 @@ class TokenServiceImpl(
             .zipWith(tokenRepository.findTokenByRefreshToken(user, refreshToken)) { userData, token ->
                 Pair(userData, token)
             }
+            .switchIfEmpty { Mono.error(BadRequestError("invalid token")) }
 
     private fun joinUserAndAccessToken(user: User, accessToken: String) =
         Mono.just(user)

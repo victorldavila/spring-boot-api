@@ -27,6 +27,7 @@ class TokenRepositoryImpl(
         Mono.just(user)
             .map { it.token }
             .map { it.first { token -> token.refresh == refreshToken } }
+            .onErrorResume { Mono.empty() }
 
     override fun saveToken(user: User, token: Token): Mono<User> =
         userRepository.saveUser(user.copy(token = user.token.toMutableList().apply { add(token) }))

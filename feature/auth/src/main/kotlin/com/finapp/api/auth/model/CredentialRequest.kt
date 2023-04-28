@@ -1,6 +1,8 @@
 package com.finapp.api.auth.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.finapp.api.auth.validation.OnSignIn
+import com.finapp.api.auth.validation.OnSignUp
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 
