@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.finapp.buildsrc.ApiGroup
 import com.finapp.buildsrc.ApiVersion
+import com.finapp.buildsrc.springBootSecurityImplementation
 import com.finapp.buildsrc.userLibImplementation
 
 plugins {
@@ -34,6 +35,7 @@ dependencies {
     implementation(project(":lib:core"))
     implementation(project(":lib:user-api"))
 
+    springBootSecurityImplementation()
     userLibImplementation()
 }
 

@@ -11,8 +11,8 @@ import org.springframework.web.reactive.function.server.ServerResponse
 class AuthRouter(private val authHandler: AuthHandler) {
     @Bean
     fun authRoutes(): RouterFunction<ServerResponse> =
-        route(ApiRouter.apiPOST("/v1/auth/signIn"), authHandler::signIn)
-            .andRoute(ApiRouter.apiPOST("/v1/auth/signUp"), authHandler::signIn)
+        route(ApiRouter.apiPOST("/v1/auth/signin"), authHandler::signIn)
+            .andRoute(ApiRouter.apiPOST("/v1/auth/signup"), authHandler::signUp)
             .andRoute(ApiRouter.apiPOST("/v1/auth/refresh"), authHandler::signIn)
-            .andRoute(ApiRouter.apiPOST("/v1/auth/signOut"), authHandler::signIn)
+            .andRoute(ApiRouter.apiPOST("/v1/auth/signout"), authHandler::signIn)
 }

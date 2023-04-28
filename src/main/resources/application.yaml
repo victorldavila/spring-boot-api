@@ -24,3 +24,8 @@ logging:
       netty:
         http:
           client: DEBUG
+
+finapp:
+  jwt:
+    secret: "4etFgqnKUn7REKMfS2DHWiJa3nLtRUpj9tsH9ig9iFWhm6FfmJxw90QMlv3VioW"
+    expirationMs: "259200"

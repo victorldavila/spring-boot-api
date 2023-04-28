@@ -61,10 +61,10 @@ class SecurityConfig {
 
     private fun authorizeApiPaths(auth: AuthorizeExchangeSpec) {
         auth.pathMatchers(HttpMethod.GET,"/health").permitAll()
-        auth.pathMatchers(HttpMethod.POST,"/v1/auth/login").permitAll()
+        auth.pathMatchers(HttpMethod.POST,"/v1/auth/signin").permitAll()
         auth.pathMatchers(HttpMethod.POST,"/v1/auth/signup").permitAll()
-        auth.pathMatchers(HttpMethod.GET,"/v1/auth/refresh").permitAll()
-        auth.pathMatchers(HttpMethod.DELETE,"/v1/auth/logout").permitAll()
+        auth.pathMatchers(HttpMethod.POST,"/v1/auth/refresh").permitAll()
+        auth.pathMatchers(HttpMethod.DELETE,"/v1/auth/signout").permitAll()
     }
 
     private fun authorizeSwaggerPaths(auth: AuthorizeExchangeSpec) {
