@@ -19,7 +19,7 @@ abstract class BaseHandler(
     private fun errorHandling(error: Throwable) = BodyInserters.fromValue(when(error) {
         is ConstraintViolationException -> validationHandler.onConstraintValidationException(error)
         is MethodArgumentNotValidException -> validationHandler.onMethodArgumentNotValidException(error)
-        is BadRequestError -> ValidationErrorResponse().apply { violations.add(ViolationResponse(message = error.message)) }
+        is BadRequestError -> ValidationErrorResponse().apply { this.error.add(ViolationResponse(message = error.message)) }
         else -> throw error
     })
 }

@@ -3,9 +3,9 @@ package com.finapp.api.auth.mapper
 import com.finapp.api.auth.model.CredentialRequest
 import com.finapp.api.auth.model.SignUpRequest
 import com.finapp.api.core.model.ProfilePermissionType
-import com.finapp.api.user_api.RoleResponse
-import com.finapp.api.user_api.TokenResponse
-import com.finapp.api.user_api.UserResponse
+import com.finapp.api.user_api.role.model.RoleResponse
+import com.finapp.api.user_api.token.model.TokenResponse
+import com.finapp.api.user_api.model.UserResponse
 import com.finapp.api.user_api.credential.data.Credential
 import com.finapp.api.user_api.data.User
 import com.finapp.api.user_api.role.data.Role

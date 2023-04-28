@@ -45,20 +45,21 @@ class TokenServiceImpl(
             .zipWith(tokenRepository.findTokenByRefreshToken(user, refreshToken)) { userData, token ->
                 Pair(userData, token)
             }
-            .switchIfEmpty { Mono.error(BadRequestError("invalid token")) }
+            .switchIfEmpty { Mono.error(BadRequestError("Token is not valid")) }
 
     private fun joinUserAndAccessToken(user: User, accessToken: String) =
         Mono.just(user)
             .zipWith(tokenRepository.findTokenByAccessToken(user, accessToken)) { userData, token ->
                 Pair(userData, token)
             }
+            .switchIfEmpty { Mono.error(BadRequestError("Token is not valid")) }
 
     private fun validateToken(token: String) =
         Mono.just(token)
             .filter { jwtHelper.validateJwtToken(it) }
-            .switchIfEmpty(Mono.error(BadRequestError("Token is not valid")))
+            .switchIfEmpty { Mono.error(BadRequestError("Token is not valid")) }
 
     private fun getUserByUsername(username: String): Mono<User> =
         userRepository.findUserByUsername(username)
-            .switchIfEmpty(Mono.error(BadRequestError("username or password are invalid")))
+            .switchIfEmpty { Mono.error(BadRequestError("username or password are invalid")) }
 }

@@ -1,4 +1,4 @@
-package com.finapp.api.user_api
+package com.finapp.api.user_api.role.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

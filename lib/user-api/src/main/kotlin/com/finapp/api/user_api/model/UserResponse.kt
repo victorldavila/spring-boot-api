@@ -1,6 +1,8 @@
-package com.finapp.api.user_api
+package com.finapp.api.user_api.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.finapp.api.user_api.role.model.RoleResponse
+import com.finapp.api.user_api.token.model.TokenResponse
 
 data class UserResponse(
     @JsonProperty("id") val id: String?,

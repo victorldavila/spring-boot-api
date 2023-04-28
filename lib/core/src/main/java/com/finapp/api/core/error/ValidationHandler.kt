@@ -20,8 +20,8 @@ class ValidationHandler {
     ): ValidationErrorResponse {
         val error = ValidationErrorResponse()
         for (violation in e.constraintViolations) {
-            error.violations.add(
-                ViolationResponse(violation.propertyPath.toString(), violation.message)
+            error.error.add(
+                ViolationResponse(violation.message)
             )
         }
         return error
@@ -35,8 +35,8 @@ class ValidationHandler {
     ): ValidationErrorResponse {
         val error = ValidationErrorResponse()
         for (fieldError in e.bindingResult.fieldErrors) {
-            error.violations.add(
-                ViolationResponse(fieldError.field, fieldError.defaultMessage)
+            error.error.add(
+                ViolationResponse(fieldError.defaultMessage)
             )
         }
         return error

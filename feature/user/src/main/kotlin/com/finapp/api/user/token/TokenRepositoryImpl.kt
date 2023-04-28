@@ -22,6 +22,7 @@ class TokenRepositoryImpl(
         Mono.just(user)
             .map { it.token }
             .map { it.first { token -> token.access == accessToken } }
+            .onErrorResume { Mono.empty() }
 
     override fun findTokenByRefreshToken(user: User, refreshToken: String): Mono<Token> =
         Mono.just(user)
