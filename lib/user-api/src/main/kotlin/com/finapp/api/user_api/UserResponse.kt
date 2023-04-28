@@ -7,5 +7,6 @@ data class UserResponse(
     @JsonProperty("first_name") val firstName: String,
     @JsonProperty("last_name") val lastName: String,
     @JsonProperty("email") val email: String,
+    @JsonProperty("token") val token: TokenResponse?,
     @JsonProperty("roles") val roles: List<RoleResponse>
 )

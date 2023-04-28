@@ -33,6 +33,7 @@ tasks.bootJar {
 dependencies {
     implementation(project(":lib:user-api"))
     implementation(project(":lib:authorize"))
+    implementation(project(":lib:security"))
     implementation(project(":lib:core"))
 
     userLibImplementation()

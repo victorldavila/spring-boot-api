@@ -1,10 +1,10 @@
-package com.finapp.api.auth
+package com.finapp.api.auth.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.finapp.api.auth.model.CredentialRequest
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
-import org.springframework.validation.annotation.Validated
 
 data class SignUpRequest(
     @JsonProperty("first_name")

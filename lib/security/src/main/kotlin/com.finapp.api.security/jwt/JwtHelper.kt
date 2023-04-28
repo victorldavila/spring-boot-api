@@ -1,6 +1,7 @@
 package com.finapp.api.security.jwt
 
 import com.finapp.api.core.model.ProfilePermissionType
+import com.finapp.api.user_api.data.User
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SignatureException
@@ -25,6 +26,8 @@ class JwtHelper {
     private val key: SecretKey? by lazy { Keys.hmacShaKeyFor(jwtSecret?.toByteArray()) }
 
     fun generateToken(roles: List<String>, username: String, isRefreshToken: Boolean = false): String = generateJwtToken(username, hashMapOf("roles" to roles), isRefreshToken)
+
+    fun generateToken(user: User, isRefreshToken: Boolean = false): String = generateJwtToken(user.credential.username, hashMapOf("roles" to user.roles.map { it.type }), isRefreshToken)
 
     private fun generateJwtToken(username: String, claims: Map<String, Any>, isRefreshToken: Boolean): String {
         val jwt = Jwts.builder()

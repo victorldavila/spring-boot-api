@@ -1,3 +1,3 @@
-package com.finapp.api.auth
+package com.finapp.api.core.error
 
 class BadRequestError(message: String): Throwable(message)

@@ -1,6 +1,12 @@
 package com.finapp.api.auth
 
-import jakarta.validation.ConstraintViolationException
+import com.finapp.api.auth.model.CredentialRequest
+import com.finapp.api.auth.model.SignOutRequest
+import com.finapp.api.auth.model.SignUpRequest
+import com.finapp.api.auth.server.AuthServer
+import com.finapp.api.core.error.BadRequestError
+import com.finapp.api.core.error.BaseHandler
+import com.finapp.api.core.error.ValidationHandler
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -9,20 +15,26 @@ import reactor.core.publisher.Mono
 
 @Component
 class AuthHandler(
-    private val authServer: AuthServer
-) {
+    private val authServer: AuthServer,
+    validationHandler: ValidationHandler
+): BaseHandler(validationHandler) {
     fun signIn(serverRequest: ServerRequest): Mono<ServerResponse> =
-        ServerResponse.ok().body(BodyInserters.fromValue(""))
+        serverRequest.bodyToMono(CredentialRequest::class.java)
+            .flatMap { authServer.signIn(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
 
     fun signUp(serverRequest: ServerRequest): Mono<ServerResponse> =
         serverRequest.bodyToMono(SignUpRequest::class.java)
             .flatMap { authServer.signUp(it) }
             .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
-            .onErrorResume { errorHandling(it) }
+            .onErrorResume { errorResponse(it) }
 
-    private fun errorHandling(error: Throwable) = when(error) {
-        is ConstraintViolationException -> ServerResponse.badRequest().body(BodyInserters.fromValue(error.message))
-        is BadRequestError -> ServerResponse.badRequest().body(BodyInserters.fromValue(error.message))
-        else -> throw error
-    }
+    fun signOut(serverRequest: ServerRequest): Mono<ServerResponse> =
+        serverRequest.bodyToMono(SignOutRequest::class.java)
+            .flatMap { authServer.signOut(it) }
+            .filter { it }
+            .flatMap { ServerResponse.ok().build() }
+            .switchIfEmpty(Mono.error(BadRequestError("invalid token")))
+            .onErrorResume { errorResponse(it) }
 }

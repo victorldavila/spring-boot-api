@@ -18,6 +18,16 @@ class TokenRepositoryImpl(
             .map { it.token }
             .flatMapIterable { it }
 
+    override fun findTokenByAccessToken(user: User, accessToken: String): Mono<Token> =
+        Mono.just(user)
+            .map { it.token }
+            .map { it.first { token -> token.access == accessToken } }
+
+    override fun findTokenByRefreshToken(user: User, refreshToken: String): Mono<Token> =
+        Mono.just(user)
+            .map { it.token }
+            .map { it.first { token -> token.refresh == refreshToken } }
+
     override fun saveToken(user: User, token: Token): Mono<User> =
         userRepository.saveUser(user.copy(token = user.token.toMutableList().apply { add(token) }))
 
