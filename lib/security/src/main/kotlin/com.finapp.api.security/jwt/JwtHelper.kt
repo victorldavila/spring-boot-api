@@ -27,9 +27,9 @@ class JwtHelper {
 
     fun generateToken(roles: List<String>, username: String, isRefreshToken: Boolean = false): String = generateJwtToken(username, hashMapOf("roles" to roles), isRefreshToken)
 
-    fun generateToken(user: User, isRefreshToken: Boolean = false): String = generateJwtToken(user.credential.username, hashMapOf("roles" to user.roles.map { it.type }), isRefreshToken)
+    fun generateToken(user: User, isRefreshToken: Boolean = false): String = generateJwtToken(user.credential?.username, hashMapOf("roles" to user.roles.map { it.type }), isRefreshToken)
 
-    private fun generateJwtToken(username: String, claims: Map<String, Any>, isRefreshToken: Boolean): String {
+    private fun generateJwtToken(username: String?, claims: Map<String, Any>, isRefreshToken: Boolean): String {
         val jwt = Jwts.builder()
             .setClaims(claims)
             .setSubject(username)

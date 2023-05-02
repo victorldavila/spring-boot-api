@@ -8,6 +8,7 @@ import com.finapp.api.core.error.BadRequestError
 import com.finapp.api.user_api.token.model.TokenResponse
 import com.finapp.api.user_api.model.UserResponse
 import com.finapp.api.user_api.data.User
+import com.finapp.api.user_api.mapper.UserMapper
 import com.finapp.api.user_api.repository.UserRepository
 import com.finapp.api.user_api.token.repository.TokenService
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -19,6 +20,7 @@ class AuthServerImpl(
     private val tokenService: TokenService,
     private val userRepository: UserRepository,
     private val authMapper: AuthMapper,
+    private val userMapper: UserMapper,
     private val passwordEncoder: PasswordEncoder
 ): AuthServer {
     override fun signUp(signUpRequest: SignUpRequest): Mono<UserResponse> =
@@ -27,15 +29,15 @@ class AuthServerImpl(
             .flatMap { emailAlreadyExists(signUpRequest.email) }
             .map { authMapper.signUpRequestToUser(signUpRequest) }
             .flatMap { userRepository.saveUser(it) }
-            .map { authMapper.userToUserResponse(it) }
+            .map { userMapper.userToUserResponse(it) }
 
     override fun signIn(credentialRequest: CredentialRequest): Mono<UserResponse> =
         Mono.just(credentialRequest)
             .flatMap { getUserByUsername(credentialRequest.username) }
-            .filter { passwordEncoder.matches(credentialRequest.password, it.credential.password) }
+            .filter { passwordEncoder.matches(credentialRequest.password, it.credential?.password) }
             .switchIfEmpty(Mono.error(BadRequestError("username or password are invalid")))
             .flatMap { tokenService.generateNewToken(it) }
-            .map { authMapper.userToUserResponse(it, hasTokenInfo = true) }
+            .map { userMapper.userToUserResponse(it, hasTokenInfo = true) }
 
     override fun signOut(tokenRequest: TokenRequest): Mono<Boolean> =
         Mono.just(tokenRequest)
@@ -49,7 +51,7 @@ class AuthServerImpl(
     override fun refresh(tokenRequest: TokenRequest): Mono<TokenResponse> =
         Mono.just(tokenRequest)
             .flatMap { tokenService.generateNewTokenByRefreshToken(it.token) }
-            .map { authMapper.userToUserResponse(it, true) }
+            .map { userMapper.userToUserResponse(it, true) }
             .map { it.token }
 
     private fun getUserByUsername(username: String): Mono<User> =

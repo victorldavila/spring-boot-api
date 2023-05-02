@@ -15,7 +15,7 @@ data class User(
     @Field(EMAIL_FIELD) val email: String,
     @Field(FIRST_NAME_FIELD) val firstName: String,
     @Field(LAST_NAME_FIELD) val lastName: String,
-    @Field(CREDENTIAL_FIELD) val credential: Credential,
+    @Field(CREDENTIAL_FIELD) val credential: Credential? = null,
     @Field(TOKEN_FIELD) val token: List<Token> = emptyList(),
     @Field(ROLE_FIELD) val roles: List<Role> = emptyList(),
     @Field(VERSION_FIELD) val version: Long = 1

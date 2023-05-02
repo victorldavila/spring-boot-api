@@ -11,33 +11,40 @@ import org.springframework.web.reactive.function.server.RouterFunctions.route
 import org.springframework.web.reactive.function.server.ServerResponse
 
 @Component
-class UserRouter(private val userHandler: UserHandler) {
+class UserRouter(
+    private val userHandler: UserHandler,
+    private val authorizationFilter: AuthorizationFilterImpl
+) {
     @Bean
     fun userRoutes(): RouterFunction<ServerResponse> =
         route(ApiRouter.apiGET("/v1/user/{userId}"), userHandler::getUser)
-            .filter(getUserReadAuthorizationFilter()::filter)
-        .andRoute(ApiRouter.apiGET("/v1/user"), userHandler::getUser)
-            .filter(getUserReadAuthorizationFilter()::filter)
-        .andRoute(ApiRouter.apiPOST("/v1/user"), userHandler::getUser)
-            .filter(getUserWriteAuthorizationFilter()::filter)
-        .andRoute(ApiRouter.apiPUT("/v1/user"), userHandler::getUser)
-            .filter(getUserUpdateAuthorizationFilter()::filter)
-        .andRoute(ApiRouter.apiDELETE("/v1/user"), userHandler::getUser)
-            .filter(getUserDeleteAuthorizationFilter()::filter)
+            .filter(getUserReadAuthorizationFilter())
+        .andRoute(ApiRouter.apiGET("/v1/user"), userHandler::getAllUsers)
+            .filter(getUserReadAuthorizationFilter())
+        .andRoute(ApiRouter.apiPOST("/v1/user"), userHandler::createUser)
+            .filter(getUserWriteAuthorizationFilter())
+        .andRoute(ApiRouter.apiPUT("/v1/user"), userHandler::updateUser)
+            .filter(getUserUpdateAuthorizationFilter())
+        .andRoute(ApiRouter.apiDELETE("/v1/user"), userHandler::deleteUser)
+            .filter(getUserDeleteAuthorizationFilter())
 
-    private fun getUserReadAuthorizationFilter(): AuthorizationFilter =
-        AuthorizationFilterImpl(listOf(ProfilePermissionType.USER_READ, ProfilePermissionType.ADMIN_READ, ProfilePermissionType.SUPER_ADMIN_READ))
+    private fun getUserReadAuthorizationFilter(): AuthorizationFilterImpl {
+        authorizationFilter.roles = listOf(ProfilePermissionType.USER_READ, ProfilePermissionType.ADMIN_READ, ProfilePermissionType.SUPER_ADMIN_READ)
+        return authorizationFilter
+    }
 
-    private fun getUserWriteAuthorizationFilter(): AuthorizationFilter =
-        AuthorizationFilterImpl(listOf(ProfilePermissionType.USER_WRITE, ProfilePermissionType.ADMIN_WRITE, ProfilePermissionType.SUPER_ADMIN_WRITE))
+    private fun getUserWriteAuthorizationFilter(): AuthorizationFilterImpl {
+        authorizationFilter.roles = listOf(ProfilePermissionType.USER_WRITE, ProfilePermissionType.ADMIN_WRITE, ProfilePermissionType.SUPER_ADMIN_WRITE)
+        return authorizationFilter
+    }
 
-    private fun getUserUpdateAuthorizationFilter(): AuthorizationFilter =
-        AuthorizationFilterImpl(listOf(ProfilePermissionType.USER_UPDATE, ProfilePermissionType.ADMIN_UPDATE, ProfilePermissionType.SUPER_ADMIN_UPDATE))
+    private fun getUserUpdateAuthorizationFilter(): AuthorizationFilterImpl {
+        authorizationFilter.roles = listOf(ProfilePermissionType.USER_UPDATE, ProfilePermissionType.ADMIN_UPDATE, ProfilePermissionType.SUPER_ADMIN_UPDATE)
+        return authorizationFilter
+    }
 
-    private fun getUserDeleteAuthorizationFilter(): AuthorizationFilter =
-        AuthorizationFilterImpl(listOf(ProfilePermissionType.USER_DELETE, ProfilePermissionType.ADMIN_DELETE, ProfilePermissionType.SUPER_ADMIN_DELETE))
-
-    companion object {
-        const val ID_PARAM = "id"
+    private fun getUserDeleteAuthorizationFilter(): AuthorizationFilterImpl {
+        authorizationFilter.roles = listOf(ProfilePermissionType.USER_DELETE, ProfilePermissionType.ADMIN_DELETE, ProfilePermissionType.SUPER_ADMIN_DELETE)
+        return authorizationFilter
     }
 }

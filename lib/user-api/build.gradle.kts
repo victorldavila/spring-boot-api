@@ -31,6 +31,8 @@ tasks.bootJar {
 
 
 dependencies {
+    implementation(project(":lib:core"))
+
     userLibImplementation()
 }
 

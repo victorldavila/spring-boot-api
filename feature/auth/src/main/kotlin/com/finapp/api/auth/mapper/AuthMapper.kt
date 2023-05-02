@@ -25,15 +25,6 @@ class AuthMapper(
         roles = signUpRequest.roles.map { it.toRole() }
     )
 
-    fun userToUserResponse(user: User, hasTokenInfo: Boolean = false): UserResponse = UserResponse(
-        id = user.id?.toHexString(),
-        firstName = user.firstName,
-        lastName = user.lastName,
-        email = user.email,
-        token = if (hasTokenInfo) user.token.last().toTokenResponse() else null,
-        roles = user.roles.map { it.toRoleResponse() }
-    )
-
     private fun String.toRole() = Role(
         type = ProfilePermissionType.getPermissionByType(this).name,
         name = ProfilePermissionType.getPermissionByType(this).permissionName
@@ -42,15 +33,5 @@ class AuthMapper(
     private fun CredentialRequest.toCredential(): Credential = Credential(
         username = this.username,
         password = passwordEncoder.encode(password)
-    )
-
-    private fun Role.toRoleResponse() = RoleResponse (
-        type = this.type,
-        name = this.name
-    )
-
-    private fun Token.toTokenResponse(): TokenResponse = TokenResponse(
-        accessToken = this.access,
-        refreshToken = this.refresh
     )
 }
