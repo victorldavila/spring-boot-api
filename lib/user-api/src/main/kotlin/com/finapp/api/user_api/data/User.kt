@@ -21,14 +21,10 @@ data class User(
     @Field(CREDENTIAL_FIELD) val credential: Credential? = null,
     @Field(TOKEN_FIELD) val token: List<Token> = emptyList(),
     @Field(ROLE_FIELD) val roles: List<Role> = emptyList(),
-    @CreatedDate @Field(CREATED_DATE_FIELD) val createdDate: LocalDateTime = LocalDateTime.now(),
-    @LastModifiedDate @Field(LAST_MODIFIED_DATE_FIELD) val lastModifiedDate: LocalDateTime = LocalDateTime.now()
+    @CreatedDate @Field(CREATED_DATE_FIELD) val createdDate: LocalDateTime? = null,
+    @LastModifiedDate @Field(LAST_MODIFIED_DATE_FIELD) var lastModifiedDate: LocalDateTime? = null
 ): Serializable {
 
-
-//    constructor(email: String, firstName: String, lastName: String, credential: Credential? = null, token: List<Token> = emptyList(), roles: List<Role> = emptyList()) {
-//
-//    }
     companion object {
         const val TOKEN_FIELD = "token"
         const val ROLE_FIELD = "role"
