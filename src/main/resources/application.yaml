@@ -6,8 +6,8 @@ spring:
   data:
     mongodb:
       authentication-database: admin
-      uri: mongodb://localhost:27017/test
-      database: test
+      uri: mongodb://admin-teste:Teste2020bd!@localhost:27017/Test?authSource=admin
+      database: Test
 
 logging:
   level:
