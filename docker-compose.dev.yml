@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  database:
+    container_name: database
+    hostname: mongodb-host
+    env_file:
+      - .env
+    build:
+      context: ./
+      dockerfile: Dockerfile-db
+      args:
+        - DATABASE=$MONGO_DATABASE
+        - USERNAME=$MONGO_USERNAME
+        - PASSWORD=$MONGO_PASSWORD
+    #restart: on-failure
+    ports:
+      - "27017:27017"
+    networks:
+      - dexpay-net
+
+  api:
+    build:
+      context: ./
+      dockerfile: Dockerfile-api
+    container_name: api
+    #restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - dexpay-net
+    env_file:
+      - .env
+    environment:
+      - mongo_data_base=$MONGO_INITDB_DATABASE
+      - mongo_user_name=$MONGO_INITDB_ROOT_USERNAME
+      - mongo_password=$MONGO_INITDB_ROOT_PASSWORD
+      - mongo_uri=$MONGO_ADMIN_DATABASE_URI
+
+networks:
+  dexpay-net:
+    driver: bridge

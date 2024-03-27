@@ -1,0 +1,64 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo:5.0.9
+    container_name: hml-mongodb
+    hostname: mongodb-host
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - MONGO_INITDB_DATABASE=$MONGO_INITDB_DATABASE
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
+    ports:
+      - "27017:27017"
+    networks:
+      - dexpay-net
+    volumes:
+      - ./mongodb:/data/db
+
+  api:
+    build:
+      context: ./
+      dockerfile: Dockerfile-api
+    container_name: hml-api
+    restart: always
+    image: dexpay:0.0.1
+    hostname: dexpay-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    networks:
+      - dexpay-net
+    env_file:
+      - .env
+    environment:
+      - mongo_data_base=$MONGO_INITDB_DATABASE
+      - mongo_user_name=$MONGO_INITDB_ROOT_USERNAME
+      - mongo_password=$MONGO_INITDB_ROOT_PASSWORD
+      - mongo_host=mongodb-host
+      - mongo_port=27017
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    network_mode: host
+    volumes:
+      - ./env/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    network_mode: host
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./env/grafana.env
+
+networks:
+  dexpay-net:
+    driver: bridge

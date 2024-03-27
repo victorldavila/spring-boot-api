@@ -3,6 +3,7 @@ package com.finapp.api.security
 import com.finapp.api.security.repository.SecurityContextRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.ReactiveAuthenticationManager
@@ -16,7 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter
 import org.springframework.security.web.server.authentication.ServerAuthenticationConverter
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.reactive.CorsConfigurationSource
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
 import reactor.core.publisher.Mono
+import java.security.SecureRandom
 
 
 @EnableWebFluxSecurity
@@ -26,11 +32,51 @@ class SecurityConfig {
 
     @Bean
     fun passwordEncoder(): PasswordEncoder? {
-        return BCryptPasswordEncoder()
+        val strength = 10
+        return BCryptPasswordEncoder(strength, SecureRandom())
     }
 
     @Bean
+    @Order(2)
     fun securityWebFilterChain(
+        http: ServerHttpSecurity,
+        reactiveAuthenticationManager: ReactiveAuthenticationManager,
+        jwtAuthenticationConverter: ServerAuthenticationConverter,
+        securityContextRepository: SecurityContextRepository
+    ): SecurityWebFilterChain {
+        val authenticationWebFilter = AuthenticationWebFilter(reactiveAuthenticationManager).apply {
+            setServerAuthenticationConverter(jwtAuthenticationConverter)
+        }
+
+        http
+            .cors().configurationSource(corsWebFilter()).and()
+            .csrf().disable()
+            .formLogin().disable()
+            .httpBasic().disable()
+            .logout().disable()
+            .securityMatcher {
+                ServerWebExchangeMatchers.matchers(
+                    ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, "/**"),
+                    ServerWebExchangeMatchers.pathMatchers(HttpMethod.PUT, "/**"),
+                    ServerWebExchangeMatchers.pathMatchers(HttpMethod.DELETE, "/**"),
+                    ServerWebExchangeMatchers.pathMatchers(HttpMethod.GET, "/**")
+                ).matches(it)
+            }
+            .authorizeExchange()
+            .anyExchange().authenticated().and()
+            .exceptionHandling()
+            .authenticationEntryPoint { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.UNAUTHORIZED } }
+            .accessDeniedHandler { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.FORBIDDEN } }
+            .and()
+            .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+            .securityContextRepository(securityContextRepository)
+
+        return http.build()
+    }
+
+    @Bean
+    @Order(1)
+    fun openSecurityWebFilterChain(
         http: ServerHttpSecurity,
         authManager: ReactiveAuthenticationManager,
         authConverter: ServerAuthenticationConverter,
@@ -41,7 +87,7 @@ class SecurityConfig {
         }
 
         http
-            .cors().disable()
+            .cors().configurationSource(corsWebFilter()).and()
             .csrf().disable()
             .formLogin().disable()
             .httpBasic().disable()
@@ -67,11 +113,29 @@ class SecurityConfig {
         auth.pathMatchers(HttpMethod.DELETE,"/v1/auth/signout").permitAll()
     }
 
+    private fun corsWebFilter(): CorsConfigurationSource {
+        val corsConfig = CorsConfiguration()
+        corsConfig.allowedOrigins = listOf("*")
+        corsConfig.maxAge = 8000L
+        corsConfig.addAllowedMethod("GET")
+        corsConfig.addAllowedMethod("POST")
+        corsConfig.addAllowedMethod("PUT")
+        corsConfig.addAllowedMethod("DELETE")
+        corsConfig.addAllowedMethod("OPTIONS")
+
+        corsConfig.addAllowedHeader("*")
+
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", corsConfig)
+
+        return source
+    }
+
     private fun authorizeSwaggerPaths(auth: AuthorizeExchangeSpec) {
         auth.pathMatchers(
             "/actuator",
             "/actuator/**",
-            "/v1/dexpay-docs",
+            "/v1/finapp-docs",
             "/v1/swagger-ui.html",
             "/swagger-ui/**",
             "/webjars/**",

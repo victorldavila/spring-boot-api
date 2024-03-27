@@ -1,0 +1,17 @@
+FROM mongo:6.0.4
+
+ARG DATABASE
+ARG USERNAME
+ARG PASSWORD
+
+ENV MONGO_DATABASE=${DATABASE}
+ENV MONGO_USERNAME=${USERNAME}
+ENV MONGO_PASSWORD=${PASSWORD}
+
+USER root
+
+COPY scripts/setup.sh /scripts/setup.sh
+COPY data/mongodb.key /data/mongodb.key
+RUN chmod 400 /data/mongodb.key
+
+CMD (sleep 30 && echo 'GO ->>----' && sh /scripts/setup.sh) & /usr/bin/mongod --keyFile /data/mongodb.key --replSet rs --journal --bind_ip_all

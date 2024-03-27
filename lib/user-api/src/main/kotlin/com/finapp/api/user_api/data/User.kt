@@ -4,10 +4,13 @@ import com.finapp.api.user_api.credential.data.Credential
 import com.finapp.api.user_api.role.data.Role
 import com.finapp.api.user_api.token.data.Token
 import org.bson.types.ObjectId
+import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import org.springframework.data.mongodb.core.mapping.MongoId
 import java.io.Serializable
+import java.time.LocalDateTime
 
 @Document(collection = "user")
 data class User(
@@ -18,7 +21,8 @@ data class User(
     @Field(CREDENTIAL_FIELD) val credential: Credential? = null,
     @Field(TOKEN_FIELD) val token: List<Token> = emptyList(),
     @Field(ROLE_FIELD) val roles: List<Role> = emptyList(),
-    @Field(VERSION_FIELD) val version: Long = 1
+    @CreatedDate val createdDate: LocalDateTime? = null,
+    @LastModifiedDate val lastModifiedDate: LocalDateTime? = null
 ): Serializable {
     companion object {
         const val TOKEN_FIELD = "token"
@@ -27,6 +31,5 @@ data class User(
         const val FIRST_NAME_FIELD = "first_name"
         const val LAST_NAME_FIELD = "last_name"
         const val CREDENTIAL_FIELD = "credential"
-        const val VERSION_FIELD = "version"
     }
 }
