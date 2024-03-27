@@ -29,7 +29,7 @@ class UserServiceImpl(
     override fun updateUser(userRequest: UserRequest): Mono<UserResponse> =
         findUserById(userRequest.id)
             .map { userMapper.userRequestToUser(it, userRequest) }
-            .flatMap { userRepository.saveUser(it) }
+            .flatMap { userRepository.updateUser(it) }
             .map { userMapper.userToUserResponse(it) }
 
     override fun createUser(userRequest: UserRequest): Mono<UserResponse> =

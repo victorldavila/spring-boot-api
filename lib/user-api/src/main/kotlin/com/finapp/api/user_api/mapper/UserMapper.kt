@@ -8,6 +8,7 @@ import com.finapp.api.user_api.role.model.RoleResponse
 import com.finapp.api.user_api.token.data.Token
 import com.finapp.api.user_api.token.model.TokenResponse
 import org.springframework.stereotype.Component
+import java.time.LocalDateTime
 
 @Component
 class UserMapper {

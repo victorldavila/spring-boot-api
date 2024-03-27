@@ -9,6 +9,9 @@ spring:
       uri: mongodb://admin-teste:Teste2020bd!@localhost:27017/Test?authSource=admin
       database: Test
 
+server:
+  port: 8080
+
 logging:
   level:
     io:

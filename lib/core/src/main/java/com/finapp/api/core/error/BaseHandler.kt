@@ -13,6 +13,7 @@ abstract class BaseHandler(
         is ConstraintViolationException,
         is MethodArgumentNotValidException,
         is BadRequestError -> ServerResponse.badRequest().body(errorHandling(error))
+        is NotFoundError -> ServerResponse.notFound().build()
         else -> throw error
     }
 

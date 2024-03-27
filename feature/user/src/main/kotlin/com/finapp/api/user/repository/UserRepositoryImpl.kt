@@ -12,6 +12,8 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import com.finapp.api.user_api.data.User
 import com.finapp.api.user_api.repository.UserRepository
+import org.springframework.data.mongodb.core.query.Update
+import java.time.LocalDateTime
 
 @Repository
 class UserRepositoryImpl(
@@ -42,6 +44,17 @@ class UserRepositoryImpl(
 
     override fun saveUser(user: User): Mono<User> =
         template.save(user)
+
+    override fun updateUser(user: User): Mono<User> =
+        template.findAndModify(
+            Query(Criteria.where("_id").isEqualTo(user.id)),
+            Update()
+                .set(User.FIRST_NAME_FIELD, user.firstName)
+                .set(User.LAST_NAME_FIELD, user.lastName)
+                .set(User.EMAIL_FIELD, user.email)
+                .set(User.LAST_MODIFIED_DATE_FIELD, LocalDateTime.now()),
+            User::class.java
+        )
 
     override fun deleteUser(user: User): Mono<DeleteResult> =
         template.remove(user)

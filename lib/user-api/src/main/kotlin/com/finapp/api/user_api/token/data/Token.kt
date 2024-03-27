@@ -4,8 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Field
 
 data class Token(
     @Field(ACCESS_FIELD) val access: String,
-    @Field(REFRESH_FIELD) val refresh: String,
-    @Field(VERSION_FIELD) val version: Long = 1
+    @Field(REFRESH_FIELD) val refresh: String
 ) {
     companion object {
         const val ACCESS_FIELD = "access"
