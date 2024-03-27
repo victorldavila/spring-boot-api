@@ -17,15 +17,15 @@ class UserRouter(
 ) {
     @Bean
     fun userRoutes(): RouterFunction<ServerResponse> =
-        route(ApiRouter.apiGET("/v1/user/{userId}"), userHandler::getUser)
+        route(ApiRouter.apiGET("/v1/users/{userId}"), userHandler::getUser)
             .filter(getUserReadAuthorizationFilter())
-        .andRoute(ApiRouter.apiGET("/v1/user"), userHandler::getAllUsers)
+        .andRoute(ApiRouter.apiGET("/v1/users"), userHandler::getAllUsers)
             .filter(getUserReadAuthorizationFilter())
-        .andRoute(ApiRouter.apiPOST("/v1/user"), userHandler::createUser)
+        .andRoute(ApiRouter.apiPOST("/v1/users"), userHandler::createUser)
             .filter(getUserWriteAuthorizationFilter())
-        .andRoute(ApiRouter.apiPUT("/v1/user"), userHandler::updateUser)
+        .andRoute(ApiRouter.apiPUT("/v1/users"), userHandler::updateUser)
             .filter(getUserUpdateAuthorizationFilter())
-        .andRoute(ApiRouter.apiDELETE("/v1/user"), userHandler::deleteUser)
+        .andRoute(ApiRouter.apiDELETE("/v1/users"), userHandler::deleteUser)
             .filter(getUserDeleteAuthorizationFilter())
 
     private fun getUserReadAuthorizationFilter(): AuthorizationFilterImpl {
