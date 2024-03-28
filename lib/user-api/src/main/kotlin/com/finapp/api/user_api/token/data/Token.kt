@@ -9,6 +9,5 @@ data class Token(
     companion object {
         const val ACCESS_FIELD = "access"
         const val REFRESH_FIELD = "refresh"
-        const val VERSION_FIELD = "version"
     }
 }

@@ -8,7 +8,6 @@ import reactor.core.publisher.Mono
 
 interface UserRepository {
     fun saveUser(user: User): Mono<User>
-    fun updateUser(user: User): Mono<User>
     fun deleteUser(user: User): Mono<DeleteResult>
     fun findUserById(userId: ObjectId): Mono<User>
     fun findUserByEmail(email: String): Mono<User>

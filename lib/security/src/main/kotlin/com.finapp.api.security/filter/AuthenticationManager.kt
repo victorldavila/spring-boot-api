@@ -44,7 +44,7 @@ class AuthenticationManager(
     }
 
     private fun getUserWithValidAccessToken(accessToken: String) =
-        tokenRepository.findTokenByUsername(jwtHelper.getUserNameFromJwtToken(accessToken))
+        tokenRepository.findTokenByUserId(jwtHelper.getUserIdFromJwtToken(accessToken))
             .filter { it.access == accessToken }
             .collectList()
             .map { it.first() }

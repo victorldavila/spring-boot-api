@@ -6,7 +6,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 interface TokenRepository {
-    fun findTokenByUsername(username: String): Flux<Token>
+    fun findTokenByUserId(userId: String): Flux<Token>
     fun findTokenByAccessToken(user: User, accessToken: String): Mono<Token>
     fun findTokenByRefreshToken(user: User, refreshToken: String): Mono<Token>
     fun saveToken(user: User, token: Token): Mono<User>

@@ -7,14 +7,15 @@ import com.finapp.api.user_api.data.User
 import com.finapp.api.user_api.repository.UserRepository
 import com.finapp.api.user_api.token.repository.TokenRepository
 import com.finapp.api.user_api.token.data.Token
+import org.bson.types.ObjectId
 
 @Repository
 class TokenRepositoryImpl(
     private val userRepository: UserRepository
 ): TokenRepository {
 
-    override fun findTokenByUsername(username: String): Flux<Token> =
-        userRepository.findUserByUsername(username)
+    override fun findTokenByUserId(userId: String): Flux<Token> =
+        userRepository.findUserById(ObjectId(userId))
             .map { it.token }
             .flatMapIterable { it }
 

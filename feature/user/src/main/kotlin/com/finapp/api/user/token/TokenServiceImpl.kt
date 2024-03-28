@@ -26,7 +26,7 @@ class TokenServiceImpl(
     override fun generateNewTokenByRefreshToken(refreshToken: String): Mono<User> =
         Mono.just(refreshToken)
             .flatMap { validateToken(it) }
-            .map { jwtHelper.getUserNameFromJwtToken(it) }
+            .map { jwtHelper.getUserIdFromJwtToken(it) }
             .flatMap { getUserByUsername(it) }
             .flatMap { joinUserAndRefreshToken(it, refreshToken) }
             .flatMap { tokenRepository.deleteToken(it.first, it.second) }
@@ -35,7 +35,7 @@ class TokenServiceImpl(
     override fun deleteToken(accessToken: String): Mono<User> =
         Mono.just(accessToken)
             .flatMap { validateToken(it) }
-            .map { jwtHelper.getUserNameFromJwtToken(it) }
+            .map { jwtHelper.getUserIdFromJwtToken(it) }
             .flatMap { getUserByUsername(it) }
             .flatMap { joinUserAndAccessToken(it, accessToken)}
             .flatMap { tokenRepository.deleteToken(it.first, it.second) }
