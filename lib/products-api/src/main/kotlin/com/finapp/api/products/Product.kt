@@ -2,7 +2,9 @@ package com.finapp.api.products
 
 import com.finapp.api.products.Product.Companion.COLLECTION_NAME
 import org.bson.types.ObjectId
+import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
@@ -20,8 +22,15 @@ data class Product(
     @Field(VARIABLE_FIELD) val isVariable: Boolean,
     @Field(TYPE_FIELD) val type: String,
     @Field(CATEGORY_FIELD) val category: String,
-    @CreatedDate val createdDate: LocalDateTime? = null,
-    @LastModifiedDate val lastModifiedDate: LocalDateTime? = null
+
+    @CreatedDate
+    @Field(CREATED_DATE_FIELD) val createdDate: LocalDateTime? = null,
+    @LastModifiedDate
+    @Field(LAST_MODIFIED_DATE_FIELD) var lastModifiedDate: LocalDateTime? = null,
+    @LastModifiedBy
+    @Field(LAST_MODIFIED_BY_FIELD) var lastModifiedBy: ObjectId? = null,
+    @CreatedBy
+    @Field(CREATED_BY_FIELD) var createdBy: ObjectId? = null
 ): Serializable {
     companion object {
         const val COLLECTION_NAME = "products"
@@ -32,5 +41,10 @@ data class Product(
         const val VARIABLE_FIELD = "is_variable"
         const val TYPE_FIELD = "type"
         const val CATEGORY_FIELD = "category"
+
+        const val CREATED_DATE_FIELD = "created_date"
+        const val LAST_MODIFIED_DATE_FIELD = "last_modified_date"
+        const val LAST_MODIFIED_BY_FIELD = "last_modified_by"
+        const val CREATED_BY_FIELD = "created_by"
     }
 }

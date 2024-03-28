@@ -41,6 +41,7 @@ data class User(
         const val FIRST_NAME_FIELD = "first_name"
         const val LAST_NAME_FIELD = "last_name"
         const val CREDENTIAL_FIELD = "credential"
+
         const val CREATED_DATE_FIELD = "created_date"
         const val LAST_MODIFIED_DATE_FIELD = "last_modified_date"
         const val LAST_MODIFIED_BY_FIELD = "last_modified_by"
