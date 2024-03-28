@@ -29,9 +29,9 @@ data class User(
     @LastModifiedDate
     @Field(LAST_MODIFIED_DATE_FIELD) var lastModifiedDate: LocalDateTime? = null,
     @LastModifiedBy
-    @Field(LAST_MODIFIED_BY_FIELD) var lastModifiedBy: ObjectId? = null,
+    @Field(LAST_MODIFIED_BY_FIELD) var lastModifiedBy: AuditingUser? = null,
     @CreatedBy
-    @Field(CREATED_BY_FIELD) var createdBy: ObjectId? = null
+    @Field(CREATED_BY_FIELD) var createdBy: AuditingUser? = null
 ): Serializable {
 
     companion object {
