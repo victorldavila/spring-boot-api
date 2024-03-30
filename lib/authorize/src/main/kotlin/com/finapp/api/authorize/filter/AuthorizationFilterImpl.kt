@@ -1,5 +1,6 @@
 package com.finapp.api.authorize.filter
 
+import com.finapp.api.core.model.PermissionType
 import com.finapp.api.core.model.ProfilePermissionType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
@@ -14,7 +15,7 @@ class AuthorizationFilterImpl(
     private val authorizationHelper: AuthorizationHelper
 ) : HandlerFilterFunction<ServerResponse, ServerResponse> {
 
-    var roles: List<ProfilePermissionType> = listOf(ProfilePermissionType.NONE)
+    var roles: List<PermissionType> = listOf(PermissionType.NONE)
 
     override fun filter(request: ServerRequest, next: HandlerFunction<ServerResponse>): Mono<ServerResponse> {
         return authorizationHelper.getUserRoles(request)

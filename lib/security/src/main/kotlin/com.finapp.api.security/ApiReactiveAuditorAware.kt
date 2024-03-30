@@ -18,6 +18,7 @@ internal class ApiReactiveAuditorAware : ReactiveAuditorAware<AuditingUser> {
 
     @Autowired
     private lateinit var userRepository: UserRepository
+
     override fun getCurrentAuditor(): Mono<AuditingUser> {
         return ReactiveSecurityContextHolder.getContext()
             .map{ it.authentication }

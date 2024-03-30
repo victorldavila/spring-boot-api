@@ -20,7 +20,7 @@ class UserRepositoryImpl(
     private val template: ReactiveMongoTemplate
 ): UserRepository {
 
-    override fun findUserById(userId: ObjectId): Mono<User> =
+    override fun findUserById(userId: ObjectId?): Mono<User> =
         template.findById(userId, User::class.java)
 
     override fun findUserByEmail(email: String): Mono<User> =

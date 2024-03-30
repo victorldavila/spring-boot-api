@@ -1,7 +1,9 @@
 package com.finapp.api.security.jwt
 
+import com.finapp.api.core.model.PermissionType
 import com.finapp.api.core.model.ProfilePermissionType
 import com.finapp.api.user_api.data.User
+import com.finapp.api.user_api.role.data.RoleItem
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SignatureException
@@ -27,7 +29,7 @@ class JwtHelper {
 
     fun generateToken(roles: List<String>, username: String, isRefreshToken: Boolean = false): String = generateJwtToken(username, hashMapOf("roles" to roles), isRefreshToken)
 
-    fun generateToken(user: User, isRefreshToken: Boolean = false): String = generateJwtToken(user.id?.toHexString(), hashMapOf("roles" to user.roles.map { it.type }), isRefreshToken)
+    fun generateToken(user: User, roles: List<RoleItem>, isRefreshToken: Boolean = false): String = generateJwtToken(user.id?.toHexString(), hashMapOf("roles" to roles.map { it.type }), isRefreshToken)
 
     private fun generateJwtToken(userId: String?, claims: Map<String, Any>, isRefreshToken: Boolean): String {
         val jwt = Jwts.builder()
@@ -71,7 +73,7 @@ class JwtHelper {
 
     private fun isTokenExpired(token: String): Boolean = getExpirationDateFromToken(token)?.before(Date()) == true
 
-    private fun getPermissionName(permissionType: String) = ProfilePermissionType.getPermissionByType(permissionType).permissionName
+    private fun getPermissionName(permissionType: String) = PermissionType.getPermissionByType(permissionType).permissionName
 
     fun validateJwtToken(authToken: String?): Boolean {
         try {

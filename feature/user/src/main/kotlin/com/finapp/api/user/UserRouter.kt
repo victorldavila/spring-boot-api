@@ -3,6 +3,7 @@ package com.finapp.api.user
 import com.finapp.api.authorize.filter.AuthorizationFilter
 import com.finapp.api.authorize.filter.AuthorizationFilterImpl
 import com.finapp.api.core.ApiRouter
+import com.finapp.api.core.model.PermissionType
 import com.finapp.api.core.model.ProfilePermissionType
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
@@ -29,22 +30,22 @@ class UserRouter(
             .filter(getUserDeleteAuthorizationFilter())
 
     private fun getUserReadAuthorizationFilter(): AuthorizationFilterImpl {
-        authorizationFilter.roles = listOf(ProfilePermissionType.USER_READ, ProfilePermissionType.ADMIN_READ, ProfilePermissionType.SUPER_ADMIN_READ)
+        authorizationFilter.roles = listOf(PermissionType.USER_READ, PermissionType.ADMIN_READ, PermissionType.SUPER_ADMIN_READ)
         return authorizationFilter
     }
 
     private fun getUserWriteAuthorizationFilter(): AuthorizationFilterImpl {
-        authorizationFilter.roles = listOf(ProfilePermissionType.USER_WRITE, ProfilePermissionType.ADMIN_WRITE, ProfilePermissionType.SUPER_ADMIN_WRITE)
+        authorizationFilter.roles = listOf(PermissionType.USER_WRITE, PermissionType.ADMIN_WRITE, PermissionType.SUPER_ADMIN_WRITE)
         return authorizationFilter
     }
 
     private fun getUserUpdateAuthorizationFilter(): AuthorizationFilterImpl {
-        authorizationFilter.roles = listOf(ProfilePermissionType.USER_UPDATE, ProfilePermissionType.ADMIN_UPDATE, ProfilePermissionType.SUPER_ADMIN_UPDATE)
+        authorizationFilter.roles = listOf(PermissionType.USER_UPDATE, PermissionType.ADMIN_UPDATE, PermissionType.SUPER_ADMIN_UPDATE)
         return authorizationFilter
     }
 
     private fun getUserDeleteAuthorizationFilter(): AuthorizationFilterImpl {
-        authorizationFilter.roles = listOf(ProfilePermissionType.USER_DELETE, ProfilePermissionType.ADMIN_DELETE, ProfilePermissionType.SUPER_ADMIN_DELETE)
+        authorizationFilter.roles = listOf(PermissionType.USER_DELETE, PermissionType.ADMIN_DELETE, PermissionType.SUPER_ADMIN_DELETE)
         return authorizationFilter
     }
 }

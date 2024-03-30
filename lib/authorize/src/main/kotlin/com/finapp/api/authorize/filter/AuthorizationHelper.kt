@@ -1,5 +1,6 @@
 package com.finapp.api.authorize.filter
 
+import com.finapp.api.core.model.PermissionType
 import com.finapp.api.core.model.ProfilePermissionType
 import com.finapp.api.core.model.Security
 import com.finapp.api.security.jwt.JwtHelper
@@ -28,7 +29,7 @@ class AuthorizationHelper(
         ServerResponse.status(HttpStatus.FORBIDDEN).build()
     }
 
-    fun containsAnyElementOnList(userRoles: List<GrantedAuthority>, acceptableRoles: List<ProfilePermissionType>): Boolean {
+    fun containsAnyElementOnList(userRoles: List<GrantedAuthority>, acceptableRoles: List<PermissionType>): Boolean {
         var userHasPermission = false
 
         acceptableRoles.forEach {

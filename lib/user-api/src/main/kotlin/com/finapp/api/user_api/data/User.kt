@@ -1,7 +1,7 @@
 package com.finapp.api.user_api.data
 
 import com.finapp.api.user_api.credential.data.Credential
-import com.finapp.api.user_api.role.data.Role
+import com.finapp.api.user_api.role.data.RoleItem
 import com.finapp.api.user_api.token.data.Token
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.CreatedBy
@@ -22,7 +22,6 @@ data class User(
     @Field(LAST_NAME_FIELD) val lastName: String,
     @Field(CREDENTIAL_FIELD) val credential: Credential? = null,
     @Field(TOKEN_FIELD) val token: List<Token> = emptyList(),
-    @Field(ROLE_FIELD) val roles: List<Role> = emptyList(),
 
     @CreatedDate
     @Field(CREATED_DATE_FIELD) val createdDate: LocalDateTime? = null,
@@ -36,7 +35,6 @@ data class User(
 
     companion object {
         const val TOKEN_FIELD = "token"
-        const val ROLE_FIELD = "role"
         const val EMAIL_FIELD = "email"
         const val FIRST_NAME_FIELD = "first_name"
         const val LAST_NAME_FIELD = "last_name"

@@ -2,14 +2,13 @@ package com.finapp.api.auth.mapper
 
 import com.finapp.api.auth.model.CredentialRequest
 import com.finapp.api.auth.model.SignUpRequest
+import com.finapp.api.core.model.PermissionType
 import com.finapp.api.core.model.ProfilePermissionType
-import com.finapp.api.user_api.role.model.RoleResponse
-import com.finapp.api.user_api.token.model.TokenResponse
-import com.finapp.api.user_api.model.UserResponse
 import com.finapp.api.user_api.credential.data.Credential
 import com.finapp.api.user_api.data.User
 import com.finapp.api.user_api.role.data.Role
-import com.finapp.api.user_api.token.data.Token
+import com.finapp.api.user_api.role.data.RoleItem
+import org.bson.types.ObjectId
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 
@@ -21,13 +20,19 @@ class AuthMapper(
         email = signUpRequest.email,
         firstName = signUpRequest.firstName,
         lastName = signUpRequest.lastName,
-        credential = signUpRequest.credential.toCredential(),
-        roles = signUpRequest.roles.map { it.toRole() }
+        credential = signUpRequest.credential.toCredential()
     )
 
-    private fun String.toRole() = Role(
-        type = ProfilePermissionType.getPermissionByType(this).name,
-        name = ProfilePermissionType.getPermissionByType(this).permissionName
+    fun getRoleByRoleType(userId: ObjectId?, roleType: String) =
+        Role(
+            userId = userId,
+            isActive = true,
+            roleItems = ProfilePermissionType.getPermissionsByRoleType(roleType)?.map { it.toRole() }
+        )
+
+    private fun PermissionType.toRole() = RoleItem(
+        type = this.name,
+        name = this.permissionName
     )
 
     private fun CredentialRequest.toCredential(): Credential = Credential(

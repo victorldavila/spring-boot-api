@@ -19,5 +19,5 @@ data class SignUpRequest(
     @JsonProperty("credential")
     @field:Valid
     val credential: CredentialRequest,
-    @JsonProperty("roles") val roles: List<String>
+    @JsonProperty("role_type") val roleType: String
 )
