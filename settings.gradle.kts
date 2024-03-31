@@ -14,8 +14,12 @@ include("feature:user")
 include("feature:products")
 
 include("lib:security")
-include("lib:user-api")
 include("lib:authorize")
 include("lib:core")
-include("lib:products-api")
 include("lib:swagger")
+
+include("lib:user-api")
+include("lib:products-api")
+include("lib:role-api")
+include("feature:role")
+findProject(":feature:role")?.name = "role"

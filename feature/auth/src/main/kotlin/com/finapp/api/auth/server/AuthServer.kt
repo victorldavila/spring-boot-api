@@ -3,7 +3,7 @@ package com.finapp.api.auth.server
 import com.finapp.api.auth.model.*
 import com.finapp.api.auth.validation.OnSignIn
 import com.finapp.api.auth.validation.OnSignUp
-import com.finapp.api.user_api.token.model.TokenResponse
+import com.finapp.api.user_api.model.TokenResponse
 import com.finapp.api.user_api.model.UserResponse
 import jakarta.validation.Valid
 import org.springframework.validation.annotation.Validated

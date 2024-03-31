@@ -1,6 +1,6 @@
 package com.finapp.api.user.repository
 
-import com.finapp.api.user_api.credential.data.Credential
+import com.finapp.api.user_api.data.Credential
 import com.mongodb.client.result.DeleteResult
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
@@ -12,8 +12,6 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import com.finapp.api.user_api.data.User
 import com.finapp.api.user_api.repository.UserRepository
-import org.springframework.data.mongodb.core.query.Update
-import java.time.LocalDateTime
 
 @Repository
 class UserRepositoryImpl(

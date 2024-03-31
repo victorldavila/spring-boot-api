@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.finapp.buildsrc.ApiGroup
 import com.finapp.buildsrc.ApiVersion
-import com.finapp.buildsrc.springBootSecurityImplementation
+import com.finapp.buildsrc.springBootSwaggerImplementation
 import com.finapp.buildsrc.userLibImplementation
 
 plugins {
@@ -12,8 +12,8 @@ plugins {
     kotlin("plugin.spring")
 }
 
-group = ApiGroup.Feature.auth
-version = ApiVersion.Feature.auth
+group = ApiGroup.Lib.userInterface
+version = ApiVersion.Lib.user
 
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -33,12 +33,10 @@ tasks.bootJar {
 
 dependencies {
     implementation(project(":lib:core"))
-
-    implementation(project(":lib:user-api"))
     implementation(project(":lib:role-api"))
 
-    springBootSecurityImplementation()
     userLibImplementation()
+    springBootSwaggerImplementation()
 }
 
 tasks.withType<KotlinCompile> {

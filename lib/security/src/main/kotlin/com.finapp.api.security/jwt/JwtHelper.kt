@@ -1,9 +1,8 @@
 package com.finapp.api.security.jwt
 
 import com.finapp.api.core.model.PermissionType
-import com.finapp.api.core.model.ProfilePermissionType
+import com.finapp.api.role.data.RoleItem
 import com.finapp.api.user_api.data.User
-import com.finapp.api.user_api.role.data.RoleItem
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SignatureException

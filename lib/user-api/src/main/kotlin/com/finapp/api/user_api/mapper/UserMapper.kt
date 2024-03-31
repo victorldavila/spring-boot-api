@@ -3,10 +3,8 @@ package com.finapp.api.user_api.mapper
 import com.finapp.api.user_api.data.User
 import com.finapp.api.user_api.model.UserRequest
 import com.finapp.api.user_api.model.UserResponse
-import com.finapp.api.user_api.role.data.RoleItem
-import com.finapp.api.user_api.role.model.RoleResponse
-import com.finapp.api.user_api.token.data.Token
-import com.finapp.api.user_api.token.model.TokenResponse
+import com.finapp.api.user_api.data.Token
+import com.finapp.api.user_api.model.TokenResponse
 import org.springframework.stereotype.Component
 
 @Component
@@ -30,11 +28,6 @@ class UserMapper {
         lastName = userRequest?.lastName ?: user.lastName,
         email = userRequest?.email ?: user.email,
         credential = user.credential?.copy(username = userRequest?.username ?: user.credential.username)
-    )
-
-    private fun RoleItem.toRoleResponse() = RoleResponse (
-        type = this.type,
-        name = this.name
     )
 
     private fun Token.toTokenResponse(): TokenResponse = TokenResponse(

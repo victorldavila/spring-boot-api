@@ -1,6 +1,6 @@
 package com.finapp.api.security
 
-import com.finapp.api.user_api.data.AuditingUser
+import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -15,7 +15,7 @@ class MongoConfig {
     private lateinit var auditorAware: ApiReactiveAuditorAware
 
     @Bean
-    fun getCurrentAuditor(): Mono<AuditingUser> {
+    fun getCurrentAuditor(): Mono<ObjectId> {
         return auditorAware.currentAuditor
     }
 }

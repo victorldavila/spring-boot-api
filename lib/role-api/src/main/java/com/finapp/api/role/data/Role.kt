@@ -1,4 +1,4 @@
-package com.finapp.api.user_api.data
+package com.finapp.api.role.data
 
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.CreatedBy
@@ -11,14 +11,13 @@ import org.springframework.data.mongodb.core.mapping.MongoId
 import java.io.Serializable
 import java.time.LocalDateTime
 
-@Document(collection = "user")
-data class User(
+@Document(collection = "role")
+data class Role(
     @MongoId val id: ObjectId? = null,
-    @Field(EMAIL_FIELD) val email: String,
-    @Field(FIRST_NAME_FIELD) val firstName: String,
-    @Field(LAST_NAME_FIELD) val lastName: String,
-    @Field(CREDENTIAL_FIELD) val credential: Credential? = null,
-    @Field(TOKEN_FIELD) val token: List<Token> = emptyList(),
+    @Field(USER_ID_FIELD) val userId: ObjectId?,
+    @Field(IS_ACTIVE_FIELD) val isActive: Boolean = true,
+    @Field(API_ROLE_FIELD) val roleItems: List<RoleItem>? = null,
+    @Field(FEATURE_TOGGLE_FIELD) val featureToggles: List<RoleItem>? = null,
 
     @CreatedDate
     @Field(CREATED_DATE_FIELD) val createdDate: LocalDateTime? = null,
@@ -26,17 +25,19 @@ data class User(
     @Field(LAST_MODIFIED_DATE_FIELD) var lastModifiedDate: LocalDateTime? = null,
     @LastModifiedBy
     @Field(LAST_MODIFIED_BY_FIELD) var lastModifiedBy: ObjectId? = null,
+    @CreatedBy
+    @Field(CREATED_BY_FIELD) var createdBy: ObjectId? = null
 ): Serializable {
 
     companion object {
-        const val TOKEN_FIELD = "token"
-        const val EMAIL_FIELD = "email"
-        const val FIRST_NAME_FIELD = "first_name"
-        const val LAST_NAME_FIELD = "last_name"
-        const val CREDENTIAL_FIELD = "credential"
+        const val API_ROLE_FIELD = "api_roles"
+        const val FEATURE_TOGGLE_FIELD = "feature_toggle"
+        const val USER_ID_FIELD = "user_id"
+        const val IS_ACTIVE_FIELD = "is_active"
 
         const val CREATED_DATE_FIELD = "created_date"
         const val LAST_MODIFIED_DATE_FIELD = "last_modified_date"
         const val LAST_MODIFIED_BY_FIELD = "last_modified_by"
+        const val CREATED_BY_FIELD = "created_by"
     }
 }

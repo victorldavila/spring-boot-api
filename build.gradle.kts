@@ -12,6 +12,7 @@ plugins {
 
 group = "com.finapp"
 version = "0.0.1-SNAPSHOT"
+
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -24,6 +25,8 @@ dependencies {
 
 	implementation(project(":feature:auth"))
 	implementation(project(":feature:user"))
+	implementation(project(":feature:products"))
+	implementation(project(":feature:role"))
 
 	implementation(project(":lib:security"))
 	implementation(project(":lib:core"))

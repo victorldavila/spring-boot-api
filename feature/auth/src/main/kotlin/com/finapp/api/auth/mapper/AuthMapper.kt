@@ -4,10 +4,10 @@ import com.finapp.api.auth.model.CredentialRequest
 import com.finapp.api.auth.model.SignUpRequest
 import com.finapp.api.core.model.PermissionType
 import com.finapp.api.core.model.ProfilePermissionType
-import com.finapp.api.user_api.credential.data.Credential
+import com.finapp.api.role.data.Role
+import com.finapp.api.role.data.RoleItem
+import com.finapp.api.user_api.data.Credential
 import com.finapp.api.user_api.data.User
-import com.finapp.api.user_api.role.data.Role
-import com.finapp.api.user_api.role.data.RoleItem
 import org.bson.types.ObjectId
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component

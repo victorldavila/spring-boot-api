@@ -33,12 +33,13 @@ tasks.bootJar {
 
 dependencies {
     implementation(project(":lib:user-api"))
+    implementation(project(":lib:role-api"))
+
     implementation(project(":lib:authorize"))
     implementation(project(":lib:security"))
     implementation(project(":lib:core"))
 
     userLibImplementation()
-    springBootSwaggerImplementation()
 }
 
 tasks.withType<KotlinCompile> {

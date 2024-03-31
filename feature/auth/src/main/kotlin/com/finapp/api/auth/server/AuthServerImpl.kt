@@ -5,13 +5,13 @@ import com.finapp.api.auth.mapper.AuthMapper
 import com.finapp.api.auth.model.CredentialRequest
 import com.finapp.api.auth.model.TokenRequest
 import com.finapp.api.core.error.BadRequestError
-import com.finapp.api.user_api.token.model.TokenResponse
+import com.finapp.api.role.repository.RoleRepository
+import com.finapp.api.user_api.model.TokenResponse
 import com.finapp.api.user_api.model.UserResponse
 import com.finapp.api.user_api.data.User
 import com.finapp.api.user_api.mapper.UserMapper
 import com.finapp.api.user_api.repository.UserRepository
-import com.finapp.api.user_api.role.repository.RoleRepository
-import com.finapp.api.user_api.token.repository.TokenService
+import com.finapp.api.user_api.service.TokenService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
