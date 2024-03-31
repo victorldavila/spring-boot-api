@@ -1,8 +1,7 @@
-package com.finapp.api.user_api.model
+package com.finapp.api.user.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.finapp.api.core.validation.OnCreate
-import com.finapp.api.core.validation.OnUpdate
 import jakarta.validation.constraints.NotBlank
 
 data class UserRequest(

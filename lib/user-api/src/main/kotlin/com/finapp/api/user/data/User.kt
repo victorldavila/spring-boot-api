@@ -1,7 +1,6 @@
-package com.finapp.api.user_api.data
+package com.finapp.api.user.data
 
 import org.bson.types.ObjectId
-import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate

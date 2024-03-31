@@ -1,7 +1,6 @@
 package com.finapp.api.security
 
 import com.finapp.api.security.jwt.JwtHelper
-import com.finapp.api.user_api.repository.UserRepository
 import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.ReactiveAuditorAware

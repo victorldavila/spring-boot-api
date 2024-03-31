@@ -1,4 +1,4 @@
-package com.finapp.api.user_api.data
+package com.finapp.api.user.data
 
 import org.springframework.data.mongodb.core.mapping.Field
 

@@ -1,7 +1,7 @@
-package com.finapp.api.user_api.repository
+package com.finapp.api.user.repository
 
-import com.finapp.api.user_api.data.Credential
-import com.finapp.api.user_api.data.User
+import com.finapp.api.user.data.Credential
+import com.finapp.api.user.data.User
 import reactor.core.publisher.Mono
 
 interface CredentialRepository {

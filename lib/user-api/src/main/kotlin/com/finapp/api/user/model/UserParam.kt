@@ -1,4 +1,4 @@
-package com.finapp.api.user_api.model
+package com.finapp.api.user.model
 
 import com.finapp.api.core.validation.OnDelete
 import com.finapp.api.core.validation.OnRead

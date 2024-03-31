@@ -1,9 +1,7 @@
 package com.finapp.api.user.repository
 
-import com.finapp.api.user_api.data.Credential
-import com.finapp.api.user_api.repository.CredentialRepository
-import com.finapp.api.user_api.data.User
-import com.finapp.api.user_api.repository.UserRepository
+import com.finapp.api.user.data.Credential
+import com.finapp.api.user.data.User
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 

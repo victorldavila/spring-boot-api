@@ -3,10 +3,8 @@ package com.finapp.api.user.repository
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import com.finapp.api.user_api.data.User
-import com.finapp.api.user_api.repository.UserRepository
-import com.finapp.api.user_api.repository.TokenRepository
-import com.finapp.api.user_api.data.Token
+import com.finapp.api.user.data.User
+import com.finapp.api.user.data.Token
 import org.bson.types.ObjectId
 
 @Repository

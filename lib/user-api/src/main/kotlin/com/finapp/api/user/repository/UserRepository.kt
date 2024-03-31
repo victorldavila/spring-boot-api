@@ -1,6 +1,6 @@
-package com.finapp.api.user_api.repository
+package com.finapp.api.user.repository
 
-import com.finapp.api.user_api.data.User
+import com.finapp.api.user.data.User
 import com.mongodb.client.result.DeleteResult
 import org.bson.types.ObjectId
 import reactor.core.publisher.Flux

@@ -1,6 +1,6 @@
 package com.finapp.api.user.repository
 
-import com.finapp.api.user_api.data.Credential
+import com.finapp.api.user.data.Credential
 import com.mongodb.client.result.DeleteResult
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
@@ -10,8 +10,7 @@ import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import com.finapp.api.user_api.data.User
-import com.finapp.api.user_api.repository.UserRepository
+import com.finapp.api.user.data.User
 
 @Repository
 class UserRepositoryImpl(

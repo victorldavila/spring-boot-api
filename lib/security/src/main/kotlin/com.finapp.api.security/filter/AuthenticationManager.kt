@@ -1,7 +1,7 @@
 package com.finapp.api.security.filter
 
 import com.finapp.api.security.jwt.JwtHelper
-import com.finapp.api.user_api.repository.TokenRepository
+import com.finapp.api.user.repository.TokenRepository
 import io.jsonwebtoken.Claims
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.ReactiveAuthenticationManager

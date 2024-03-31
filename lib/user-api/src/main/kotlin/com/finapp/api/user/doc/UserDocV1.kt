@@ -1,8 +1,8 @@
-package com.finapp.api.user_api.doc
+package com.finapp.api.user.doc
 
-import com.finapp.api.user_api.model.UserRequest
-import com.finapp.api.user_api.model.UserResponse
-import com.finapp.api.user_api.service.UserService
+import com.finapp.api.user.model.UserRequest
+import com.finapp.api.user.model.UserResponse
+import com.finapp.api.user.service.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn

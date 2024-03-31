@@ -6,8 +6,8 @@ import com.finapp.api.core.model.PermissionType
 import com.finapp.api.core.model.ProfilePermissionType
 import com.finapp.api.role.data.Role
 import com.finapp.api.role.data.RoleItem
-import com.finapp.api.user_api.data.Credential
-import com.finapp.api.user_api.data.User
+import com.finapp.api.user.data.Credential
+import com.finapp.api.user.data.User
 import org.bson.types.ObjectId
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component

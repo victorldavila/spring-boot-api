@@ -2,11 +2,11 @@ package com.finapp.api.user
 
 import com.finapp.api.core.error.BaseHandler
 import com.finapp.api.core.error.ValidationHandler
-import com.finapp.api.user_api.model.UserArg
-import com.finapp.api.user_api.model.UserParam
-import com.finapp.api.user_api.model.UserRequest
-import com.finapp.api.user_api.model.UserResponse
-import com.finapp.api.user_api.service.UserService
+import com.finapp.api.user.model.UserArg
+import com.finapp.api.user.model.UserParam
+import com.finapp.api.user.model.UserRequest
+import com.finapp.api.user.model.UserResponse
+import com.finapp.api.user.service.UserService
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest

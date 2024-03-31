@@ -1,6 +1,6 @@
-package com.finapp.api.user_api.service
+package com.finapp.api.user.service
 
-import com.finapp.api.user_api.data.User
+import com.finapp.api.user.data.User
 import reactor.core.publisher.Mono
 
 interface TokenService {

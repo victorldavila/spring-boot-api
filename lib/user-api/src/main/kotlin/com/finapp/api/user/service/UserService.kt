@@ -1,15 +1,14 @@
-package com.finapp.api.user_api.service
+package com.finapp.api.user.service
 
 import com.finapp.api.core.validation.OnCreate
 import com.finapp.api.core.validation.OnDelete
 import com.finapp.api.core.validation.OnRead
 import com.finapp.api.core.validation.OnUpdate
-import com.finapp.api.user_api.model.UserArg
-import com.finapp.api.user_api.model.UserParam
-import com.finapp.api.user_api.model.UserRequest
-import com.finapp.api.user_api.model.UserResponse
+import com.finapp.api.user.model.UserArg
+import com.finapp.api.user.model.UserParam
+import com.finapp.api.user.model.UserRequest
+import com.finapp.api.user.model.UserResponse
 import jakarta.validation.Valid
-import jakarta.validation.constraints.NotEmpty
 import org.springframework.validation.annotation.Validated
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono

@@ -1,4 +1,4 @@
-package com.finapp.api.role
+package com.finapp.api.swagger
 
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI

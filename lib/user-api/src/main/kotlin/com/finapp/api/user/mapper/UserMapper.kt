@@ -1,10 +1,10 @@
-package com.finapp.api.user_api.mapper
+package com.finapp.api.user.mapper
 
-import com.finapp.api.user_api.data.User
-import com.finapp.api.user_api.model.UserRequest
-import com.finapp.api.user_api.model.UserResponse
-import com.finapp.api.user_api.data.Token
-import com.finapp.api.user_api.model.TokenResponse
+import com.finapp.api.user.data.User
+import com.finapp.api.user.model.UserRequest
+import com.finapp.api.user.model.UserResponse
+import com.finapp.api.user.data.Token
+import com.finapp.api.user.model.TokenResponse
 import org.springframework.stereotype.Component
 
 @Component

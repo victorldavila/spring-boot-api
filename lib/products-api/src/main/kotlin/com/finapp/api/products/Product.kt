@@ -1,6 +1,6 @@
-package com.finapp.api.role
+package com.finapp.api.products
 
-import com.finapp.api.role.Product.Companion.COLLECTION_NAME
+import com.finapp.api.products.Product.Companion.COLLECTION_NAME
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate

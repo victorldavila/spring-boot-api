@@ -3,11 +3,10 @@ package com.finapp.api.user.service
 import com.finapp.api.core.error.BadRequestError
 import com.finapp.api.role.repository.RoleRepository
 import com.finapp.api.security.jwt.JwtHelper
-import com.finapp.api.user_api.data.User
-import com.finapp.api.user_api.repository.UserRepository
-import com.finapp.api.user_api.data.Token
-import com.finapp.api.user_api.repository.TokenRepository
-import com.finapp.api.user_api.service.TokenService
+import com.finapp.api.user.data.User
+import com.finapp.api.user.repository.UserRepository
+import com.finapp.api.user.data.Token
+import com.finapp.api.user.repository.TokenRepository
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
