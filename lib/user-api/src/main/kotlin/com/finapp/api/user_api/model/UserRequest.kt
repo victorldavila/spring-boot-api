@@ -6,9 +6,6 @@ import com.finapp.api.core.validation.OnUpdate
 import jakarta.validation.constraints.NotBlank
 
 data class UserRequest(
-    @JsonProperty("id")
-    @field:NotBlank(groups = [ OnUpdate::class ], message = "id can not be blanked")
-    val id: String,
     @JsonProperty("first_name")
     @field:NotBlank(groups = [ OnCreate::class ], message = "first name can not be blanked")
     val firstName: String?,
@@ -18,5 +15,6 @@ data class UserRequest(
     @JsonProperty("email")
     @field:NotBlank(groups = [ OnCreate::class ], message = "email can not be blanked")
     val email: String?,
-    @JsonProperty("username") val username: String?
+    @JsonProperty("username")
+    val username: String?
 )

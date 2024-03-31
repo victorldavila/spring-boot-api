@@ -11,12 +11,11 @@ rootProject.name = "finapp"
 
 include("feature:auth")
 include("feature:user")
+include("feature:products")
 
 include("lib:security")
 include("lib:user-api")
 include("lib:authorize")
 include("lib:core")
-include("feature:products")
-findProject(":feature:products")?.name = "products"
 include("lib:products-api")
-findProject(":lib:products-api")?.name = "products-api"
+include("lib:swagger")

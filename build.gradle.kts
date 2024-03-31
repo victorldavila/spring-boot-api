@@ -1,4 +1,5 @@
 import com.finapp.buildsrc.springBootImplementation
+import com.finapp.buildsrc.springBootSwaggerImplementation
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -19,12 +20,14 @@ repositories {
 
 dependencies {
 	springBootImplementation()
+	springBootSwaggerImplementation()
 
 	implementation(project(":feature:auth"))
 	implementation(project(":feature:user"))
 
 	implementation(project(":lib:security"))
 	implementation(project(":lib:core"))
+	implementation(project(":lib:swagger"))
 }
 
 tasks.withType<KotlinCompile> {

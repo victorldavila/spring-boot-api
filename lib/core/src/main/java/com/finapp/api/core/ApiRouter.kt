@@ -22,7 +22,6 @@ object ApiRouter {
         RequestPredicates.method(HttpMethod.DELETE)
             .and(RequestPredicates.path(path))
             .and(RequestPredicates.accept(MediaType.APPLICATION_JSON))
-            .and(RequestPredicates.contentType(MediaType.APPLICATION_JSON))
 
     fun apiGET(path: String): RequestPredicate =
         RequestPredicates.method(HttpMethod.GET)

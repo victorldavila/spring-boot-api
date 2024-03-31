@@ -8,6 +8,11 @@ object ApiDeps {
         val security by lazy { "org.springframework.boot:spring-boot-starter-security" }
     }
 
+    object OpenApi {
+        //val core by lazy { "org.springdoc:springdoc-openapi-webflux-core:1.4.3" }
+        val ui by lazy { "org.springdoc:springdoc-openapi-starter-webflux-ui:2.0.4" }
+    }
+
     object Jwt {
         val jwtApi by lazy { "io.jsonwebtoken:jjwt-api:0.11.5" }
         val jwtImpl by lazy { "io.jsonwebtoken:jjwt-impl:0.11.5" }

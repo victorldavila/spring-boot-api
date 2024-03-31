@@ -138,7 +138,9 @@ class SecurityConfig {
             "/v1/finapp-docs",
             "/v1/swagger-ui.html",
             "/swagger-ui/**",
+            "/swagger-ui.html",
             "/webjars/**",
+            "/v1/webjars/**",
             "/swagger-resources/**",
             "/*/swagger-resources/**",
             "/*/v3/api-docs"

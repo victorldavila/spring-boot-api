@@ -2,6 +2,8 @@ package com.finapp.api.user
 
 import com.finapp.api.core.error.BaseHandler
 import com.finapp.api.core.error.ValidationHandler
+import com.finapp.api.user_api.model.UserArg
+import com.finapp.api.user_api.model.UserParam
 import com.finapp.api.user_api.model.UserRequest
 import com.finapp.api.user_api.model.UserResponse
 import com.finapp.api.user_api.service.UserService
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
-import org.springframework.web.reactive.function.server.bodyToMono
 import reactor.core.publisher.Mono
 
 @Component
@@ -20,7 +21,7 @@ class UserHandler(
 
     fun getUser(serverRequest: ServerRequest): Mono<ServerResponse> =
         Mono.just(serverRequest)
-            .map { it.pathVariable("userId") }
+            .map { getUserParam(it) }
             .flatMap { userService.getUserById(it) }
             .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
             .onErrorResume { errorResponse(it) }
@@ -32,7 +33,10 @@ class UserHandler(
 
     fun updateUser(serverRequest: ServerRequest): Mono<ServerResponse> =
         Mono.just(serverRequest)
-            .flatMap { it.bodyToMono(UserRequest::class.java) }
+            .flatMap { serverRequest ->
+                serverRequest.bodyToMono(UserRequest::class.java)
+                    .map { UserArg(getUserParam(serverRequest), it) }
+            }
             .flatMap { userService.updateUser(it) }
             .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
             .onErrorResume { errorResponse(it) }
@@ -46,8 +50,14 @@ class UserHandler(
 
     fun deleteUser(serverRequest: ServerRequest): Mono<ServerResponse> =
         Mono.just(serverRequest)
-            .map { it.pathVariable("userId") }
+            .map { UserArg(getUserParam(it)) }
             .flatMap { userService.deleteUser(it) }
             .flatMap { ServerResponse.noContent().build() }
             .onErrorResume { errorResponse(it) }
+
+    private fun getUserParam(serverRequest: ServerRequest): UserParam {
+        val userId = serverRequest.pathVariable("userId")
+
+        return UserParam(userId)
+    }
 }

@@ -9,6 +9,13 @@ spring:
       uri: mongodb://admin-teste:Teste2020bd!@localhost:27017/Test?authSource=admin
       database: Test
 
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /v1/swagger-ui.html
+  api-docs:
+    path: /v1/finapp-docs
+
 server:
   port: 8080
 

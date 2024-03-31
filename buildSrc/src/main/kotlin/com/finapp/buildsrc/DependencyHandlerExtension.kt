@@ -20,6 +20,11 @@ fun DependencyHandler.springBootImplementation() {
     this.add("implementation", ApiDeps.SpringBoot.reactiveMongoDb)
 }
 
+fun DependencyHandler.springBootSwaggerImplementation() {
+    //this.add("implementation", ApiDeps.OpenApi.core)
+    this.add("implementation", ApiDeps.OpenApi.ui)
+}
+
 fun DependencyHandler.springBootSecurityImplementation() {
     this.add("implementation", ApiDeps.SpringBoot.security)
 }

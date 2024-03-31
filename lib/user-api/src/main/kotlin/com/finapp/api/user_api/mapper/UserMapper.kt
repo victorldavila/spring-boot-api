@@ -25,11 +25,11 @@ class UserMapper {
         email = userRequest.email!!
     )
 
-    fun userRequestToUser(user: User, userRequest: UserRequest) = user.copy(
-        firstName = userRequest.firstName ?: user.firstName,
-        lastName = userRequest.lastName ?: user.lastName,
-        email = userRequest.email ?: user.email,
-        credential = user.credential?.copy(username = userRequest.username ?: user.credential.username)
+    fun userRequestToUser(user: User, userRequest: UserRequest?) = user.copy(
+        firstName = userRequest?.firstName ?: user.firstName,
+        lastName = userRequest?.lastName ?: user.lastName,
+        email = userRequest?.email ?: user.email,
+        credential = user.credential?.copy(username = userRequest?.username ?: user.credential.username)
     )
 
     private fun RoleItem.toRoleResponse() = RoleResponse (
