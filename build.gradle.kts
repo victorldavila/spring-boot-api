@@ -24,9 +24,9 @@ dependencies {
 	springBootSwaggerImplementation()
 
 	implementation(project(":feature:auth"))
-	implementation(project(":feature:user"))
+	implementation(project(":feature:users"))
 	implementation(project(":feature:products"))
-	implementation(project(":feature:role"))
+	implementation(project(":feature:roles"))
 
 	implementation(project(":lib:security"))
 	implementation(project(":lib:core"))

@@ -33,7 +33,8 @@ tasks.bootJar {
 
 dependencies {
     implementation(project(":lib:core"))
-    implementation(project(":lib:role-api"))
+
+    implementation(project(":lib:roles-api"))
 
     userLibImplementation()
     springBootSwaggerImplementation()

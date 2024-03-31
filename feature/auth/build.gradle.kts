@@ -34,8 +34,8 @@ tasks.bootJar {
 dependencies {
     implementation(project(":lib:core"))
 
-    implementation(project(":lib:user-api"))
-    implementation(project(":lib:role-api"))
+    implementation(project(":lib:users-api"))
+    implementation(project(":lib:roles-api"))
 
     springBootSecurityImplementation()
     userLibImplementation()

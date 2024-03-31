@@ -10,16 +10,15 @@ pluginManagement {
 rootProject.name = "finapp"
 
 include("feature:auth")
-include("feature:user")
+include("feature:users")
 include("feature:products")
+include("feature:roles")
 
 include("lib:security")
 include("lib:authorize")
 include("lib:core")
 include("lib:swagger")
 
-include("lib:user-api")
+include("lib:users-api")
 include("lib:products-api")
-include("lib:role-api")
-include("feature:role")
-findProject(":feature:role")?.name = "role"
+include("lib:roles-api")
