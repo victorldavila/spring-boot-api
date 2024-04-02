@@ -21,7 +21,6 @@ fun DependencyHandler.springBootImplementation() {
 }
 
 fun DependencyHandler.springBootSwaggerImplementation() {
-    //this.add("implementation", ApiDeps.OpenApi.core)
     this.add("implementation", ApiDeps.OpenApi.ui)
 }
 
@@ -48,7 +47,7 @@ fun DependencyHandler.securityLibImplementation() {
     jacksonImplementation()
     projectReactorImplementation()
     kotlinImplementation()
-    mongoDbImplementation()
+    //mongoDbImplementation()
 }
 
 fun DependencyHandler.userLibImplementation() {
