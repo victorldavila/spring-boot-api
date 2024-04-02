@@ -37,6 +37,10 @@ fun DependencyHandler.jacksonImplementation() {
     this.add("implementation", ApiDeps.Json.jackson)
 }
 
+fun DependencyHandler.mongoDbImplementation() {
+    this.add("implementation", ApiDeps.MongoDb.crypt)
+}
+
 fun DependencyHandler.securityLibImplementation() {
     springBootImplementation()
     springBootSecurityImplementation()
@@ -44,6 +48,7 @@ fun DependencyHandler.securityLibImplementation() {
     jacksonImplementation()
     projectReactorImplementation()
     kotlinImplementation()
+    mongoDbImplementation()
 }
 
 fun DependencyHandler.userLibImplementation() {

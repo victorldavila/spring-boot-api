@@ -13,6 +13,11 @@ object ApiDeps {
         val ui by lazy { "org.springdoc:springdoc-openapi-starter-webflux-ui:2.0.4" }
     }
 
+    object MongoDb {
+        //val core by lazy { "org.springdoc:springdoc-openapi-webflux-core:1.4.3" }
+        val crypt by lazy { "org.mongodb:mongodb-crypt:1.8.0" }
+    }
+
     object Jwt {
         val jwtApi by lazy { "io.jsonwebtoken:jjwt-api:0.11.5" }
         val jwtImpl by lazy { "io.jsonwebtoken:jjwt-impl:0.11.5" }

@@ -8,6 +8,27 @@ spring:
       authentication-database: admin
       uri: mongodb://admin-teste:Teste2020bd!@localhost:27017/Test?authSource=admin
       database: Test
+      vault:
+        uri: mongodb://admin-teste:Teste2020bd!@localhost:27017/Test?authSource=admin
+      storage:
+        uri: mongodb://admin-teste:Teste2020bd!@localhost:27017/Test?authSource=admin
+
+mongodb:
+  key:
+    vault:
+      db: encryption
+      coll: keyVault
+  kms:
+    provider: local
+  master:
+    key:
+      file:
+        path: ./master-key.txt
+
+crypt:
+  shared:
+    lib:
+      path: ./mongo_crypt_shared_v1-windows-x86_64-enterprise-7.0.7/bin/mongo_crypt_v1
 
 springdoc:
   swagger-ui:

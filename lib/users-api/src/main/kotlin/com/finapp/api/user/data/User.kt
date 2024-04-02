@@ -5,14 +5,17 @@ import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.mongodb.core.mapping.Document
+import org.springframework.data.mongodb.core.mapping.Encrypted
 import org.springframework.data.mongodb.core.mapping.Field
 import org.springframework.data.mongodb.core.mapping.MongoId
 import java.io.Serializable
 import java.time.LocalDateTime
 
 @Document(collection = "user")
+@Encrypted(keyId = ["#{mongocrypt.keyId(#target)}"])
 data class User(
     @MongoId val id: ObjectId? = null,
+    @Encrypted(algorithm = "AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic")
     @Field(EMAIL_FIELD) val email: String,
     @Field(FIRST_NAME_FIELD) val firstName: String,
     @Field(LAST_NAME_FIELD) val lastName: String,

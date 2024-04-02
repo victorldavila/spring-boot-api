@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 
 @Component
-internal class ApiReactiveAuditorAware : ReactiveAuditorAware<ObjectId> {
+class ApiReactiveAuditorAware : ReactiveAuditorAware<ObjectId> {
     @Autowired
     private lateinit var jwtHelper: JwtHelper
 
