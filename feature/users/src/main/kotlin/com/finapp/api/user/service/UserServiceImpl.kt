@@ -1,7 +1,7 @@
 package com.finapp.api.user.service
 
 import com.finapp.api.core.error.NotFoundError
-import com.finapp.api.security.WSMessage
+import com.finapp.api.core.websocket.WSMessage
 import com.finapp.api.user.mapper.UserMapper
 import com.finapp.api.user.data.User
 import com.finapp.api.user.model.UserArg
@@ -10,8 +10,6 @@ import com.finapp.api.user.model.UserRequest
 import com.finapp.api.user.model.UserResponse
 import com.finapp.api.user.repository.UserRepository
 import org.bson.types.ObjectId
-import org.slf4j.LoggerFactory
-import org.springframework.messaging.rsocket.RSocketRequester
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -31,7 +29,7 @@ class UserServiceImpl(
     override fun getAllUsers(): Flux<UserResponse> =
         userRepository.findAllUsers()
             .map { userMapper.userToUserResponse(it) }
-            .doOnNext { sink.tryEmitNext(WSMessage("victorldavila@gmail.com", it.firstName)) }
+            .doOnNext { sink.tryEmitNext(WSMessage(it.email, it.firstName)) }
 
     override fun updateUser(userArg: UserArg): Mono<UserResponse> =
         findUserById(userArg.userParam?.userId)

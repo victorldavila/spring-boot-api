@@ -1,5 +1,6 @@
 package com.finapp.api.security
 
+import com.finapp.api.core.websocket.WSMessage
 import org.slf4j.LoggerFactory
 import org.springframework.web.reactive.socket.WebSocketSession
 import reactor.core.publisher.Mono

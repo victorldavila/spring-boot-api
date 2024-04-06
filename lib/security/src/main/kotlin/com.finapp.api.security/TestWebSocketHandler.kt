@@ -15,22 +15,21 @@ import reactor.core.publisher.Mono
 import reactor.core.publisher.Sinks
 import reactor.core.publisher.Sinks.EmitResult
 
-
 @Configuration
-class MyWebFluxWebSocketHandler(
+class TestWebSocketHandler(
     private val sink: Sinks.Many<Any>
 ) : WebSocketHandler {
 
     @Bean
-    fun handlerMapping(): HandlerMapping =
+    fun testHandlerMapping(): HandlerMapping =
         SimpleUrlHandlerMapping(mapOf(
-            "/test" to this
+            "/test2" to this
         ), 1)
 
     override fun handle(session: WebSocketSession): Mono<Void> {
         val builder = UriComponentsBuilder.fromUri(session.handshakeInfo.uri)
         val queryParams = builder.build().queryParams.toSingleValueMap()
-        val uniqueId = queryParams["email"]
+        val uniqueId = queryParams["id"]
 
         LOGGER.info("Websocket connected for id $uniqueId")
 
@@ -53,6 +52,6 @@ class MyWebFluxWebSocketHandler(
     }
 
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(MyWebFluxWebSocketHandler::class.java)
+        private val LOGGER = LoggerFactory.getLogger(TestWebSocketHandler::class.java)
     }
 }

@@ -1,4 +1,4 @@
-package com.finapp.api.security
+package com.finapp.api.core.websocket
 
 data class WSMessage(
     val uniqueId: String?,

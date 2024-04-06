@@ -1,4 +1,4 @@
-package com.finapp.api.security
+package com.finapp.api.core.websocket
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
