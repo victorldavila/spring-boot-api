@@ -19,20 +19,19 @@ import java.security.SecureRandom
 @Service
 class MasterKeyServiceImpl : MasterKeyService {
 
-    @Value("\${mongodb.master.key.file.path}")
-    private val masterKeyFilename: String? = null
+    @Value("\${mongodb.master.key.file.path}") private val masterKeyFileName: String? = null
 
     override fun generateNewOrRetrieveMasterKeyFromFile(): ByteArray {
         var masterKey = ByteArray(SIZE_MASTER_KEY)
 
         try {
-            masterKeyFilename?.let {
+            masterKeyFileName?.let {
                 retrieveMasterKeyFromFile(it, masterKey)
 
                 LOGGER.info("=> An existing Master Key was found in file {}.", it)
             }
         } catch (e: IOException) {
-            masterKeyFilename?.let {
+            masterKeyFileName?.let {
                 masterKey = generateMasterKey()
                 saveMasterKeyToFile(it, masterKey)
 

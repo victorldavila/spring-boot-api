@@ -1,4 +1,9 @@
 spring:
+  rsocket:
+    server:
+      mapping-path: /rsocket
+      transport: websocket
+
   application:
     name: spring-webflux-api
 #  webflux:

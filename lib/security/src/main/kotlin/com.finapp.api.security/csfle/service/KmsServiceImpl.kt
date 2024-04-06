@@ -16,14 +16,13 @@ class KmsServiceImpl(
     private val masterKeyService: MasterKeyService
 ) : KmsService {
 
-    @Value("\${mongodb.kms.provider}")
-    private val LOCAL: String? = null
+    @Value("\${mongodb.kms.provider}") private val local: String? = null
 
     override val kmsProviders: Map<String?, Map<String, Any>>
         get() {
             LOGGER.info("=> Creating local Key Management System using the master key.")
             return hashMapOf(
-                LOCAL to hashMapOf(
+                local to hashMapOf(
                     "key" to masterKeyService.generateNewOrRetrieveMasterKeyFromFile()
                 )
             )

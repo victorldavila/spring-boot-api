@@ -20,11 +20,8 @@ import reactor.kotlin.core.publisher.toFlux
  */
 @Service
 class KeyVaultServiceImpl : KeyVaultService {
-    @Value("\${mongodb.key.vault.db}")
-    private val keyVaultDB: String? = null
-
-    @Value("\${mongodb.key.vault.coll}")
-    private val keyVaultColl: String? = null
+    @Value("\${mongodb.key.vault.db}") private val keyVaultDB: String? = null
+    @Value("\${mongodb.key.vault.coll}") private val keyVaultColl: String? = null
 
     override fun setupKeyVaultCollection(mongoClient: MongoClient) {
         LOGGER.info("=> Setup the key vault collection {}.{}", keyVaultDB, keyVaultColl)

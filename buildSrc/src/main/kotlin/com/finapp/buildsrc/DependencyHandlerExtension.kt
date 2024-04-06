@@ -24,6 +24,11 @@ fun DependencyHandler.springBootSwaggerImplementation() {
     this.add("implementation", ApiDeps.OpenApi.ui)
 }
 
+fun DependencyHandler.springBootReactiveSocketImplementation() {
+    this.add("implementation", ApiDeps.SpringBoot.rsocket)
+}
+
+
 fun DependencyHandler.springBootSecurityImplementation() {
     this.add("implementation", ApiDeps.SpringBoot.security)
 }
@@ -47,7 +52,8 @@ fun DependencyHandler.securityLibImplementation() {
     jacksonImplementation()
     projectReactorImplementation()
     kotlinImplementation()
-    //mongoDbImplementation()
+    springBootReactiveSocketImplementation()
+    mongoDbImplementation()
 }
 
 fun DependencyHandler.userLibImplementation() {
@@ -55,4 +61,5 @@ fun DependencyHandler.userLibImplementation() {
     jacksonImplementation()
     projectReactorImplementation()
     kotlinImplementation()
+    springBootReactiveSocketImplementation()
 }

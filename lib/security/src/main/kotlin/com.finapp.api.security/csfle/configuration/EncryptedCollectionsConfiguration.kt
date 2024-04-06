@@ -1,5 +1,6 @@
 package com.finapp.api.security.csfle.configuration
 
+import com.finapp.api.role.data.Role
 import com.finapp.api.user.data.User
 
 /**
@@ -8,8 +9,8 @@ import com.finapp.api.user.data.User
  * the encrypted collections and their information.
  */
 object EncryptedCollectionsConfiguration {
-    val encryptedEntities: List<EncryptedEntity> = java.util.List.of<EncryptedEntity>(
+    val encryptedEntities: List<EncryptedEntity> = listOf(
         EncryptedEntity("Test", "user", User::class.java, "userDEK"),
-        //EncryptedEntity("mydb", "companies", CompanyEntity::class.java, "companyDEK")
+        //EncryptedEntity("Test", "role", Role::class.java, "roleDEK")
     )
 }

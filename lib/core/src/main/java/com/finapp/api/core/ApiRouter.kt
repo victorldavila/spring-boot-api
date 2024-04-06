@@ -27,4 +27,9 @@ object ApiRouter {
         RequestPredicates.method(HttpMethod.GET)
             .and(RequestPredicates.path(path))
             .and(RequestPredicates.accept(MediaType.APPLICATION_JSON))
+
+    fun apiRSocket(path: String): RequestPredicate =
+        RequestPredicates
+            .path(path)
+            .and(RequestPredicates.accept(MediaType.APPLICATION_JSON))
 }

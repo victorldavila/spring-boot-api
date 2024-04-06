@@ -24,26 +24,17 @@ class MongoDBSecureClientConfiguration(
     private val kmsService: KmsService,
     private val schemaService: SchemaService
 ) {
-    @Value("\${crypt.shared.lib.path}")
-    private val CRYPT_SHARED_LIB_PATH: String? = null
+    @Value("\${crypt.shared.lib.path}") private val cryptShareLibPath: String? = null
+    @Value("\${spring.data.mongodb.storage.uri}") private val connectionStrData: String? = null
+    @Value("\${spring.data.mongodb.vault.uri}") private val connectionStrVault: String? = null
+    @Value("\${mongodb.key.vault.db}") private val keyVaultDB: String? = null
+    @Value("\${mongodb.key.vault.coll}") private val keyVaultColl: String? = null
 
-    @Value("\${spring.data.mongodb.storage.uri}")
-    private val CONNECTION_STR_DATA: String? = null
-
-    @Value("\${spring.data.mongodb.vault.uri}")
-    private val CONNECTION_STR_VAULT: String? = null
-
-    @Value("\${mongodb.key.vault.db}")
-    private val KEY_VAULT_DB: String? = null
-
-    @Value("\${mongodb.key.vault.coll}")
-    private val KEY_VAULT_COLL: String? = null
-
-    private var KEY_VAULT_NS: MongoNamespace? = null
+    private var keyVaultNS: MongoNamespace? = null
 
     @PostConstruct
     fun postConstruct() {
-        this.KEY_VAULT_NS = MongoNamespace(KEY_VAULT_DB, KEY_VAULT_COLL)
+        this.keyVaultNS = MongoNamespace(keyVaultDB ?: "", keyVaultColl ?: "")
     }
 
     @Bean
@@ -52,12 +43,12 @@ class MongoDBSecureClientConfiguration(
 
         return MongoClientSettings
             .builder()
-            .applyConnectionString(ConnectionString(CONNECTION_STR_DATA))
+            .applyConnectionString(ConnectionString(connectionStrData ?: ""))
             .build()
     }
 
     @Bean
-    fun customizer(mappingContext: MappingContext<*, *>?): MongoClientSettingsBuilderCustomizer {
+    fun customizer(mappingContext: MappingContext<*, *>): MongoClientSettingsBuilderCustomizer {
         LOGGER.info("=> Creating the MongoClientSettingsBuilderCustomizer.")
         return MongoClientSettingsBuilderCustomizer { builder: MongoClientSettings.Builder ->
             val schemaCreator = MongoJsonSchemaCreator.create(mappingContext)
@@ -66,17 +57,17 @@ class MongoDBSecureClientConfiguration(
                 .associate { it.key.fullName to it.value }
 
             val extraOptions = mapOf<String, Any?>(
-                    "cryptSharedLibPath" to CRYPT_SHARED_LIB_PATH,
+                    "cryptSharedLibPath" to cryptShareLibPath,
                     "cryptSharedLibRequired" to true
                 )
 
             val mcs = MongoClientSettings.builder()
-                .applyConnectionString(ConnectionString(CONNECTION_STR_VAULT))
+                .applyConnectionString(ConnectionString(connectionStrVault ?: ""))
                 .build()
 
             val oes = AutoEncryptionSettings.builder()
                 .keyVaultMongoClientSettings(mcs)
-                .keyVaultNamespace(KEY_VAULT_NS!!.fullName)
+                .keyVaultNamespace(keyVaultNS!!.fullName)
                 .kmsProviders(kmsService.kmsProviders)
                 .schemaMap(schemaMap)
                 .extraOptions(extraOptions)

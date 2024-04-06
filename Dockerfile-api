@@ -9,6 +9,7 @@ FROM gradle:7.6.1-jdk17-alpine as build
 
 WORKDIR /app
 
+COPY buildSrc buildSrc
 COPY feature feature
 COPY lib lib
 COPY gradle gradle

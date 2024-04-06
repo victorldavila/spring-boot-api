@@ -3,7 +3,6 @@ package com.finapp.api.security.csfle.service
 import com.finapp.api.security.csfle.configuration.EncryptedEntity
 import com.mongodb.client.model.vault.DataKeyOptions
 import com.mongodb.reactivestreams.client.vault.ClientEncryption
-import kotlinx.coroutines.reactive.awaitSingle
 import org.bson.BsonBinary
 import org.bson.BsonDocument
 import org.slf4j.LoggerFactory
@@ -24,13 +23,12 @@ class DataEncryptionKeyServiceImpl(
     override val dataEncryptionKeysB64: MutableMap<String?, String?> = mutableMapOf()
         get() {
             LOGGER.info("=> Getting Data Encryption Keys Base64 Map.")
-            LOGGER.info("=> Keys in DEK Map: {}", field?.entries)
+            LOGGER.info("=> Keys in DEK Map: {}", field.entries)
 
             return field
         }
 
-    @Value("\${mongodb.kms.provider}")
-    private val KMS_PROVIDER: String? = null
+    @Value("\${mongodb.kms.provider}") private val kmsProvider: String? = null
 
     override fun createOrRetrieveDEK(encryptedEntity: EncryptedEntity?): String? {
         val b64Encoder: Base64.Encoder = Base64.getEncoder()
@@ -43,7 +41,7 @@ class DataEncryptionKeyServiceImpl(
             LOGGER.info("=> Creating Data Encryption Key: {}", dekName)
 
             val dko = DataKeyOptions().keyAltNames(listOf(dekName))
-            dataKeyId = clientEncryption.createDataKey(KMS_PROVIDER ?: "", dko).toFlux().blockFirst()
+            dataKeyId = clientEncryption.createDataKey(kmsProvider ?: "", dko).toFlux().blockFirst()
 
             LOGGER.debug("=> DEK ID: {}", dataKeyId)
         } else {
@@ -53,7 +51,7 @@ class DataEncryptionKeyServiceImpl(
 
             LOGGER.debug("=> DEK ID: {}", dataKeyId)
         }
-        val dek64 = b64Encoder.encodeToString(dataKeyId.data)
+        val dek64 = b64Encoder.encodeToString(dataKeyId?.data)
 
         LOGGER.debug("=> Base64 DEK ID: {}", dek64)
         LOGGER.info(

@@ -18,20 +18,18 @@ import org.springframework.context.annotation.Configuration
  * ClientEncryption used by the DataEncryptionKeyService to create the DEKs.
  */
 @Configuration
-class MongoDBKeyVaultClientConfiguration(private val kmsService: KmsService) {
-    @Value("\${spring.data.mongodb.vault.uri}")
-    private val CONNECTION_STR: String? = null
+class MongoDBKeyVaultClientConfiguration(
+    private val kmsService: KmsService
+) {
+    @Value("\${spring.data.mongodb.vault.uri}") private val connectionStr: String? = null
+    @Value("\${mongodb.key.vault.db}") private val keyVaultDB: String? = null
+    @Value("\${mongodb.key.vault.coll}") private val keyVaultColl: String? = null
 
-    @Value("\${mongodb.key.vault.db}")
-    private val KEY_VAULT_DB: String? = null
-
-    @Value("\${mongodb.key.vault.coll}")
-    private val KEY_VAULT_COLL: String? = null
-    private var KEY_VAULT_NS: MongoNamespace? = null
+    private var keyVaultNS: MongoNamespace? = null
 
     @PostConstruct
     fun postConstructor() {
-        this.KEY_VAULT_NS = MongoNamespace(KEY_VAULT_DB, KEY_VAULT_COLL)
+        this.keyVaultNS = MongoNamespace(keyVaultDB ?: "", keyVaultColl ?: "")
     }
 
     /**
@@ -44,12 +42,12 @@ class MongoDBKeyVaultClientConfiguration(private val kmsService: KmsService) {
         LOGGER.info("=> Creating the MongoDB Key Vault Client.")
 
         val mcs = MongoClientSettings.builder()
-            .applyConnectionString(ConnectionString(CONNECTION_STR))
+            .applyConnectionString(ConnectionString(connectionStr ?: ""))
             .build()
 
         val ces = ClientEncryptionSettings.builder()
             .keyVaultMongoClientSettings(mcs)
-            .keyVaultNamespace(KEY_VAULT_NS!!.fullName)
+            .keyVaultNamespace(keyVaultNS!!.fullName)
             .kmsProviders(kmsService.kmsProviders)
             .build()
 

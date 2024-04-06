@@ -27,8 +27,7 @@ class UserHandler(
             .onErrorResume { errorResponse(it) }
 
     fun getAllUsers(serverRequest: ServerRequest): Mono<ServerResponse> =
-        ServerResponse
-            .ok()
+        ServerResponse.ok()
             .body(userService.getAllUsers(), UserResponse::class.java)
 
     fun updateUser(serverRequest: ServerRequest): Mono<ServerResponse> =

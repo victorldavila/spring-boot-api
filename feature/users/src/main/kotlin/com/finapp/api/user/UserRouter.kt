@@ -5,7 +5,9 @@ import com.finapp.api.core.ApiRouter
 import com.finapp.api.core.model.PermissionType
 import com.finapp.api.user.doc.UserDocV1
 import org.springframework.context.annotation.Bean
+import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.stereotype.Component
+import org.springframework.web.reactive.function.server.RequestPredicates
 import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.RouterFunctions.route
 import org.springframework.web.reactive.function.server.ServerResponse
