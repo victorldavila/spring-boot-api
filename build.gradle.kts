@@ -31,6 +31,7 @@ dependencies {
 	implementation(project(":lib:security"))
 	implementation(project(":lib:core"))
 	implementation(project(":lib:swagger"))
+	implementation(project(":lib:kafka"))
 }
 
 tasks.withType<KotlinCompile> {

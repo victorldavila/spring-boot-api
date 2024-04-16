@@ -6,7 +6,16 @@ object ApiDeps {
         val webFlux by lazy { "org.springframework.boot:spring-boot-starter-webflux" }
         val reactiveMongoDb by lazy { "org.springframework.boot:spring-boot-starter-data-mongodb-reactive" }
         val security by lazy { "org.springframework.boot:spring-boot-starter-security" }
+        val actuator by lazy { "org.springframework.boot:spring-boot-starter-actuator" }
         val rsocket by lazy { "org.springframework.boot:spring-boot-starter-rsocket" }
+        val cloudStream by lazy { "org.springframework.cloud:spring-cloud-stream:4.1.1" }
+        val cloudStreamKafka by lazy { "org.springframework.cloud:spring-cloud-stream-binder-kafka:4.1.1" }
+        val cloudFunctionKotlin by lazy { "org.springframework.cloud:spring-cloud-function-kotlin:4.1.1" }
+        //val kafkaStream by lazy { "org.springframework.cloud:spring-cloud-stream-binder-kafka-streams:4.1.1" }
+    }
+
+    object Kafka {
+        val streams by lazy { "org.apache.kafka:kafka-streams" }
     }
 
     object OpenApi {
@@ -31,6 +40,7 @@ object ApiDeps {
 
     object Reactor {
         val projectReactor by lazy { "io.projectreactor.kotlin:reactor-kotlin-extensions" }
+        val reactorExtra by lazy { "io.projectreactor.addons:reactor-extra" }
     }
 
     object Kotlin {

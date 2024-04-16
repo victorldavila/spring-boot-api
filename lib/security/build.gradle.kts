@@ -9,8 +9,8 @@ plugins {
     kotlin("plugin.spring")
 }
 
-group = ApiGroup.Lib.security
-version = ApiVersion.Lib.security
+group = ApiGroup.Lib.SECURITY
+version = ApiVersion.Lib.SECURITY
 
 java.sourceCompatibility = JavaVersion.VERSION_17
 

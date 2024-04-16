@@ -12,8 +12,8 @@ plugins {
     kotlin("plugin.spring")
 }
 
-group = ApiGroup.Feature.auth
-version = ApiVersion.Feature.auth
+group = ApiGroup.Feature.AUTH
+version = ApiVersion.Feature.AUTH
 
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -33,6 +33,7 @@ tasks.bootJar {
 
 dependencies {
     implementation(project(":lib:core"))
+    implementation(project(":lib:kafka"))
 
     implementation(project(":lib:users-api"))
     implementation(project(":lib:roles-api"))

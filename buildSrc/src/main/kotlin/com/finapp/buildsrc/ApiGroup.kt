@@ -1,18 +1,20 @@
 package com.finapp.buildsrc
 
 object ApiGroup {
-    const val base = "com.finapp.api"
+    const val BASE = "com.finapp.api"
+
     object Feature {
-        const val user = "$base.user"
-        const val auth = "$base.auth"
+        const val USERS = "$BASE.users"
+        const val AUTH = "$BASE.auth"
     }
 
     object Lib {
-        const val core = "$base.core"
-        const val authorize = "$base.authorize"
-        const val security = "$base.security"
-        const val role = "$base.role"
-        const val token = "$base.token"
-        const val userInterface = "$base.user_api"
+        const val CORE = "$BASE.core"
+        const val KAFKA = "$BASE.kafka"
+        const val AUTHORIZE = "$BASE.authorize"
+        const val SECURITY = "$BASE.security"
+        const val role = "$BASE.role"
+        const val token = "$BASE.token"
+        const val USERS_API = "$BASE.users"
     }
 }

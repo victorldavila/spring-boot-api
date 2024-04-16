@@ -12,8 +12,8 @@ plugins {
     kotlin("plugin.spring")
 }
 
-group = ApiGroup.Lib.userInterface
-version = ApiVersion.Lib.user
+group = ApiGroup.Lib.USERS_API
+version = ApiVersion.Feature.ROLES
 
 
 java.sourceCompatibility = JavaVersion.VERSION_17

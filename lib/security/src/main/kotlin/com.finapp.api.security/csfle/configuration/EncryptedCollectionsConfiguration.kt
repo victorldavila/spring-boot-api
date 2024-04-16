@@ -1,7 +1,6 @@
 package com.finapp.api.security.csfle.configuration
 
-import com.finapp.api.role.data.Role
-import com.finapp.api.user.data.User
+import com.finapp.api.users.data.User
 
 /**
  * Information about the encrypted collections in the application.

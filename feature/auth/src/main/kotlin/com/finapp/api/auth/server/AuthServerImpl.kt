@@ -5,19 +5,25 @@ import com.finapp.api.auth.mapper.AuthMapper
 import com.finapp.api.auth.model.CredentialRequest
 import com.finapp.api.auth.model.TokenRequest
 import com.finapp.api.core.error.BadRequestError
+import com.finapp.api.kafka.BindKafkaProducer
+import com.finapp.api.kafka.MessageProducerService
+import com.finapp.api.kafka.ProductMessage
 import com.finapp.api.role.repository.RoleRepository
-import com.finapp.api.user.model.TokenResponse
-import com.finapp.api.user.model.UserResponse
-import com.finapp.api.user.data.User
-import com.finapp.api.user.mapper.UserMapper
-import com.finapp.api.user.repository.UserRepository
-import com.finapp.api.user.service.TokenService
+import com.finapp.api.users.model.TokenResponse
+import com.finapp.api.users.model.UserResponse
+import com.finapp.api.users.data.User
+import com.finapp.api.users.mapper.UserMapper
+import com.finapp.api.users.repository.UserRepository
+import com.finapp.api.users.service.TokenService
+import kotlinx.coroutines.reactor.mono
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono
 
 @Component
 class AuthServerImpl(
+    private val messageProducerService: MessageProducerService,
     private val tokenService: TokenService,
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
@@ -25,6 +31,7 @@ class AuthServerImpl(
     private val userMapper: UserMapper,
     private val passwordEncoder: PasswordEncoder
 ): AuthServer {
+    @Transactional(rollbackFor = [Exception::class])
     override fun signUp(signUpRequest: SignUpRequest): Mono<UserResponse> =
         Mono.just(signUpRequest)
             .flatMap { usernameAlreadyExists(signUpRequest.credential.username) }
@@ -35,6 +42,7 @@ class AuthServerImpl(
             .flatMap { roleRepository.saveRole(it) }
             .flatMap { userRepository.findUserById(it.userId) }
             .map { userMapper.userToUserResponse(it) }
+            .doOnNext { mono { messageProducerService.sendMessage(ProductMessage(it.firstName + " " + it.lastName)) } }
 
     override fun signIn(credentialRequest: CredentialRequest): Mono<UserResponse> =
         Mono.just(credentialRequest)

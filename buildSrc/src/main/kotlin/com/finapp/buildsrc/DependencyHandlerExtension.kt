@@ -18,6 +18,7 @@ fun DependencyHandler.springBootImplementation() {
     this.add("implementation", ApiDeps.SpringBoot.validation)
     this.add("implementation", ApiDeps.SpringBoot.webFlux)
     this.add("implementation", ApiDeps.SpringBoot.reactiveMongoDb)
+    this.add("implementation", ApiDeps.SpringBoot.actuator)
 }
 
 fun DependencyHandler.springBootSwaggerImplementation() {
@@ -28,6 +29,12 @@ fun DependencyHandler.springBootReactiveSocketImplementation() {
     this.add("implementation", ApiDeps.SpringBoot.rsocket)
 }
 
+fun DependencyHandler.springBootKafkaImplementation() {
+    this.add("implementation", ApiDeps.SpringBoot.cloudStreamKafka)
+    this.add("implementation", ApiDeps.SpringBoot.cloudStream)
+    this.add("implementation", ApiDeps.SpringBoot.cloudFunctionKotlin)
+    //this.add("implementation", ApiDeps.Kafka.streams)
+}
 
 fun DependencyHandler.springBootSecurityImplementation() {
     this.add("implementation", ApiDeps.SpringBoot.security)
@@ -35,6 +42,7 @@ fun DependencyHandler.springBootSecurityImplementation() {
 
 fun DependencyHandler.projectReactorImplementation() {
     this.add("implementation", ApiDeps.Reactor.projectReactor)
+    this.add("implementation", ApiDeps.Reactor.reactorExtra)
 }
 
 fun DependencyHandler.jacksonImplementation() {
@@ -43,6 +51,13 @@ fun DependencyHandler.jacksonImplementation() {
 
 fun DependencyHandler.mongoDbImplementation() {
     this.add("implementation", ApiDeps.MongoDb.crypt)
+}
+
+fun DependencyHandler.baseLibsImplementation() {
+    springBootImplementation()
+    jacksonImplementation()
+    projectReactorImplementation()
+    kotlinImplementation()
 }
 
 fun DependencyHandler.securityLibImplementation() {
@@ -56,10 +71,12 @@ fun DependencyHandler.securityLibImplementation() {
     mongoDbImplementation()
 }
 
+fun DependencyHandler.kafkaLibImplementation() {
+    baseLibsImplementation()
+    springBootKafkaImplementation()
+}
+
 fun DependencyHandler.userLibImplementation() {
-    springBootImplementation()
-    jacksonImplementation()
-    projectReactorImplementation()
-    kotlinImplementation()
+    baseLibsImplementation()
     springBootReactiveSocketImplementation()
 }

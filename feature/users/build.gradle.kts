@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.finapp.buildsrc.ApiGroup
 import com.finapp.buildsrc.ApiVersion
-import com.finapp.buildsrc.springBootSwaggerImplementation
 import com.finapp.buildsrc.userLibImplementation
 
 plugins {
@@ -12,8 +11,8 @@ plugins {
     kotlin("plugin.spring")
 }
 
-group = ApiGroup.Feature.user
-version = ApiVersion.Feature.user
+group = ApiGroup.Feature.USERS
+version = ApiVersion.Feature.USERS
 
 
 java.sourceCompatibility = JavaVersion.VERSION_17

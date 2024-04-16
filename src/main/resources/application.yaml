@@ -1,13 +1,20 @@
-spring:
-  rsocket:
-    server:
-      mapping-path: /rsocket
-      transport: websocket
+server:
+  port: 8080
 
-  application:
-    name: spring-webflux-api
-#  webflux:
-#    base-path: /api
+finapp:
+  jwt:
+    secret: "4etFgqnKUn7REKMfS2DHWiJa3nLtRUpj9tsH9ig9iFWhm6FfmJxw90QMlv3VioW"
+    expirationMs: "259200"
+
+topic:
+  product: product-topic
+  multiName: multi-name-topic
+  multiQuantity: multi-quantity-topic
+
+spring:
+  profiles:
+    include:
+      - cloudstream
   data:
     mongodb:
       authentication-database: admin
@@ -17,6 +24,67 @@ spring:
         uri: mongodb://admin-teste:Teste2020bd!@localhost:27017/Test?authSource=admin
       storage:
         uri: mongodb://admin-teste:Teste2020bd!@localhost:27017/Test?authSource=admin
+
+  application:
+    name: spring-webflux-api
+
+  kafka:
+    bootstrap-servers: localhost:9092
+#    default:
+#      producer:
+#        recordMetadataChannel: producerMetadata
+    consumer:
+      properties:
+        spring.json.trusted.packages: "*"
+
+  cloud:
+    function:
+      definition: consumeMessage;produceMessage;multiInMultiOut;enrichAndSendToRabbit
+    stream:
+      default-binder: kafka
+      kafka:
+        binder:
+          auto-create-topics: true
+          consumer-properties:
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+            max.poll.records: 10
+            spring.json.trusted.packages: "*"
+          producer-properties:
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bindings:
+        produceMessage-out-0:
+          destination: product-topic
+          binder: kafka
+        consumeMessage-in-0:
+          destination: product-topic
+          binder: kafka
+          group: product-consumer-group
+        enrichAndSendToRabbit-in-0:
+          destination: product-topic
+          binder: kafka
+          group: product-enrich-group
+        enrichAndSendToRabbit-out-0:
+          destination: product-process-topic
+          binder: kafka
+#          destination: inventory.message.exchange
+#          requiredGroups: inventory_group
+#          binder: rabbit
+        multiInMultiOut-in-0:
+          group: multi_message_group
+          destination: product-process-topic
+          binder: kafka
+        multiInMultiOut-in-1:
+          destination: product-topic
+          binder: kafka
+          group: product-multimessage-group
+        multiInMultiOut-out-0:
+          destination: multi-name-topic
+        multiInMultiOut-out-1:
+          destination: multi-quantity-topic
+#  webflux:
+#    base-path: /api
 
 mongodb:
   key:
@@ -42,9 +110,6 @@ springdoc:
   api-docs:
     path: /v1/finapp-docs
 
-server:
-  port: 8080
-
 logging:
   level:
     io:
@@ -60,8 +125,3 @@ logging:
       netty:
         http:
           client: DEBUG
-
-finapp:
-  jwt:
-    secret: "4etFgqnKUn7REKMfS2DHWiJa3nLtRUpj9tsH9ig9iFWhm6FfmJxw90QMlv3VioW"
-    expirationMs: "259200"
