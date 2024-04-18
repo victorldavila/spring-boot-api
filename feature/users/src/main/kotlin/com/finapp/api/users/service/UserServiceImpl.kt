@@ -19,8 +19,7 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 @Component
 class UserServiceImpl(
     private val userRepository: UserRepository,
-    private val userMapper: UserMapper,
-    private val sink: Sinks.Many<Any>
+    private val userMapper: UserMapper
 ): UserService {
     override fun getUserById(userParam: UserParam): Mono<UserResponse> =
         findUserById(userParam.userId)
@@ -29,7 +28,6 @@ class UserServiceImpl(
     override fun getAllUsers(): Flux<UserResponse> =
         userRepository.findAllUsers()
             .map { userMapper.userToUserResponse(it) }
-            .doOnNext { sink.tryEmitNext(WSMessage(it.email, it.firstName)) }
 
     override fun updateUser(userArg: UserArg): Mono<UserResponse> =
         findUserById(userArg.userParam?.userId)
@@ -42,7 +40,6 @@ class UserServiceImpl(
             .map { userMapper.userRequestToUser(it) }
             .flatMap { userRepository.saveUser(it) }
             .map { userMapper.userToUserResponse(it) }
-            .doOnNext { sink.tryEmitNext(it.firstName) }
 
     override fun deleteUser(userArg: UserArg): Mono<Boolean> =
         findUserById(userArg.userParam?.userId)

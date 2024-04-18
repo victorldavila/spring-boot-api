@@ -17,6 +17,7 @@ object ApiVersion {
     object Feature {
         const val AUTH = "0.0.1"
         const val USERS = "0.0.1"
+        const val PRODUCTS = "0.0.1"
         const val ROLES = "0.0.1"
     }
 }

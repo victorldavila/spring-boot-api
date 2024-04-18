@@ -19,6 +19,11 @@ enum class PermissionType(val permissionName: String) {
     USER_UPDATE("user:update"),
     USER_DELETE("user:delete"),
 
+    PRODUCT_READ("product:read"),
+    PRODUCT_WRITE("product:write"),
+    PRODUCT_UPDATE("product:update"),
+    PRODUCT_DELETE("product:delete"),
+
     NONE("none");
 
     fun getGrantedAuthority(): GrantedAuthority =
@@ -41,6 +46,11 @@ enum class PermissionType(val permissionName: String) {
             USER_WRITE.name -> USER_WRITE
             USER_UPDATE.name -> USER_UPDATE
             USER_DELETE.name -> USER_DELETE
+
+            PRODUCT_READ.name -> PRODUCT_READ
+            PRODUCT_WRITE.name -> PRODUCT_WRITE
+            PRODUCT_UPDATE.name -> PRODUCT_UPDATE
+            PRODUCT_DELETE.name -> PRODUCT_DELETE
 
             else -> NONE
         }

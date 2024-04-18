@@ -5,6 +5,7 @@ object ApiGroup {
 
     object Feature {
         const val USERS = "$BASE.users"
+        const val PRODUCTS = "$BASE.products"
         const val AUTH = "$BASE.auth"
     }
 

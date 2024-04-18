@@ -1,17 +1,49 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.finapp.buildsrc.ApiGroup
+import com.finapp.buildsrc.ApiVersion
+import com.finapp.buildsrc.userLibImplementation
+
 plugins {
-    id("java")
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+
+    kotlin("jvm")
+    kotlin("plugin.spring")
 }
 
-group = "com.finapp.api.products"
-version = "0.0.1-SNAPSHOT"
+group = ApiGroup.Feature.PRODUCTS
+version = ApiVersion.Feature.PRODUCTS
+
+
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
 }
 
+tasks.jar {
+    enabled = true
+}
+
+tasks.bootJar {
+    enabled = false
+}
+
+
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation(project(":lib:products-api"))
+
+    implementation(project(":lib:authorize"))
+    implementation(project(":lib:security"))
+    implementation(project(":lib:core"))
+
+    userLibImplementation()
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
 }
 
 tasks.test {
