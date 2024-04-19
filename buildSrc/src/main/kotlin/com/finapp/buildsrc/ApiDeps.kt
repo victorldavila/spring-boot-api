@@ -11,7 +11,7 @@ object ApiDeps {
         val cloudStream by lazy { "org.springframework.cloud:spring-cloud-stream:4.1.1" }
         val cloudStreamKafka by lazy { "org.springframework.cloud:spring-cloud-stream-binder-kafka:4.1.1" }
         val cloudFunctionKotlin by lazy { "org.springframework.cloud:spring-cloud-function-kotlin:4.1.1" }
-        //val kafkaStream by lazy { "org.springframework.cloud:spring-cloud-stream-binder-kafka-streams:4.1.1" }
+        val kafka by lazy { "org.springframework.kafka:spring-kafka" }
     }
 
     object Kafka {

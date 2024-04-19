@@ -42,7 +42,7 @@ class AuthServerImpl(
             .flatMap { roleRepository.saveRole(it) }
             .flatMap { userRepository.findUserById(it.userId) }
             .map { userMapper.userToUserResponse(it) }
-            .doOnNext { mono { messageProducerService.sendMessage(ProductMessage(it.firstName + " " + it.lastName)) } }
+            .doOnNext { messageProducerService.sendMessage(ProductMessage(it.firstName + " " + it.lastName)) }
 
     override fun signIn(credentialRequest: CredentialRequest): Mono<UserResponse> =
         Mono.just(credentialRequest)

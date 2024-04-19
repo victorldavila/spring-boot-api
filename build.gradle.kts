@@ -1,4 +1,5 @@
 import com.finapp.buildsrc.springBootImplementation
+import com.finapp.buildsrc.springBootKafkaImplementation
 import com.finapp.buildsrc.springBootSwaggerImplementation
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -22,6 +23,7 @@ repositories {
 dependencies {
 	springBootImplementation()
 	springBootSwaggerImplementation()
+	springBootKafkaImplementation()
 
 	implementation(project(":feature:auth"))
 	implementation(project(":feature:users"))
@@ -31,7 +33,7 @@ dependencies {
 	implementation(project(":lib:security"))
 	implementation(project(":lib:core"))
 	implementation(project(":lib:swagger"))
-	//implementation(project(":lib:kafka"))
+	implementation(project(":lib:kafka"))
 }
 
 tasks.withType<KotlinCompile> {

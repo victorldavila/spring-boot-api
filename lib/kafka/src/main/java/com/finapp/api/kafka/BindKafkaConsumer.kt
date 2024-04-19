@@ -15,7 +15,7 @@ class BindKafkaConsumer {
     fun consumeMessage(): Consumer<Flux<Message<ProductMessage>>> = Consumer { stream ->
         stream.concatMap { msg ->
             mono {
-                LOGGER.info(msg.toString())
+                LOGGER.info(msg.payload.toString())
                 //service.processProductMessage(msg.payload)
             }
         }.onErrorContinue { e, _ ->

@@ -3,44 +3,31 @@ spring:
     stream:
       bindings:
         consumeMessage-in-0:
-          destination: ${topic.product}
+          destination: "${kafka.topic.product}"
           binder: kafka
           group: product-consumer-group
         produceMessage-out-0:
-          destination: ${topic.product}
+          destination: "${kafka.topic.product}"
           binder: kafka
         enrichAndSendToRabbit-in-0:
-          destination: ${topic.product}
+          destination: "${kafka.topic.product}"
           binder: kafka
           group: product-enrich-group
         enrichAndSendToRabbit-out-0:
-          destination: inventory.message.exchange
-          requiredGroups: inventory_group
-          binder: rabbit
+          destination: "${kafka.topic.multiName}"
+          binder: kafka
         multiInMultiOut-in-0:
-          group: multi_message_group
-          destination: inventory.message.exchange
-          binder: rabbit
+          destination: "${kafka.topic.multiName}"
+          binder: kafka
+          group: product-multimessage-group
         multiInMultiOut-in-1:
-          destination: ${topic.product}
+          destination: "${kafka.topic.product}"
           binder: kafka
           group: product-multimessage-group
         multiInMultiOut-out-0:
-          destination: ${topic.multiName}
+          destination: "${kafka.topic.multiNameOut}"
         multiInMultiOut-out-1:
-          destination: ${topic.multiQuantity}
-      rabbit:
-        bindings:
-          enrichAndSendToRabbit-out-0:
-            producer:
-              bindingRoutingKey: inventory_item_publication
-              routing-key-expression: "'inventory_item_publication'"
-              exchangeAutoDelete: false
-              exchangeType: direct
-          multiInMultiOut-in-0:
-            consumer:
-              bindingRoutingKey: inventory_item_publication
-              exchangeType: direct
+          destination: "${kafka.topic.multiQuantity}"
       kafka:
         default:
           producer:
@@ -48,3 +35,15 @@ spring:
         bindings:
           consumeMessage-in-0:
             enableDlq: true
+#      rabbit:
+#        bindings:
+#          enrichAndSendToRabbit-out-0:
+#            producer:
+#              bindingRoutingKey: inventory_item_publication
+#              routing-key-expression: "'inventory_item_publication'"
+#              exchangeAutoDelete: false
+#              exchangeType: direct
+#          multiInMultiOut-in-0:
+#            consumer:
+#              bindingRoutingKey: inventory_item_publication
+#              exchangeType: direct

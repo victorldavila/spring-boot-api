@@ -16,7 +16,7 @@ class MessageProducerService {
 
     fun messageProducer(): Flux<Message<ProductMessage>> = unicastProcessor.asFlux()
 
-    suspend fun sendMessage(productMessage: ProductMessage) {
+    fun sendMessage(productMessage: ProductMessage) {
         val message = MessageBuilder
             .withPayload(productMessage)
             .build()

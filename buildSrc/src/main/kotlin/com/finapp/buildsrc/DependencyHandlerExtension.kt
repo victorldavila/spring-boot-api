@@ -33,7 +33,7 @@ fun DependencyHandler.springBootKafkaImplementation() {
     this.add("implementation", ApiDeps.SpringBoot.cloudStreamKafka)
     this.add("implementation", ApiDeps.SpringBoot.cloudStream)
     this.add("implementation", ApiDeps.SpringBoot.cloudFunctionKotlin)
-    //this.add("implementation", ApiDeps.Kafka.streams)
+    //this.add("implementation", ApiDeps.SpringBoot.kafka)
 }
 
 fun DependencyHandler.springBootSecurityImplementation() {

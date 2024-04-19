@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component
 @Component
 class ProductMapper {
     fun productRequestToProduct(productRequest: ProductRequest): Product = Product(
-        name = productRequest.name,
+        name = productRequest.name!!,
         price = productRequest.price,
-        isActive = productRequest.isActive,
-        isVariable = productRequest.isVariable,
-        category = productRequest.category,
-        type = productRequest.type,
+        isActive = productRequest.isActive!!,
+        isVariable = productRequest.isVariable!!,
+        category = productRequest.category!!,
+        type = productRequest.type!!,
         steps = productRequest.steps?.map { it.toMountableStep() }
     )
 
