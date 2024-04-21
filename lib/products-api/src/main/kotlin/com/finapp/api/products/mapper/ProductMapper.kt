@@ -4,6 +4,7 @@ import com.finapp.api.products.data.MountableItem
 import com.finapp.api.products.data.MountableStep
 import com.finapp.api.products.data.Product
 import com.finapp.api.products.model.*
+import com.finapp.api.products.model.ProductType.Companion.toProductType
 import org.springframework.stereotype.Component
 
 @Component
@@ -12,31 +13,37 @@ class ProductMapper {
         name = productRequest.name!!,
         price = productRequest.price,
         isActive = productRequest.isActive!!,
-        isVariable = productRequest.isVariable!!,
         category = productRequest.category!!,
-        type = productRequest.type!!,
-        steps = productRequest.steps?.map { it.toMountableStep() }
+        type = productRequest.type!!.toProductType(),
+        compose = productRequest.composed?.map { it.toMountableStep() },
+        steps = productRequest.steps?.map { it.toMountableStep() }?.toMutableList()
     )
 
-    fun productRequestToProduct(productRequest: ProductRequest?, product: Product): Product = Product(
-        id = product.id,
+    fun productRequestToProduct(productRequest: ProductRequest?, product: Product): Product = product.copy(
         name = productRequest?.name ?: product.name,
-        price = getProductPriceValue(product, productRequest),
+        price = productRequest?.getProductPrice(product),
         isActive = productRequest?.isActive ?: product.isActive,
-        isVariable = productRequest?.isVariable ?: product.isVariable,
         category = productRequest?.category ?: product.category,
-        type = productRequest?.type ?: product.type,
-        steps = productRequest?.steps?.map { it.toMountableStep() } ?: product.steps
+        type = productRequest?.type?.toProductType() ?: product.type,
+        compose = productRequest?.composed?.map { it.toMountableStep() },
+        steps = with(product.steps) {
+            productRequest?.steps?.forEach {
+                val newItem = it.toMountableStep(this!![it.index])
+                this.removeAt(it.index)
+                this.add(it.index, newItem)
+            }
+
+            return@with this
+        }
     )
 
     fun productToProductResponse(product: Product): ProductResponse = ProductResponse(
-        id = product.id,
+        id = product.id?.toHexString(),
         name = product.name,
         price = product.price,
         isActive = product.isActive,
-        isVariable = product.isVariable,
         category = product.category,
-        type = product.type,
+        type = product.type.name,
         steps = product.steps?.map { it.toMountableStepResponse() }
     )
 
@@ -56,29 +63,49 @@ class ProductMapper {
         measure = this.measure
     )
 
+    private fun MountableStepRequest.toMountableStep(mountableStep: MountableStep): MountableStep = mountableStep.copy(
+        stepName = this.name ?: mountableStep.stepName,
+        minimum = this.minimum ?: mountableStep.minimum,
+        maximum = this.maximum ?: mountableStep.maximum,
+        type = this.type ?: mountableStep.type,
+        items = with(mountableStep.items) {
+            this@toMountableStep.items?.forEach {
+                val newItem = it.toMountableItem(this[it.index])
+                this.removeAt(it.index)
+                this.add(it.index, newItem)
+            }
+
+            return@with this
+        }
+    )
+
+    private fun MountableItemRequest.toMountableItem(mountableItem: MountableItem): MountableItem = mountableItem.copy(
+        itemName = this.name ?: mountableItem.itemName,
+        price = if (this.isVariable == true) {
+            null
+        } else {
+            this.price ?: mountableItem.price
+        },
+        maximumQuantity = this.maximumQuantity ?: mountableItem.maximumQuantity,
+        subtractionQuantity = this.subtractionQuantity ?: mountableItem.subtractionQuantity,
+        measure = this.measure ?: mountableItem.measure
+    )
+
     private fun MountableStepRequest.toMountableStep(): MountableStep = MountableStep(
-        stepName = this.name,
-        minimum = this.minimum,
-        maximum = this.maximum,
-        type = this.type,
-        items = this.items.map { it.toMountableItem() }
+        stepName = this.name!!,
+        minimum = this.minimum!!,
+        maximum = this.maximum!!,
+        type = this.type!!,
+        items = this.items!!.map { it.toMountableItem() }.toMutableList()
     )
 
     private fun MountableItemRequest.toMountableItem(): MountableItem = MountableItem (
-        itemName = this.name,
+        itemName = this.name!!,
         price = this.price,
-        maximumQuantity = this.maximumQuantity,
-        subtractionQuantity = this.subtractionQuantity,
-        measure = this.measure
+        maximumQuantity = this.maximumQuantity!!,
+        subtractionQuantity = this.subtractionQuantity!!,
+        measure = this.measure!!
     )
-
-    private fun getProductPriceValue(product: Product, productRequest: ProductRequest?) = productRequest?.isActive?.let {
-        productRequest.getProductPrice(product)
-    } ?: run { product.getProductPrice(productRequest) }
-
-    private fun Product.getProductPrice(productRequest: ProductRequest?) =
-        if (this.isVariable) { null }
-        else { productRequest?.price ?: this.price }
 
     private fun ProductRequest?.getProductPrice(product: Product) =
         if (this?.isVariable == true) { null }

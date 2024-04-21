@@ -1,15 +1,15 @@
-package com.finapp.api.core.validation
+package com.finapp.api.products.validation
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
 import kotlin.reflect.KClass
 
-@Constraint(validatedBy = [ObjectIdValidator::class])
+@Constraint(validatedBy = [MountableProductTypeValidator::class])
 @Target(AnnotationTarget.FIELD)
 @Retention(AnnotationRetention.RUNTIME)
 @MustBeDocumented
-annotation class ValidObjectId(
-    val message: String = "Id is not Valid",
+annotation class MountableProductType(
+    val message: String = "Mountable Product type is not Valid",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = []
 )

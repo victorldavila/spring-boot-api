@@ -56,8 +56,8 @@ class ProductHandler(
             .onErrorResume { errorResponse(it) }
 
     private fun getProductParam(serverRequest: ServerRequest): ProductParam {
-        val userId = serverRequest.pathVariable("productId")
+        val productId = serverRequest.pathVariable("productId")
 
-        return ProductParam(userId)
+        return ProductParam(productId)
     }
 }

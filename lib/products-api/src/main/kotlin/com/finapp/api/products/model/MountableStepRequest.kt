@@ -1,11 +1,27 @@
 package com.finapp.api.products.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.finapp.api.core.validation.OnCreate
+import com.finapp.api.core.validation.OnUpdate
+import com.finapp.api.products.validation.MountableProductType
+import jakarta.validation.Valid
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Size
 
 data class MountableStepRequest(
-    @JsonProperty("name") val name: String,
-    @JsonProperty("minimum") val minimum: Int,
-    @JsonProperty("maximum") val maximum: Int,
-    @JsonProperty("type") val type: String,
-    @JsonProperty("items") val items: List<MountableItemRequest>
+    @field:NotNull(groups = [ OnUpdate::class ], message = "step item index can not be null")
+    @JsonProperty("index") val index: Int,
+    @field:NotBlank(groups = [ OnCreate::class ], message = "step name can not be blanked")
+    @JsonProperty("name") val name: String?,
+    @field:NotNull(groups = [ OnCreate::class ], message = "step minimum can not be null")
+    @JsonProperty("minimum") val minimum: Int?,
+    @field:NotNull(groups = [ OnCreate::class ], message = "step maximum can not be null")
+    @JsonProperty("maximum") val maximum: Int?,
+    @field:MountableProductType(groups = [ OnCreate::class ])
+    @JsonProperty("type") val type: String?,
+
+    @field:Size(min = 1, groups = [ OnCreate::class ], message = "step items must have 1 item at least")
+    @field:Valid
+    @JsonProperty("items") val items: List<MountableItemRequest>?
 )

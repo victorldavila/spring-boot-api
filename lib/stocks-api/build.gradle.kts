@@ -1,8 +1,5 @@
+import com.finapp.buildsrc.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import com.finapp.buildsrc.ApiGroup
-import com.finapp.buildsrc.ApiVersion
-import com.finapp.buildsrc.baseLibsImplementation
-import com.finapp.buildsrc.userLibImplementation
 
 plugins {
     id("org.springframework.boot")
@@ -12,8 +9,8 @@ plugins {
     kotlin("plugin.spring")
 }
 
-group = ApiGroup.Lib.PRODUCTS_API
-version = ApiVersion.Lib.PRODUCTS_API
+group = ApiGroup.Lib.STOCKS_API
+version = ApiVersion.Lib.STOCKS_API
 
 
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -35,6 +32,7 @@ dependencies {
     implementation(project(":lib:core"))
 
     baseLibsImplementation()
+    springBootSwaggerImplementation()
 }
 
 tasks.withType<KotlinCompile> {

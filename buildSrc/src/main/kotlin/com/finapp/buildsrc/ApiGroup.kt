@@ -10,6 +10,7 @@ object ApiGroup {
     }
 
     object Lib {
+        const val STOCKS_API = "$BASE.stocks"
         const val CORE = "$BASE.core"
         const val KAFKA = "$BASE.kafka"
         const val AUTHORIZE = "$BASE.authorize"
@@ -17,5 +18,7 @@ object ApiGroup {
         const val role = "$BASE.role"
         const val token = "$BASE.token"
         const val USERS_API = "$BASE.users"
+        const val PRODUCTS_API = "$BASE.products"
+        const val COMBO_API = "$BASE.combo"
     }
 }

@@ -1,15 +1,16 @@
 package com.finapp.api.products.model
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.bson.types.ObjectId
 import java.math.BigDecimal
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class ProductResponse(
-    @JsonProperty("id") val id: ObjectId? = null,
+    @JsonProperty("id") val id: String? = null,
     @JsonProperty("name") val name: String,
     @JsonProperty("price") val price: BigDecimal?,
     @JsonProperty("isActive") val isActive: Boolean,
-    @JsonProperty("isVariable") val isVariable: Boolean,
     @JsonProperty("type") val type: String,
     @JsonProperty("category") val category: String,
 

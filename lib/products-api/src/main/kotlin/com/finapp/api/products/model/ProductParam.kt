@@ -3,7 +3,7 @@ package com.finapp.api.products.model
 import com.finapp.api.core.validation.OnDelete
 import com.finapp.api.core.validation.OnRead
 import com.finapp.api.core.validation.OnUpdate
-import com.finapp.api.core.validation.ValidObjectId
+import com.finapp.api.core.validation.ObjectId
 import jakarta.validation.Valid
 
 data class ProductArg(
@@ -14,6 +14,6 @@ data class ProductArg(
 )
 
 data class ProductParam(
-    @field:ValidObjectId(groups = [ OnUpdate::class, OnDelete::class, OnRead::class ], message = "product id must be valid")
+    @field:ObjectId(groups = [ OnUpdate::class, OnDelete::class, OnRead::class ], message = "product id must be valid")
     val productId: String?
 )

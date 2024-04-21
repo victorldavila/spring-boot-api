@@ -1,16 +1,27 @@
 package com.finapp.api.products.service
 
+import com.finapp.api.core.validation.OnCreate
+import com.finapp.api.core.validation.OnDelete
+import com.finapp.api.core.validation.OnRead
+import com.finapp.api.core.validation.OnUpdate
 import com.finapp.api.products.model.ProductArg
 import com.finapp.api.products.model.ProductParam
 import com.finapp.api.products.model.ProductRequest
 import com.finapp.api.products.model.ProductResponse
+import jakarta.validation.Valid
+import org.springframework.validation.annotation.Validated
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
+@Validated
 interface ProductService {
-    fun getProductById(productParam: ProductParam): Mono<ProductResponse>
+    @Validated(OnRead::class)
+    fun getProductById(@Valid productParam: ProductParam): Mono<ProductResponse>
     fun getAllProducts(): Flux<ProductResponse>
-    fun updateProduct(productArg: ProductArg): Mono<ProductResponse>
-    fun createProduct(productRequest: ProductRequest): Mono<ProductResponse>
-    fun deleteProduct(productParam: ProductParam?): Mono<Boolean>
+    @Validated(OnUpdate::class)
+    fun updateProduct(@Valid productArg: ProductArg): Mono<ProductResponse>
+    @Validated(OnCreate::class)
+    fun createProduct(@Valid productRequest: ProductRequest): Mono<ProductResponse>
+    @Validated(OnDelete::class)
+    fun deleteProduct(@Valid productParam: ProductParam?): Mono<Boolean>
 }

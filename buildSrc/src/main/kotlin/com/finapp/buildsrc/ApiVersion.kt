@@ -11,6 +11,8 @@ object ApiVersion {
         const val KAFKA = "0.0.1"
         const val USERS_API = "0.0.1"
         const val PRODUCTS_API = "0.0.1"
+        const val STOCKS_API = "0.0.1"
+        const val COMBO_API = "0.0.1"
         const val ROLES_API = "0.0.1"
     }
 

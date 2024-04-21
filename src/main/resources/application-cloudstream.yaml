@@ -35,15 +35,3 @@ spring:
         bindings:
           consumeMessage-in-0:
             enableDlq: true
-#      rabbit:
-#        bindings:
-#          enrichAndSendToRabbit-out-0:
-#            producer:
-#              bindingRoutingKey: inventory_item_publication
-#              routing-key-expression: "'inventory_item_publication'"
-#              exchangeAutoDelete: false
-#              exchangeType: direct
-#          multiInMultiOut-in-0:
-#            consumer:
-#              bindingRoutingKey: inventory_item_publication
-#              exchangeType: direct
