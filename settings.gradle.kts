@@ -25,3 +25,5 @@ include("lib:products-api")
 include("lib:roles-api")
 include("lib:stocks-api")
 include("lib:products-combination-api")
+include("lib:mountable-products-api")
+findProject(":lib:mountable-products-api")?.name = "mountable-products-api"

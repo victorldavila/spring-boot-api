@@ -5,10 +5,12 @@ import com.finapp.api.role.repository.RoleRepository
 import com.mongodb.client.result.DeleteResult
 import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import org.springframework.data.mongodb.core.findAllAndRemove
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.isEqualTo
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Repository
@@ -33,6 +35,15 @@ class RoleRepositoryImpl(
 
     override fun deleteRole(role: Role): Mono<DeleteResult> =
         template.remove(role)
+
+    override fun deleteRoleByUserId(userId: ObjectId?): Flux<Role> =
+        template.findAllAndRemove(
+            Query(
+                Criteria
+                    .where(Role.USER_ID_FIELD)
+                    .isEqualTo(userId)
+            ), Role::class.java
+        )
 
     override fun logicalDeleteRole(role: Role): Mono<Role> =
         template.save(role.copy(isActive = false))

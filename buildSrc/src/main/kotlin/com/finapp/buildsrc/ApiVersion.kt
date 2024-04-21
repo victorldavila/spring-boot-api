@@ -4,6 +4,7 @@ object ApiVersion {
     const val VERSION = "0.0.1"
 
     object Lib {
+        const val MOUNTABLE_PRODUCTS_API = "0.0.1"
         const val CORE = "0.0.1"
         const val AUTHORIZE = "0.0.1"
         const val SECURITY = "0.0.1"

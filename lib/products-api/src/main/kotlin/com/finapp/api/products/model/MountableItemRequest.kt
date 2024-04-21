@@ -15,6 +15,8 @@ data class MountableItemRequest(
     @JsonProperty("name") val name: String?,
     @JsonProperty("isVariable") val isVariable: Boolean?,
     @JsonProperty("price") val price: BigDecimal?,
+    @field:NotNull(groups = [ OnCreate::class ], message = "step isActive can not be null")
+    @JsonProperty("isActive") val isActive: Boolean?,
     @field:NotNull(groups = [ OnCreate::class ], message = "step item maximum quantity can not be null")
     @JsonProperty("maximumQuantity") val maximumQuantity: Int?,
     @field:NotNull(groups = [ OnCreate::class ], message = "step item subtraction quantity can not be null")

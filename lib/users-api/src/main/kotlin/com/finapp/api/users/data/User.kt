@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId
 import java.io.Serializable
 import java.time.LocalDateTime
 
-@Document(collection = "user")
+@Document(collection = "users")
 @Encrypted(keyId = ["#{mongocrypt.keyId(#target)}"])
 data class User(
     @MongoId val id: ObjectId? = null,

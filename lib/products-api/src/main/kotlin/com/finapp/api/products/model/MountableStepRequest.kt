@@ -16,7 +16,9 @@ data class MountableStepRequest(
     @JsonProperty("name") val name: String?,
     @field:NotNull(groups = [ OnCreate::class ], message = "step minimum can not be null")
     @JsonProperty("minimum") val minimum: Int?,
-    @field:NotNull(groups = [ OnCreate::class ], message = "step maximum can not be null")
+    @field:NotNull(groups = [ OnCreate::class ], message = "step minimum can not be null")
+    @JsonProperty("isActive") val isActive: Boolean?,
+    @field:NotNull(groups = [ OnCreate::class ], message = "step isActive can not be null")
     @JsonProperty("maximum") val maximum: Int?,
     @field:MountableProductType(groups = [ OnCreate::class ])
     @JsonProperty("type") val type: String?,

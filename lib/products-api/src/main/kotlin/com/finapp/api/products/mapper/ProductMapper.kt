@@ -96,6 +96,7 @@ class ProductMapper {
         minimum = this.minimum!!,
         maximum = this.maximum!!,
         type = this.type!!,
+        isActive = this.isActive!!,
         items = this.items!!.map { it.toMountableItem() }.toMutableList()
     )
 
@@ -104,6 +105,7 @@ class ProductMapper {
         price = this.price,
         maximumQuantity = this.maximumQuantity!!,
         subtractionQuantity = this.subtractionQuantity!!,
+        isActive = this.isActive!!,
         measure = this.measure!!
     )
 

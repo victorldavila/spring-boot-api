@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.MongoId
 import java.io.Serializable
 import java.time.LocalDateTime
 
-@Document(collection = "role")
+@Document(collection = "roles")
 data class Role(
     @MongoId val id: ObjectId? = null,
     @Field(USER_ID_FIELD) val userId: ObjectId?,

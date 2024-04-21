@@ -1,11 +1,13 @@
 package com.finapp.api.products.data
 
-import com.finapp.api.products.data.MountableStep.Companion
+import com.finapp.api.products.data.MountableItem.Companion.COLLECTION_NAME
+import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import java.math.BigDecimal
 
+//@Document(collection = COLLECTION_NAME)
 data class MountableItem(
-    //@Field(INDEX_FIELD) val index: Int,
+    @Field(ACTIVE_FIELD) val isActive: Boolean,
     @Field(NAME_FIELD) val itemName: String,
     @Field(PRICE_FIELD) val price: BigDecimal?,
     @Field(MAXIMUM_QUANTITY_FIELD) val maximumQuantity: Int,
@@ -13,7 +15,9 @@ data class MountableItem(
     @Field(MEASURE_FIELD) val measure: String
 ) {
     companion object {
-        const val INDEX_FIELD = "index"
+        const val COLLECTION_NAME = "mountable_items"
+
+        const val ACTIVE_FIELD = "is_active"
         const val NAME_FIELD = "name"
         const val PRICE_FIELD = "price"
         const val MAXIMUM_QUANTITY_FIELD = "maximum_quantity"

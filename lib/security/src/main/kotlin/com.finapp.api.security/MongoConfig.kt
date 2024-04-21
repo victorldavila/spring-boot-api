@@ -31,6 +31,9 @@ class MongoConfig(
 ) {
 
     @Bean
+    fun userCascadingMongoEventListener(): UserCascadeDeleteMongoEventListener = UserCascadeDeleteMongoEventListener()
+
+    @Bean
     fun getCurrentAuditor(): Mono<ObjectId> {
         return auditorAware.currentAuditor
     }

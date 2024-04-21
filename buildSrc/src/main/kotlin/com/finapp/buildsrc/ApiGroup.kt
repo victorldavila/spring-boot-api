@@ -10,6 +10,7 @@ object ApiGroup {
     }
 
     object Lib {
+        const val MOUNTABLE_PRODUCTS_API = "$BASE.mountable_products"
         const val STOCKS_API = "$BASE.stocks"
         const val CORE = "$BASE.core"
         const val KAFKA = "$BASE.kafka"
