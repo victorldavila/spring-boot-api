@@ -8,8 +8,7 @@ import org.springframework.data.mongodb.core.mapping.event.BeforeDeleteEvent
 import org.springframework.stereotype.Component
 
 @Component
-class UserCascadeDeleteMongoEventListener(
-): AbstractMongoEventListener<User>() {
+class UserCascadeDeleteMongoEventListener: AbstractMongoEventListener<User>() {
 
     @Autowired
     private lateinit var roleRepository: RoleRepository
