@@ -1,9 +1,10 @@
-package com.finapp.api.products.model
+package com.finapp.api.mountable_products.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.finapp.api.core.validation.OnCreate
 import com.finapp.api.core.validation.OnUpdate
-import com.finapp.api.products.validation.MountableProductType
+import com.finapp.api.mountable_products.validation.MountableProductType
+
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull

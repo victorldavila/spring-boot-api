@@ -1,6 +1,7 @@
-package com.finapp.api.products.model
+package com.finapp.api.mountable_products.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.finapp.api.mountable_products.model.MountableItemResponse
 
 data class MountableStepResponse(
     @JsonProperty("name") val name: String,

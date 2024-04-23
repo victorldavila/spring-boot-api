@@ -1,10 +1,10 @@
-package com.finapp.api.products.data
+package com.finapp.api.mountable_products.data
 
-import com.finapp.api.products.data.MountableStep.Companion.COLLECTION_NAME
+import com.finapp.api.mountable_products.data.MountableStep.Companion.COLLECTION_NAME
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 
-//@Document(collection = COLLECTION_NAME)
+@Document(collection = COLLECTION_NAME)
 data class MountableStep(
     @Field(ACTIVE_FIELD) val isActive: Boolean,
     @Field(NAME_FIELD) val stepName: String,

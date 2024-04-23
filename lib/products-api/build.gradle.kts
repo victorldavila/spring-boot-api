@@ -33,6 +33,7 @@ tasks.bootJar {
 
 dependencies {
     implementation(project(":lib:core"))
+    implementation(project(":lib:mountable-products-api"))
 
     baseLibsImplementation()
 }

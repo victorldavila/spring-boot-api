@@ -1,6 +1,6 @@
 package com.finapp.mountable_products.repository
 
-import com.finapp.mountable_products.data.MountableStep
+import com.finapp.api.mountable_products.data.MountableStep
 import com.mongodb.client.result.DeleteResult
 import org.bson.types.ObjectId
 import reactor.core.publisher.Flux

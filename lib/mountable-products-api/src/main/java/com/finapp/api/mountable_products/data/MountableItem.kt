@@ -1,4 +1,4 @@
-package com.finapp.mountable_products.data
+package com.finapp.api.mountable_products.data
 
 import org.springframework.data.mongodb.core.mapping.Field
 import java.math.BigDecimal

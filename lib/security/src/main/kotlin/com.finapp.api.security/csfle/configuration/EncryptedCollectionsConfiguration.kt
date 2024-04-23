@@ -9,7 +9,7 @@ import com.finapp.api.users.data.User
  */
 object EncryptedCollectionsConfiguration {
     val encryptedEntities: List<EncryptedEntity> = listOf(
-        EncryptedEntity("Test", "user", User::class.java, "userDEK"),
+        EncryptedEntity("Test", "users", User::class.java, "userDEK"),
         //EncryptedEntity("Test", "role", Role::class.java, "roleDEK")
     )
 }

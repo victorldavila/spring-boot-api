@@ -3,6 +3,7 @@ package com.finapp.api.products.model
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.finapp.api.core.validation.OnCreate
 import com.finapp.api.products.validation.ProductType
+import com.finapp.api.mountable_products.model.MountableStepRequest
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
@@ -21,6 +22,5 @@ data class ProductRequest (
     @JsonProperty("category") val category: String?,
 
     @field:Valid
-    @JsonProperty("mountableSteps") val steps: List<MountableStepRequest>?,
-    @JsonProperty("composed") val composed: List<MountableStepRequest>?
+    @JsonProperty("mountableSteps") val steps: List<MountableStepRequest>?
 )

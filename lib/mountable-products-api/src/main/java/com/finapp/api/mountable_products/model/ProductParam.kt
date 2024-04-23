@@ -1,4 +1,4 @@
-package com.finapp.mountable_products.model
+package com.finapp.api.mountable_products.model
 
 import com.finapp.api.core.validation.OnDelete
 import com.finapp.api.core.validation.OnRead

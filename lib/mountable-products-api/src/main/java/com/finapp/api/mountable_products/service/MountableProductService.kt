@@ -4,10 +4,10 @@ import com.finapp.api.core.validation.OnCreate
 import com.finapp.api.core.validation.OnDelete
 import com.finapp.api.core.validation.OnRead
 import com.finapp.api.core.validation.OnUpdate
-import com.finapp.mountable_products.model.MountableProductArg
-import com.finapp.mountable_products.model.MountableProductParam
-import com.finapp.mountable_products.model.MountableStepRequest
-import com.finapp.mountable_products.model.MountableStepResponse
+import com.finapp.api.mountable_products.model.MountableProductArg
+import com.finapp.api.mountable_products.model.MountableProductParam
+import com.finapp.api.mountable_products.model.MountableStepRequest
+import com.finapp.api.mountable_products.model.MountableStepResponse
 import jakarta.validation.Valid
 import org.springframework.validation.annotation.Validated
 import reactor.core.publisher.Flux

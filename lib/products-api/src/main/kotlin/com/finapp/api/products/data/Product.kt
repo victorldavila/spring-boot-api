@@ -2,11 +2,13 @@ package com.finapp.api.products.data
 
 import com.finapp.api.products.data.Product.Companion.COLLECTION_NAME
 import com.finapp.api.products.model.ProductType
+import com.finapp.api.mountable_products.data.MountableStep
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.mongodb.core.mapping.DBRef
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import org.springframework.data.mongodb.core.mapping.MongoId
@@ -22,8 +24,8 @@ data class Product(
     @Field(ACTIVE_FIELD) val isActive: Boolean,
     @Field(TYPE_FIELD) val type: ProductType,
     @Field(CATEGORY_FIELD) val category: String,
-    @Field(STEPS_FIELD) val steps: MutableList<MountableStep>?,
-    @Field(COMPOSE_FIELD) val compose: List<MountableStep>?,
+
+    @DBRef @Field(STEPS_FIELD) val steps: MutableList<MountableStep>?,
 
     @CreatedDate @Field(CREATED_DATE_FIELD) val createdDate: LocalDateTime? = null,
     @LastModifiedDate @Field(LAST_MODIFIED_DATE_FIELD) var lastModifiedDate: LocalDateTime? = null,

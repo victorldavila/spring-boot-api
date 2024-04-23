@@ -1,4 +1,4 @@
-package com.finapp.api.products.model
+package com.finapp.api.mountable_products.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty

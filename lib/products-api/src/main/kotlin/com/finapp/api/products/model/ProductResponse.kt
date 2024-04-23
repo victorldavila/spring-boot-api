@@ -2,7 +2,7 @@ package com.finapp.api.products.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
-import org.bson.types.ObjectId
+import com.finapp.api.mountable_products.model.MountableStepResponse
 import java.math.BigDecimal
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

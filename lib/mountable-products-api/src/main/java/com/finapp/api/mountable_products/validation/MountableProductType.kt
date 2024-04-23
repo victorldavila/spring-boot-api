@@ -1,4 +1,4 @@
-package com.finapp.mountable_products.validation
+package com.finapp.api.mountable_products.validation
 
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
