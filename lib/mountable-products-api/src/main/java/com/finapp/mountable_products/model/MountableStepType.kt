@@ -1,6 +1,6 @@
 package com.finapp.mountable_products.model
 
-enum class MountableProductType {
+enum class MountableStepType {
     DEFAULT,
     ADD,
     MOST_EXPENSIVE,
@@ -8,7 +8,7 @@ enum class MountableProductType {
     NONE;
 
     companion object {
-        fun String.toMountableProductType(): MountableProductType = when(this) {
+        fun String.toMountableProductType(): MountableStepType = when(this) {
             DEFAULT.name -> DEFAULT
             ADD.name -> ADD
             MOST_EXPENSIVE.name -> MOST_EXPENSIVE
