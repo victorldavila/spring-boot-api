@@ -6,9 +6,7 @@ import com.finapp.api.products.model.ProductType.Companion.toProductType
 import org.springframework.stereotype.Component
 
 @Component
-class ProductMapper(
-    //private val mountableProductMapper: MountableProductMapper
-) {
+class ProductMapper {
     fun productRequestToProduct(productRequest: ProductRequest): Product = Product(
         name = productRequest.name!!,
         price = productRequest.price,
@@ -31,8 +29,7 @@ class ProductMapper(
         price = product.price,
         isActive = product.isActive,
         category = product.category,
-        type = product.type.name,
-        steps = null
+        type = product.type.name
     )
 
     private fun ProductRequest?.getProductPrice(product: Product) =

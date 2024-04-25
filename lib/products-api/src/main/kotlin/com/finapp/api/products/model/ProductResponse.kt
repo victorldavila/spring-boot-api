@@ -14,5 +14,5 @@ data class ProductResponse(
     @JsonProperty("type") val type: String,
     @JsonProperty("category") val category: String,
 
-    @JsonProperty("mountableSteps") val steps: List<MountableStepResponse>?
+    @JsonProperty("mountableSteps") val steps: List<MountableStepResponse>? = null
 )

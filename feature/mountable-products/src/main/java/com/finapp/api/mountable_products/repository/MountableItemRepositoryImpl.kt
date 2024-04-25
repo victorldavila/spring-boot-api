@@ -1,5 +1,6 @@
 package com.finapp.api.mountable_products.repository
 
+import com.finapp.api.mountable_products.data.MountableItem
 import com.finapp.api.mountable_products.data.MountableStep
 import com.mongodb.client.result.DeleteResult
 import org.bson.types.ObjectId
@@ -12,20 +13,20 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Repository
-class MountableProductRepositoryImpl(
+class MountableItemRepositoryImpl(
     private val template: ReactiveMongoTemplate
-): MountableProductRepository {
-    override fun findMountableProductById(mountableProductId: ObjectId?): Mono<MountableStep> =
-        template.findById(mountableProductId, MountableStep::class.java)
+): MountableItemRepository {
+    override fun findMountableItemById(mountableItemId: ObjectId?): Mono<MountableItem> =
+        template.findById(mountableItemId, MountableItem::class.java)
 
-    override fun findMountableProductByProductId(productId: ObjectId?): Flux<MountableStep> =
-        template.find(getMountableProductQueryByField(MountableStep.PRODUCT_ID_FIELD, productId), MountableStep::class.java)
+    override fun findMountableItemsByMountableStepId(mountableStepId: ObjectId?): Flux<MountableItem> =
+        template.find(getMountableProductQueryByField(MountableItem.MOUNTABLE_STEP_ID_FIELD, mountableStepId), MountableItem::class.java)
 
-    override fun saveMountableProduct(mountableStep: MountableStep): Mono<MountableStep> =
-        template.save(mountableStep)
+    override fun saveMountableItem(mountableItem: MountableItem): Mono<MountableItem> =
+        template.save(mountableItem)
 
-    override fun deleteMountableProduct(mountableStep: MountableStep): Mono<DeleteResult> =
-        template.remove(mountableStep)
+    override fun deleteMountableItem(mountableItem: MountableItem): Mono<DeleteResult> =
+        template.remove(mountableItem)
 
     private fun <T>getMountableProductQueryByField(field: String, value: T): Query =
         Query(

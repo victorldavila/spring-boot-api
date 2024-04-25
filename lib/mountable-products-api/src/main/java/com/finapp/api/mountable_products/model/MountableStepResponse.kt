@@ -9,5 +9,5 @@ data class MountableStepResponse(
     @JsonProperty("minimum") val minimum: Int,
     @JsonProperty("maximum") val maximum: Int,
     @JsonProperty("type") val type: String,
-    @JsonProperty("items") val items: List<MountableItemResponse>
+    @JsonProperty("items") val items: List<MountableItemResponse>? = null
 )

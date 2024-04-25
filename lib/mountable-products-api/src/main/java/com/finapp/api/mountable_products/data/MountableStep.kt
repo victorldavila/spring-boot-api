@@ -16,7 +16,7 @@ data class MountableStep(
     @Field(TYPE_FIELD) val type: String,
 
     //@DBRef
-    @Field(ITEMS_FIELD) val items: MutableList<MountableItem>
+    //@Field(ITEMS_FIELD) val items: List<MountableItem>
 ) {
     companion object {
         const val COLLECTION_NAME = "mountable_steps"

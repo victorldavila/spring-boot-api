@@ -6,6 +6,7 @@ import java.math.BigDecimal
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class MountableItemResponse(
+    @JsonProperty("id") val id: String?,
     @JsonProperty("name") val name: String,
     @JsonProperty("price") val price: BigDecimal?,
     @JsonProperty("maximumQuantity") val maximumQuantity: Int,
