@@ -3,6 +3,7 @@ package com.finapp.api.products.service
 import com.finapp.api.core.error.NotFoundError
 import com.finapp.api.mountable_products.model.MountableProductArg
 import com.finapp.api.mountable_products.model.MountableProductParam
+import com.finapp.api.mountable_products.model.MountableStepRequest
 import com.finapp.api.mountable_products.service.MountableProductService
 import com.finapp.api.products.data.Product
 import com.finapp.api.products.mapper.ProductMapper
@@ -26,7 +27,7 @@ class ProductServiceImpl(
     override fun getProductById(productParam: ProductParam): Mono<ProductResponse> =
         findProductById(productParam.productId)
             .flatMap { product ->
-                mountableProductService.getMountableProductByProductId(MountableProductParam(product.id?.toHexString()))
+                mountableProductService.getMountableProductByProductId(getMountableParam(product))
                     .collectList()
                     .map { productMapper.productToProductResponse(product).copy(steps = it) }
             }
@@ -34,7 +35,7 @@ class ProductServiceImpl(
     override fun getAllProducts(): Flux<ProductResponse> =
         productRepository.findAllProducts()
             .flatMap { product ->
-                mountableProductService.getMountableProductByProductId(MountableProductParam(product.id?.toHexString()))
+                mountableProductService.getMountableProductByProductId(getMountableParam(product))
                     .collectList()
                     .map { productMapper.productToProductResponse(product).copy(steps = it) }
             }
@@ -44,7 +45,7 @@ class ProductServiceImpl(
             .map { productMapper.productRequestToProduct(productArg.request, it) }
             .flatMap { productRepository.saveProduct(it) }
             .flatMap { savedProduct ->
-                mountableProductService.getMountableProductByProductId(MountableProductParam(savedProduct.id?.toHexString()))
+                mountableProductService.getMountableProductByProductId(getMountableParam(savedProduct))
                     .collectList()
                     .map { productMapper.productToProductResponse(savedProduct).copy(steps = it) }
             }
@@ -56,14 +57,7 @@ class ProductServiceImpl(
                 productRepository.saveProduct(product)
                     .flatMap { savedProduct ->
                         Flux.fromIterable(productRequest.steps ?: emptyList())
-                            .flatMap {
-                                mountableProductService.createMountableProduct(
-                                    MountableProductArg(
-                                        MountableProductParam(savedProduct.id?.toHexString()),
-                                        it
-                                    )
-                                )
-                            }
+                            .flatMap { mountableProductService.createMountableProduct(getMountableArg(savedProduct, it)) }
                             .collectList()
                             .map { productMapper.productToProductResponse(savedProduct).copy(steps = it) }
                     }
@@ -78,4 +72,13 @@ class ProductServiceImpl(
         Mono.justOrEmpty(productId)
             .flatMap { productRepository.findProductById(ObjectId(it)) }
             .switchIfEmpty { Mono.error(NotFoundError("product does not exists")) }
+
+    private fun getMountableParam(product: Product, mountableStepId: String? = null) =
+        MountableProductParam(product.id?.toHexString(), mountableStepId)
+
+    private fun getMountableArg(product: Product, mountableStepRequest: MountableStepRequest? = null) =
+        MountableProductArg(
+            MountableProductParam(product.id?.toHexString(), mountableStepRequest?.id),
+            mountableStepRequest
+        )
 }

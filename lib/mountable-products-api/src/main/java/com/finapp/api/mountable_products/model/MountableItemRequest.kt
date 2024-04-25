@@ -10,7 +10,7 @@ import java.math.BigDecimal
 
 data class MountableItemRequest(
     @field:NotNull(groups = [ OnUpdate::class ], message = "step item index can not be null")
-    @JsonProperty("index") val index: Int,
+    @JsonProperty("id") val id: String,
     @field:NotBlank(groups = [ OnCreate::class ], message = "step item name can not be blanked")
     @JsonProperty("name") val name: String?,
     @JsonProperty("isVariable") val isVariable: Boolean?,
