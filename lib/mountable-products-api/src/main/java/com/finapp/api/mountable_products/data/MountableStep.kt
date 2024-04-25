@@ -1,21 +1,27 @@
 package com.finapp.api.mountable_products.data
 
 import com.finapp.api.mountable_products.data.MountableStep.Companion.COLLECTION_NAME
-import org.springframework.data.mongodb.core.mapping.Document
-import org.springframework.data.mongodb.core.mapping.Field
+import org.bson.types.ObjectId
+import org.springframework.data.annotation.ReadOnlyProperty
+import org.springframework.data.mongodb.core.mapping.*
 
 @Document(collection = COLLECTION_NAME)
 data class MountableStep(
+    @MongoId val id: ObjectId? = null,
+    @Field(PRODUCT_ID_FIELD) val productId: ObjectId?,
     @Field(ACTIVE_FIELD) val isActive: Boolean,
     @Field(NAME_FIELD) val stepName: String,
     @Field(MINIMUM_FIELD) val minimum: Int,
     @Field(MAXIMUM_FIELD) val maximum: Int,
     @Field(TYPE_FIELD) val type: String,
+
+    //@DBRef
     @Field(ITEMS_FIELD) val items: MutableList<MountableItem>
 ) {
     companion object {
         const val COLLECTION_NAME = "mountable_steps"
 
+        const val PRODUCT_ID_FIELD = "product_id"
         const val ACTIVE_FIELD = "is_active"
         const val NAME_FIELD = "name"
         const val MINIMUM_FIELD = "minimum"

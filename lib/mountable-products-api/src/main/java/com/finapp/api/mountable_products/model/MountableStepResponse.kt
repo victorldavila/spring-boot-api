@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.finapp.api.mountable_products.model.MountableItemResponse
 
 data class MountableStepResponse(
+    @JsonProperty("id") val id: String?,
     @JsonProperty("name") val name: String,
     @JsonProperty("minimum") val minimum: Int,
     @JsonProperty("maximum") val maximum: Int,

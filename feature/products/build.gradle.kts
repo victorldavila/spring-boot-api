@@ -32,6 +32,7 @@ tasks.bootJar {
 
 dependencies {
     implementation(project(":lib:products-api"))
+    implementation(project(":lib:mountable-products-api"))
 
     implementation(project(":lib:authorize"))
     implementation(project(":lib:security"))

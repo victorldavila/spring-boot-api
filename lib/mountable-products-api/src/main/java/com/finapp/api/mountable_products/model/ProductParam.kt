@@ -1,9 +1,6 @@
 package com.finapp.api.mountable_products.model
 
-import com.finapp.api.core.validation.OnDelete
-import com.finapp.api.core.validation.OnRead
-import com.finapp.api.core.validation.OnUpdate
-import com.finapp.api.core.validation.ObjectId
+import com.finapp.api.core.validation.*
 import jakarta.validation.Valid
 
 data class MountableProductArg(
@@ -14,6 +11,8 @@ data class MountableProductArg(
 )
 
 data class MountableProductParam(
-    @field:ObjectId(groups = [ OnUpdate::class, OnDelete::class, OnRead::class ], message = "mountable step id must be valid")
-    val mountableProductId: String?
+    @field:ObjectId(groups = [ OnCreate::class, OnRead::class ], message = "product id must be valid")
+    val productId: String?,
+    @field:ObjectId(groups = [ OnUpdate::class, OnDelete::class ], message = "mountable step id must be valid")
+    val mountableProductId: String? = null,
 )

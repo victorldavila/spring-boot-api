@@ -6,11 +6,13 @@ import com.finapp.api.mountable_products.model.MountableItemRequest
 import com.finapp.api.mountable_products.model.MountableItemResponse
 import com.finapp.api.mountable_products.model.MountableStepRequest
 import com.finapp.api.mountable_products.model.MountableStepResponse
+import org.bson.types.ObjectId
 import org.springframework.stereotype.Component
 
 @Component
 class MountableProductMapper {
     fun mountableStepToMountableStepResponse(mountableStep: MountableStep): MountableStepResponse = MountableStepResponse(
+        id = mountableStep.id?.toHexString(),
         name = mountableStep.stepName,
         minimum = mountableStep.minimum,
         maximum = mountableStep.maximum,
@@ -54,7 +56,8 @@ class MountableProductMapper {
         measure = this.measure ?: mountableItem.measure
     )
 
-    fun mountableStepRequestToMountableStep(mountableStepRequest: MountableStepRequest): MountableStep = MountableStep(
+    fun mountableStepRequestToMountableStep(mountableStepRequest: MountableStepRequest, productId: ObjectId? = null): MountableStep = MountableStep(
+        productId = productId,
         stepName = mountableStepRequest.name!!,
         minimum = mountableStepRequest.minimum!!,
         maximum = mountableStepRequest.maximum!!,

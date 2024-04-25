@@ -1,4 +1,4 @@
-package com.finapp.mountable_products.service
+package com.finapp.api.mountable_products.service
 
 import com.finapp.api.core.validation.OnCreate
 import com.finapp.api.core.validation.OnDelete
@@ -6,7 +6,6 @@ import com.finapp.api.core.validation.OnRead
 import com.finapp.api.core.validation.OnUpdate
 import com.finapp.api.mountable_products.model.MountableProductArg
 import com.finapp.api.mountable_products.model.MountableProductParam
-import com.finapp.api.mountable_products.model.MountableStepRequest
 import com.finapp.api.mountable_products.model.MountableStepResponse
 import jakarta.validation.Valid
 import org.springframework.validation.annotation.Validated
@@ -20,7 +19,7 @@ interface MountableProductService {
     @Validated(OnUpdate::class)
     fun updateMountableProducts(@Valid mountableProductArg: MountableProductArg): Mono<MountableStepResponse>
     @Validated(OnCreate::class)
-    fun createMountableProduct(@Valid mountableStepRequest: MountableStepRequest): Mono<MountableStepResponse>
+    fun createMountableProduct(@Valid mountableProductArg: MountableProductArg): Mono<MountableStepResponse>
     @Validated(OnDelete::class)
     fun deleteMountableProduct(@Valid mountableProductParam: MountableProductParam?): Mono<Boolean>
 }
