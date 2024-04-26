@@ -15,6 +15,10 @@ class MountableItemServiceImpl(
     private val mountableItemRepository: MountableItemRepository,
     private val mountableItemMapper: MountableItemMapper
 ): MountableItemService {
+    override fun getMountableItemsById(mountableItemParam: MountableItemParam): Mono<MountableItemResponse> =
+        mountableItemRepository.findMountableItemById(ObjectId(mountableItemParam.mountableItemId))
+            .map { mountableItemMapper.mountableItemToMountableItemResponse(it) }
+
     override fun getMountableItemsByMountableStepId(mountableItemParam: MountableItemParam): Flux<MountableItemResponse> =
         mountableItemRepository.findMountableItemsByMountableStepId(ObjectId(mountableItemParam.mountableStepId))
             .map { mountableItemMapper.mountableItemToMountableItemResponse(it) }

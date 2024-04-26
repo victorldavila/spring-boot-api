@@ -16,6 +16,14 @@ class MountableStepServiceImpl(
     private val mountableStepRepository: MountableStepRepository,
     private val mountableStepMapper: MountableStepMapper
 ): MountableStepService {
+    override fun getMountableStepById(mountableStepParam: MountableStepParam): Mono<MountableStepResponse> =
+        mountableStepRepository.findMountableStepById(ObjectId(mountableStepParam.mountableStepId))
+            .flatMap { mountableStep ->
+                mountableItemService.getMountableItemsByMountableStepId(MountableItemParam(mountableStep.id?.toHexString()))
+                    .collectList()
+                    .map { mountableStepMapper.mountableStepToMountableStepResponse(mountableStep).copy(items = it) }
+            }
+
     override fun getMountableStepByProductId(mountableStepParam: MountableStepParam): Flux<MountableStepResponse> =
         mountableStepRepository.findMountableStepByProductId(ObjectId(mountableStepParam.productId))
             .flatMap { mountableStep ->

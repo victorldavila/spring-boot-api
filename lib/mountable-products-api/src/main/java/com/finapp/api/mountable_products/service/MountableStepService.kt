@@ -12,6 +12,8 @@ import reactor.core.publisher.Mono
 @Validated
 interface MountableStepService {
     @Validated(OnRead::class)
+    fun getMountableStepById(@Valid mountableStepParam: MountableStepParam): Mono<MountableStepResponse>
+    @Validated(OnRead::class)
     fun getMountableStepByProductId(@Valid mountableStepParam: MountableStepParam): Flux<MountableStepResponse>
     @Validated(OnUpdate::class)
     fun updateMountableStep(@Valid mountableStepArg: MountableStepArg): Mono<MountableStepResponse>
