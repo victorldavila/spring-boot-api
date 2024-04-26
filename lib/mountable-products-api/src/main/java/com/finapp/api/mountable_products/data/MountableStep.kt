@@ -2,8 +2,9 @@ package com.finapp.api.mountable_products.data
 
 import com.finapp.api.mountable_products.data.MountableStep.Companion.COLLECTION_NAME
 import org.bson.types.ObjectId
-import org.springframework.data.annotation.ReadOnlyProperty
+import org.springframework.data.annotation.*
 import org.springframework.data.mongodb.core.mapping.*
+import java.time.LocalDateTime
 
 @Document(collection = COLLECTION_NAME)
 data class MountableStep(
@@ -15,8 +16,10 @@ data class MountableStep(
     @Field(MAXIMUM_FIELD) val maximum: Int,
     @Field(TYPE_FIELD) val type: String,
 
-    //@DBRef
-    //@Field(ITEMS_FIELD) val items: List<MountableItem>
+    @CreatedDate @Field(CREATED_DATE_FIELD) val createdDate: LocalDateTime? = null,
+    @LastModifiedDate @Field(LAST_MODIFIED_DATE_FIELD) var lastModifiedDate: LocalDateTime? = null,
+    @LastModifiedBy @Field(LAST_MODIFIED_BY_FIELD) var lastModifiedBy: ObjectId? = null,
+    @CreatedBy @Field(CREATED_BY_FIELD) var createdBy: ObjectId? = null
 ) {
     companion object {
         const val COLLECTION_NAME = "mountable_steps"
@@ -27,6 +30,10 @@ data class MountableStep(
         const val MINIMUM_FIELD = "minimum"
         const val MAXIMUM_FIELD = "maximum"
         const val TYPE_FIELD = "type"
-        const val ITEMS_FIELD = "items"
+
+        const val CREATED_DATE_FIELD = "created_date"
+        const val LAST_MODIFIED_DATE_FIELD = "last_modified_date"
+        const val LAST_MODIFIED_BY_FIELD = "last_modified_by"
+        const val CREATED_BY_FIELD = "created_by"
     }
 }
