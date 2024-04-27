@@ -3,13 +3,14 @@ package com.finapp.api.mountable_products.model
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.finapp.api.core.validation.OnCreate
 import com.finapp.api.core.validation.OnUpdate
+import com.finapp.api.core.validation.OnUpdateItems
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.springframework.data.mongodb.core.aggregation.ArrayOperators.Reduce.Variable
 import java.math.BigDecimal
 
 data class MountableItemRequest(
-    @field:NotNull(groups = [ OnUpdate::class ], message = "step item index can not be null")
+    @field:NotNull(groups = [ OnUpdateItems::class ], message = "step item index can not be null")
     @JsonProperty("id") val id: String?,
     @field:NotBlank(groups = [ OnCreate::class ], message = "step item name can not be blanked")
     @JsonProperty("name") val name: String?,

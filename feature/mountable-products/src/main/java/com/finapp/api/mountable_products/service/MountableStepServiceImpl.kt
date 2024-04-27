@@ -36,8 +36,11 @@ class MountableStepServiceImpl(
         mountableStepRepository.findMountableStepById(ObjectId(mountableStepArg.mountableStepParam?.mountableStepId))
             .map { mountableStepMapper.mountableStepRequestToMountableStep(mountableStepArg.request!!, it) }
             .flatMap { mountableStepRepository.saveMountableStep(it) }
-            .map { mountableStepMapper.mountableStepToMountableStepResponse(it) }
-
+            .flatMap { mountableStep ->
+                mountableItemService.getMountableItemsByMountableStepId(MountableItemParam(mountableStep.id?.toHexString()))
+                    .collectList()
+                    .map { mountableStepMapper.mountableStepToMountableStepResponse(mountableStep).copy(items = it) }
+            }
 
     override fun createMountableStep(mountableStepArg: MountableStepArg): Mono<MountableStepResponse> =
         Mono.justOrEmpty(mountableStepArg.request)
