@@ -10,8 +10,6 @@ import org.springframework.data.mongodb.core.aggregation.ArrayOperators.Reduce.V
 import java.math.BigDecimal
 
 data class MountableItemRequest(
-    @field:NotNull(groups = [ OnUpdateItems::class ], message = "step item index can not be null")
-    @JsonProperty("id") val id: String?,
     @field:NotBlank(groups = [ OnCreate::class ], message = "step item name can not be blanked")
     @JsonProperty("name") val name: String?,
     @JsonProperty("isVariable") val isVariable: Boolean?,

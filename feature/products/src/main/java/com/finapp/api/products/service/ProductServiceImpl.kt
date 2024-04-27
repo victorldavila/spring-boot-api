@@ -76,7 +76,7 @@ class ProductServiceImpl(
 
     private fun getMountableArg(product: Product, mountableStepRequest: MountableStepRequest? = null) =
         MountableStepArg(
-            MountableStepParam(product.id?.toHexString(), mountableStepRequest?.id),
+            MountableStepParam(product.id?.toHexString()),
             mountableStepRequest
         )
 }
