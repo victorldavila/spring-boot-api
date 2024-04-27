@@ -4,7 +4,6 @@ import com.finapp.api.mountable_products.data.MountableStep
 import com.finapp.api.mountable_products.mapper.MountableStepMapper
 import com.finapp.api.mountable_products.model.*
 import com.finapp.api.mountable_products.repository.MountableStepRepository
-import kotlinx.coroutines.reactive.collect
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Component
 import reactor.core.publisher.Flux
@@ -47,7 +46,7 @@ class MountableStepServiceImpl(
             .map { mountableStepMapper.mountableStepRequestToMountableStep(it!!, mountableStepArg = mountableStepArg) }
             .flatMap { mountableStepRepository.saveMountableStep(it) }
             .flatMap { savedMountableStep ->
-                saveMutableItem(mountableStepArg.request, savedMountableStep)
+                saveMountableItem(mountableStepArg.request, savedMountableStep)
                     .map { mountableStepMapper.mountableStepToMountableStepResponse(savedMountableStep).copy(items = it) }
             }
 
@@ -63,7 +62,7 @@ class MountableStepServiceImpl(
             .flatMap { mountableStepRepository.deleteMountableStep(it) }
             .map { it.wasAcknowledged() }
 
-    private fun saveMutableItem(mountableStepRequest: MountableStepRequest?, mountableStep: MountableStep) =
+    private fun saveMountableItem(mountableStepRequest: MountableStepRequest?, mountableStep: MountableStep) =
         Flux.fromIterable(mountableStepRequest?.items ?: emptyList())
             .flatMap {
                 mountableItemService.createMountableItem(
