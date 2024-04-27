@@ -30,6 +30,7 @@ class ProductHandler(
     fun getAllProducts(serverRequest: ServerRequest): Mono<ServerResponse> =
         ServerResponse.ok()
             .body(productsService.getAllProducts(), ProductResponse::class.java)
+            .onErrorResume { errorResponse(it) }
 
     fun updateProduct(serverRequest: ServerRequest): Mono<ServerResponse> =
         Mono.just(serverRequest)

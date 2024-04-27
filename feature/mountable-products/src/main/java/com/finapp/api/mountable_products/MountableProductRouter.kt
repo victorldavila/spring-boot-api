@@ -4,6 +4,7 @@ import com.finapp.api.authorize.filter.AuthorizationFilterImpl
 import com.finapp.api.core.ApiRouter
 import com.finapp.api.core.model.PermissionType
 import org.springframework.context.annotation.Bean
+import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.RouterFunctions.route

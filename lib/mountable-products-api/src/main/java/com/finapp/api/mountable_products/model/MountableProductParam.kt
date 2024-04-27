@@ -11,9 +11,9 @@ data class MountableStepArg(
 )
 
 data class MountableStepParam(
-    @field:ObjectId(groups = [ OnCreate::class, OnRead::class, OnDeleteItems::class ], message = "product id must be valid")
+    @field:ObjectId(groups = [ OnCreate::class, OnReadItems::class, OnDeleteItems::class ], message = "product id must be valid")
     val productId: String?,
-    @field:ObjectId(groups = [ OnUpdate::class, OnDelete::class ], message = "mountable step id must be valid")
+    @field:ObjectId(groups = [ OnUpdate::class, OnDelete::class, OnRead::class ], message = "mountable step id must be valid")
     val mountableStepId: String? = null,
 )
 
@@ -25,8 +25,8 @@ data class MountableItemArg(
 )
 
 data class MountableItemParam(
-    @field:ObjectId(groups = [ OnCreate::class, OnRead::class, OnDeleteItems::class ], message = "product id must be valid")
+    @field:ObjectId(groups = [ OnCreate::class, OnReadItems::class, OnDeleteItems::class ], message = "product id must be valid")
     val mountableStepId: String?,
-    @field:ObjectId(groups = [ OnUpdate::class, OnDelete::class ], message = "mountable step id must be valid")
+    @field:ObjectId(groups = [ OnUpdate::class, OnDelete::class, OnRead::class ], message = "mountable step id must be valid")
     val mountableItemId: String? = null,
 )

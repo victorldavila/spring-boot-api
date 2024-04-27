@@ -2,6 +2,7 @@ package com.finapp.api.mountable_products
 
 import com.finapp.api.core.error.BaseHandler
 import com.finapp.api.core.error.ValidationHandler
+import com.finapp.api.core.tryGetPathVariable
 import com.finapp.api.mountable_products.model.*
 import com.finapp.api.mountable_products.service.MountableItemService
 import com.finapp.api.mountable_products.service.MountableStepService
@@ -30,6 +31,7 @@ class MountableProductHandler(
         Mono.just(serverRequest)
             .map { getMountableStepParam(it) }
             .flatMap { ServerResponse.ok().body(mountableStepService.getMountableStepByProductId(it), ProductResponse::class.java) }
+            .onErrorResume { errorResponse(it) }
 
 
     fun updateMountableStep(serverRequest: ServerRequest): Mono<ServerResponse> =
@@ -100,15 +102,15 @@ class MountableProductHandler(
             .onErrorResume { errorResponse(it) }
 
     private fun getMountableStepParam(serverRequest: ServerRequest): MountableStepParam {
-        val productId = serverRequest.pathVariable("productId")
-        val stepId = serverRequest.pathVariable("stepId")
+        val productId = serverRequest.tryGetPathVariable("productId")
+        val mountableStepId = serverRequest.tryGetPathVariable("mountableStepId")
 
-        return MountableStepParam(productId, stepId)
+        return MountableStepParam(productId, mountableStepId)
     }
 
     private fun getMountableItemParam(serverRequest: ServerRequest): MountableItemParam {
-        val mountableStepId = serverRequest.pathVariable("mountableStepId")
-        val mountableItemId = serverRequest.pathVariable("mountableItemId")
+        val mountableStepId = serverRequest.tryGetPathVariable("mountableStepId")
+        val mountableItemId = serverRequest.tryGetPathVariable("mountableItemId")
 
         return MountableItemParam(mountableStepId, mountableItemId)
     }

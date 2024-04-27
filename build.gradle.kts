@@ -27,8 +27,8 @@ dependencies {
 
 	implementation(project(":feature:auth"))
 	implementation(project(":feature:users"))
-	implementation(project(":feature:products"))
 	implementation(project(":feature:mountable-products"))
+	implementation(project(":feature:products"))
 	implementation(project(":feature:roles"))
 
 	implementation(project(":lib:security"))

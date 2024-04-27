@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono
 interface MountableItemService {
     @Validated(OnRead::class)
     fun getMountableItemsById(@Valid mountableItemParam: MountableItemParam): Mono<MountableItemResponse>
-    @Validated(OnRead::class)
+    @Validated(OnReadItems::class)
     fun getMountableItemsByMountableStepId(@Valid mountableItemParam: MountableItemParam): Flux<MountableItemResponse>
     @Validated(OnUpdate::class)
     fun updateMountableItem(@Valid mountableItemArg: MountableItemArg): Mono<MountableItemResponse>
