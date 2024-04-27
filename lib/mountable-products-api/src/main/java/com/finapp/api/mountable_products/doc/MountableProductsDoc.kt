@@ -20,79 +20,80 @@ import org.springframework.web.bind.annotation.RequestMethod
 @Retention(AnnotationRetention.RUNTIME)
 @RouterOperations(
     RouterOperation(
-        path = "/v1/users",
+        path = "/v1/products/{productId}/steps",
         produces = [MediaType.APPLICATION_JSON_VALUE],
         method = [RequestMethod.GET],
         beanClass = MountableStepService::class,
-        beanMethod = "getAllUsers",
+        beanMethod = "getMountableStepByProductId",
         operation = Operation(
-            operationId = "updateUser",
+            operationId = "getMountableStepByProductId",
             responses = [
                 ApiResponse(
                     responseCode = "200",
                     description = "successful operation",
                     content = [Content(array = ArraySchema(schema = Schema(implementation = MountableStepResponse::class)))]
                 )
-            ]
+            ],
+            parameters = [Parameter(`in` = ParameterIn.PATH, name = "productId")]
         )
     ),
     RouterOperation(
-        path = "/v1/users/{userId}",
+        path = "/v1/products/steps/{mountableStepId}",
         produces = [MediaType.APPLICATION_JSON_VALUE],
         method = [RequestMethod.GET],
         beanClass = MountableStepService::class,
-        beanMethod = "getUserById",
+        beanMethod = "getMountableStepById",
         operation = Operation(
-            operationId = "getUserById",
+            operationId = "getMountableStepById",
             responses = [
                 ApiResponse(
                     responseCode = "200",
                     description = "successful operation",
                     content =  [Content(schema = Schema(implementation = MountableStepResponse::class))]
                 ),
-                ApiResponse(responseCode = "400", description = "Invalid User id"),
-                ApiResponse(responseCode = "404", description = "User not found")
+                ApiResponse(responseCode = "400", description = "Invalid Mountable Step Id"),
+                ApiResponse(responseCode = "404", description = "Mountable Step not found")
             ],
-            parameters = [Parameter(`in` = ParameterIn.PATH, name = "userId")],
+            parameters = [Parameter(`in` = ParameterIn.PATH, name = "mountableStepId")],
             requestBody = RequestBody(content = [Content()])
         )
     ),
     RouterOperation(
-        path = "/v1/users/{userId}",
+        path = "/v1/products/steps/{mountableStepId}",
         produces = [MediaType.APPLICATION_JSON_VALUE],
         method = [RequestMethod.PUT],
         beanClass = MountableStepService::class,
-        beanMethod = "updateUser",
+        beanMethod = "updateMountableStep",
         operation = Operation(
-            operationId = "updateUser",
+            operationId = "updateProductStep",
             responses = [
                 ApiResponse(
                     responseCode = "200",
                     description = "successful operation",
                     content = [Content(schema = Schema(implementation = MountableStepResponse::class))]
                 ),
-                ApiResponse(responseCode = "400", description = "Invalid User"),
-                ApiResponse(responseCode = "404", description = "User not found")
+                ApiResponse(responseCode = "400", description = "Invalid Mountable Step Id"),
+                ApiResponse(responseCode = "404", description = "Mountable Step not found")
             ],
-            parameters = [Parameter(`in` = ParameterIn.PATH, name = "userId")],
+            parameters = [Parameter(`in` = ParameterIn.PATH, name = "mountableStepId")],
             requestBody = RequestBody(content = [Content(schema = Schema(implementation = MountableStepRequest::class))])
         )
     ),
     RouterOperation(
-        path = "/v1/users/{userId}",
+        path = "/v1/products/steps/{mountableStepId}",
         produces = [MediaType.APPLICATION_JSON_VALUE],
         method = [RequestMethod.DELETE],
         beanClass = MountableStepService::class,
-        beanMethod = "deleteUser",
+        beanMethod = "deleteMountableStepById",
         operation = Operation(
-            operationId = "deleteUser",
+            operationId = "deleteMountableStepById",
             responses = [
                 ApiResponse(
                     responseCode = "201",
                     description = "successful operation",
                 ),
-                ApiResponse(responseCode = "400", description = "Invalid User Id"),
-                ApiResponse(responseCode = "404", description = "User not found")
+                ApiResponse(responseCode = "400", description = "Invalid Mountable Step Id"),
+                ApiResponse(responseCode = "404", description = "Mountable Step not found")
             ],
             parameters = [Parameter(`in` = ParameterIn.PATH, name = "userId")],
             requestBody = RequestBody(content = [Content()])

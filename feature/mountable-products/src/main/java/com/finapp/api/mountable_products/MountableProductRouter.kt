@@ -3,6 +3,7 @@ package com.finapp.api.mountable_products
 import com.finapp.api.authorize.filter.AuthorizationFilterImpl
 import com.finapp.api.core.ApiRouter
 import com.finapp.api.core.model.PermissionType
+import com.finapp.api.mountable_products.doc.MountableProductsDoc
 import org.springframework.context.annotation.Bean
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
@@ -16,6 +17,7 @@ class MountableProductRouter(
     private val authorizationFilter: AuthorizationFilterImpl
 ) {
     @Bean
+    @MountableProductsDoc
     fun mountableProductsRoutes(): RouterFunction<ServerResponse> =
         route(ApiRouter.apiGET("/v1/products/steps/{mountableStepId}"), mountableProductHandler::getMountableStepById)
             .filter(getProductReadAuthorizationFilter())
