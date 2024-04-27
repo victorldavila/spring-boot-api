@@ -1,6 +1,7 @@
 import com.finapp.buildsrc.ApiGroup
 import com.finapp.buildsrc.ApiVersion
 import com.finapp.buildsrc.baseLibsImplementation
+import com.finapp.buildsrc.springBootSwaggerImplementation
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -34,6 +35,7 @@ dependencies {
     implementation(project(":lib:core"))
 
     baseLibsImplementation()
+    springBootSwaggerImplementation()
 }
 
 tasks.withType<KotlinCompile> {

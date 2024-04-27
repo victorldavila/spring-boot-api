@@ -3,7 +3,7 @@ package com.finapp.api.users
 import com.finapp.api.authorize.filter.AuthorizationFilterImpl
 import com.finapp.api.core.ApiRouter
 import com.finapp.api.core.model.PermissionType
-import com.finapp.api.users.doc.UserDocV1
+import com.finapp.api.users.doc.UsersDocV1
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.RouterFunction
@@ -16,7 +16,7 @@ class UserRouter(
     private val authorizationFilter: AuthorizationFilterImpl
 ) {
     @Bean
-    @UserDocV1
+    @UsersDocV1
     fun userRoutes(): RouterFunction<ServerResponse> =
         route(ApiRouter.apiGET("/v1/users/{userId}"), userHandler::getUser)
             .filter(getUserReadAuthorizationFilter())

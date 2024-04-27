@@ -1,8 +1,8 @@
-package com.finapp.api.users.doc
+package com.finapp.api.mountable_products.doc
 
-import com.finapp.api.users.model.UserRequest
-import com.finapp.api.users.model.UserResponse
-import com.finapp.api.users.service.UserService
+import com.finapp.api.mountable_products.model.MountableStepRequest
+import com.finapp.api.mountable_products.model.MountableStepResponse
+import com.finapp.api.mountable_products.service.MountableStepService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod
         path = "/v1/users",
         produces = [MediaType.APPLICATION_JSON_VALUE],
         method = [RequestMethod.GET],
-        beanClass = UserService::class,
+        beanClass = MountableStepService::class,
         beanMethod = "getAllUsers",
         operation = Operation(
             operationId = "updateUser",
@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod
                 ApiResponse(
                     responseCode = "200",
                     description = "successful operation",
-                    content = [Content(array = ArraySchema(schema = Schema(implementation = UserResponse::class)))]
+                    content = [Content(array = ArraySchema(schema = Schema(implementation = MountableStepResponse::class)))]
                 )
             ]
         )
@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestMethod
         path = "/v1/users/{userId}",
         produces = [MediaType.APPLICATION_JSON_VALUE],
         method = [RequestMethod.GET],
-        beanClass = UserService::class,
+        beanClass = MountableStepService::class,
         beanMethod = "getUserById",
         operation = Operation(
             operationId = "getUserById",
@@ -48,7 +48,7 @@ import org.springframework.web.bind.annotation.RequestMethod
                 ApiResponse(
                     responseCode = "200",
                     description = "successful operation",
-                    content =  [Content(schema = Schema(implementation = UserResponse::class))]
+                    content =  [Content(schema = Schema(implementation = MountableStepResponse::class))]
                 ),
                 ApiResponse(responseCode = "400", description = "Invalid User id"),
                 ApiResponse(responseCode = "404", description = "User not found")
@@ -61,7 +61,7 @@ import org.springframework.web.bind.annotation.RequestMethod
         path = "/v1/users/{userId}",
         produces = [MediaType.APPLICATION_JSON_VALUE],
         method = [RequestMethod.PUT],
-        beanClass = UserService::class,
+        beanClass = MountableStepService::class,
         beanMethod = "updateUser",
         operation = Operation(
             operationId = "updateUser",
@@ -69,20 +69,20 @@ import org.springframework.web.bind.annotation.RequestMethod
                 ApiResponse(
                     responseCode = "200",
                     description = "successful operation",
-                    content = [Content(schema = Schema(implementation = UserResponse::class))]
+                    content = [Content(schema = Schema(implementation = MountableStepResponse::class))]
                 ),
                 ApiResponse(responseCode = "400", description = "Invalid User"),
                 ApiResponse(responseCode = "404", description = "User not found")
             ],
             parameters = [Parameter(`in` = ParameterIn.PATH, name = "userId")],
-            requestBody = RequestBody(content = [Content(schema = Schema(implementation = UserRequest::class))])
+            requestBody = RequestBody(content = [Content(schema = Schema(implementation = MountableStepRequest::class))])
         )
     ),
     RouterOperation(
         path = "/v1/users/{userId}",
         produces = [MediaType.APPLICATION_JSON_VALUE],
         method = [RequestMethod.DELETE],
-        beanClass = UserService::class,
+        beanClass = MountableStepService::class,
         beanMethod = "deleteUser",
         operation = Operation(
             operationId = "deleteUser",
@@ -99,4 +99,4 @@ import org.springframework.web.bind.annotation.RequestMethod
         )
     )
 )
-annotation class UserDocV1
+annotation class MountableProductsDoc
