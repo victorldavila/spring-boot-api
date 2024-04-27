@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder
 import org.springframework.security.config.web.server.ServerHttpSecurity
@@ -44,16 +45,16 @@ class SecurityConfig {
         jwtAuthenticationConverter: ServerAuthenticationConverter,
         securityContextRepository: SecurityContextRepository
     ): SecurityWebFilterChain {
+
         val authenticationWebFilter = AuthenticationWebFilter(reactiveAuthenticationManager).apply {
             setServerAuthenticationConverter(jwtAuthenticationConverter)
         }
 
-        http
-            .cors().configurationSource(corsWebFilter()).and()
-            .csrf().disable()
-            .formLogin().disable()
-            .httpBasic().disable()
-            .logout().disable()
+        http.cors { it.configurationSource(corsWebFilter()) }
+            .csrf { it.disable() }
+            .formLogin { it.disable() }
+            .httpBasic { it.disable() }
+            .logout { it.disable() }
             .securityMatcher {
                 ServerWebExchangeMatchers.matchers(
                     ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, "/**"),
@@ -62,12 +63,11 @@ class SecurityConfig {
                     ServerWebExchangeMatchers.pathMatchers(HttpMethod.GET, "/**")
                 ).matches(it)
             }
-            .authorizeExchange()
-            .anyExchange().authenticated().and()
-            .exceptionHandling()
-            .authenticationEntryPoint { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.UNAUTHORIZED } }
-            .accessDeniedHandler { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.FORBIDDEN } }
-            .and()
+            .authorizeExchange { it.anyExchange().authenticated() }
+            .exceptionHandling {
+                it.authenticationEntryPoint { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.UNAUTHORIZED } }
+                it.accessDeniedHandler { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.FORBIDDEN } }
+            }
             .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
             .securityContextRepository(securityContextRepository)
 
@@ -87,18 +87,18 @@ class SecurityConfig {
         }
 
         http
-            .cors().configurationSource(corsWebFilter()).and()
-            .csrf().disable()
-            .formLogin().disable()
-            .httpBasic().disable()
-            .logout().disable()
+            .cors { it.configurationSource(corsWebFilter()) }
+            .csrf { it.disable() }
+            .formLogin { it.disable() }
+            .httpBasic { it.disable() }
+            .logout { it.disable() }
             .authorizeExchange{ authorizeSwaggerPaths(it) }
             .authorizeExchange { authorizeApiPaths(it) }
             .authorizeExchange { it.anyExchange().authenticated() }
-            .exceptionHandling()
-            .authenticationEntryPoint{ swe, _ -> Mono.fromRunnable{ swe.response.statusCode = HttpStatus.UNAUTHORIZED } }
-            .accessDeniedHandler { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.FORBIDDEN } }
-            .and()
+            .exceptionHandling {
+                it.authenticationEntryPoint { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.UNAUTHORIZED } }
+                it.accessDeniedHandler { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.FORBIDDEN } }
+            }
             .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
             .securityContextRepository(securityContextRepository)
 
