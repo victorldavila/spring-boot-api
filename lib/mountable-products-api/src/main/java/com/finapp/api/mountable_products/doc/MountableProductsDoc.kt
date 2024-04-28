@@ -1,7 +1,10 @@
 package com.finapp.api.mountable_products.doc
 
+import com.finapp.api.mountable_products.model.MountableItemRequest
+import com.finapp.api.mountable_products.model.MountableItemResponse
 import com.finapp.api.mountable_products.model.MountableStepRequest
 import com.finapp.api.mountable_products.model.MountableStepResponse
+import com.finapp.api.mountable_products.service.MountableItemService
 import com.finapp.api.mountable_products.service.MountableStepService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -32,7 +35,27 @@ import org.springframework.web.bind.annotation.RequestMethod
                     responseCode = "200",
                     description = "successful operation",
                     content = [Content(array = ArraySchema(schema = Schema(implementation = MountableStepResponse::class)))]
-                )
+                ),
+                ApiResponse(responseCode = "400", description = "Invalid Products Id"),
+            ],
+            parameters = [Parameter(`in` = ParameterIn.PATH, name = "productId")]
+        )
+    ),
+    RouterOperation(
+        path = "/v1/products/steps/{mountableStepId}/items",
+        produces = [MediaType.APPLICATION_JSON_VALUE],
+        method = [RequestMethod.GET],
+        beanClass = MountableItemService::class,
+        beanMethod = "getMountableItemsByMountableStepId",
+        operation = Operation(
+            operationId = "getMountableItemsByMountableStepId",
+            responses = [
+                ApiResponse(
+                    responseCode = "200",
+                    description = "successful operation",
+                    content = [Content(array = ArraySchema(schema = Schema(implementation = MountableItemResponse::class)))]
+                ),
+                ApiResponse(responseCode = "400", description = "Invalid Mountable Step Id"),
             ],
             parameters = [Parameter(`in` = ParameterIn.PATH, name = "productId")]
         )
@@ -59,6 +82,27 @@ import org.springframework.web.bind.annotation.RequestMethod
         )
     ),
     RouterOperation(
+        path = "/v1/products/steps/items/{mountableItemId}",
+        produces = [MediaType.APPLICATION_JSON_VALUE],
+        method = [RequestMethod.GET],
+        beanClass = MountableItemService::class,
+        beanMethod = "getMountableItemsById",
+        operation = Operation(
+            operationId = "getMountableItemsById",
+            responses = [
+                ApiResponse(
+                    responseCode = "200",
+                    description = "successful operation",
+                    content =  [Content(schema = Schema(implementation = MountableItemResponse::class))]
+                ),
+                ApiResponse(responseCode = "400", description = "Invalid Mountable Item Id"),
+                ApiResponse(responseCode = "404", description = "Mountable Item not found")
+            ],
+            parameters = [Parameter(`in` = ParameterIn.PATH, name = "mountableItemId")],
+            requestBody = RequestBody(content = [Content()])
+        )
+    ),
+    RouterOperation(
         path = "/v1/products/steps/{mountableStepId}",
         produces = [MediaType.APPLICATION_JSON_VALUE],
         method = [RequestMethod.PUT],
@@ -80,6 +124,27 @@ import org.springframework.web.bind.annotation.RequestMethod
         )
     ),
     RouterOperation(
+        path = "/v1/products/steps/items/{mountableItemId}",
+        produces = [MediaType.APPLICATION_JSON_VALUE],
+        method = [RequestMethod.PUT],
+        beanClass = MountableStepService::class,
+        beanMethod = "updateMountableItem",
+        operation = Operation(
+            operationId = "updateMountableItem",
+            responses = [
+                ApiResponse(
+                    responseCode = "200",
+                    description = "successful operation",
+                    content = [Content(schema = Schema(implementation = MountableItemResponse::class))]
+                ),
+                ApiResponse(responseCode = "400", description = "Invalid Mountable Item Id"),
+                ApiResponse(responseCode = "404", description = "Mountable Item not found")
+            ],
+            parameters = [Parameter(`in` = ParameterIn.PATH, name = "mountableItemId")],
+            requestBody = RequestBody(content = [Content(schema = Schema(implementation = MountableItemRequest::class))])
+        )
+    ),
+    RouterOperation(
         path = "/v1/products/steps/{mountableStepId}",
         produces = [MediaType.APPLICATION_JSON_VALUE],
         method = [RequestMethod.DELETE],
@@ -95,7 +160,27 @@ import org.springframework.web.bind.annotation.RequestMethod
                 ApiResponse(responseCode = "400", description = "Invalid Mountable Step Id"),
                 ApiResponse(responseCode = "404", description = "Mountable Step not found")
             ],
-            parameters = [Parameter(`in` = ParameterIn.PATH, name = "userId")],
+            parameters = [Parameter(`in` = ParameterIn.PATH, name = "mountableStepId")],
+            requestBody = RequestBody(content = [Content()])
+        )
+    ),
+    RouterOperation(
+        path = "/v1/products/steps/items/{mountableItemId}",
+        produces = [MediaType.APPLICATION_JSON_VALUE],
+        method = [RequestMethod.DELETE],
+        beanClass = MountableStepService::class,
+        beanMethod = "deleteMountableItemById",
+        operation = Operation(
+            operationId = "deleteMountableItemById",
+            responses = [
+                ApiResponse(
+                    responseCode = "201",
+                    description = "successful operation",
+                ),
+                ApiResponse(responseCode = "400", description = "Invalid Mountable Item Id"),
+                ApiResponse(responseCode = "404", description = "Mountable Item not found")
+            ],
+            parameters = [Parameter(`in` = ParameterIn.PATH, name = "mountableItemId")],
             requestBody = RequestBody(content = [Content()])
         )
     )
