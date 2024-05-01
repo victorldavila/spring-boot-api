@@ -11,7 +11,7 @@ data class ProductsCombinationRequest(
     @field:NotBlank(groups = [ OnCreate::class ], message = "Product Combination name can not be blanked")
     @JsonProperty("name") val name: String?,
     @JsonProperty("price") val price: BigDecimal?,
-    @field:NotNull(groups = [ OnCreate::class ], message = "Product Combination item isVariable can not be null")
+    @field:NotNull(groups = [ OnCreate::class ], message = "Product Combination isVariable can not be null")
     @JsonProperty("isVariable") val isVariable: Boolean?,
     @field:NotNull(groups = [ OnCreate::class ], message = "Product Combination isActive can not be null")
     @JsonProperty("isActive") val isActive: Boolean?,

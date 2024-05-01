@@ -14,7 +14,7 @@ class ProductCombinationItemsMapper {
         productCombinationItemsParam: ProductCombinationItemsParam?
     ) = ProductCombinationItems(
         name = productCombinationItemRequest?.name,
-        price = if (productCombinationItemRequest?.isVariable == true) {
+        price = if (productCombinationItemRequest?.isVariable == false) {
             productCombinationItemRequest.price
         } else {
             null
@@ -30,7 +30,7 @@ class ProductCombinationItemsMapper {
     ) =
         productCombinationItems.copy(
             name = productCombinationItemRequest?.name ?: productCombinationItems.name,
-            price = if (productCombinationItemRequest?.isVariable == true) {
+            price = if (productCombinationItemRequest?.isVariable == false) {
                 productCombinationItemRequest.price ?: productCombinationItems.price
             } else {
                 null

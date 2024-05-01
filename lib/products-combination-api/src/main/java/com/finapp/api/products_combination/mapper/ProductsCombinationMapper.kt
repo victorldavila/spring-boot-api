@@ -12,7 +12,11 @@ class ProductsCombinationMapper {
     ): ProductsCombination =
         ProductsCombination(
             name = productsCombinationRequest.name!!,
-            price = productsCombinationRequest.price,
+            price = if (productsCombinationRequest.isVariable == false) {
+                productsCombinationRequest.price
+            } else {
+                null
+            },
             isActive = productsCombinationRequest.isActive!!,
             type = productsCombinationRequest.type!!,
             category = productsCombinationRequest.category!!
@@ -22,9 +26,13 @@ class ProductsCombinationMapper {
         productsCombinationRequest: ProductsCombinationRequest?,
         productsCombination: ProductsCombination
     ): ProductsCombination =
-        ProductsCombination(
+        productsCombination.copy(
             name = productsCombinationRequest?.name ?: productsCombination.name,
-            price = productsCombinationRequest?.price ?: productsCombination.price,
+            price = if (productsCombinationRequest?.isVariable == false) {
+                productsCombinationRequest.price ?: productsCombination.price
+            } else {
+                null
+            },
             isActive = productsCombinationRequest?.isActive ?: productsCombination.isActive,
             type = productsCombinationRequest?.type ?: productsCombination.type,
             category = productsCombinationRequest?.category ?: productsCombination.category,
@@ -35,7 +43,7 @@ class ProductsCombinationMapper {
     ): ProductsCombinationResponse = ProductsCombinationResponse(
         id = productsCombination.id?.toHexString(),
         name = productsCombination.name,
-        price = productsCombination.price,
+        price =  productsCombination.price,
         isActive = productsCombination.isActive,
         type = productsCombination.type,
         category = productsCombination.category
