@@ -13,5 +13,5 @@ data class ProductsCombinationResponse(
     @JsonProperty("type") val type: ProductsCombinationType,
     @JsonProperty("category") val category: String,
 
-    @JsonProperty("products") val products: List<ProductCombinationItemResponse>? = null,
+    @JsonProperty("items") val products: List<ProductCombinationItemResponse>? = null,
 )

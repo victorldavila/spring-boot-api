@@ -1,6 +1,8 @@
 package com.finapp.api.products_combination.service
 
 import com.finapp.api.core.error.NotFoundError
+import com.finapp.api.products.model.ProductParam
+import com.finapp.api.products.service.ProductService
 import com.finapp.api.products_combination.data.ProductCombinationItems
 import com.finapp.api.products_combination.mapper.ProductCombinationItemsMapper
 import com.finapp.api.products_combination.model.ProductCombinationItemRequest
@@ -16,6 +18,7 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 
 @Component
 class ProductCombinationItemsServiceImpl(
+    private val productService: ProductService,
     private val productCombinationItemsRepository: ProductCombinationItemsRepository,
     private val productCombinationItemsMapper: ProductCombinationItemsMapper
 ): ProductCombinationItemsService {
@@ -26,15 +29,25 @@ class ProductCombinationItemsServiceImpl(
 
     override fun getProductCombinationItemById(productCombinationItemsParam: ProductCombinationItemsParam): Mono<ProductCombinationItemResponse> =
         findProductCombinationItemById(productCombinationItemsParam.productCombinationItemId)
-            .map { productCombinationItemsMapper.productCombinationItemToProductCombinationItemResponse(it) }
+            .flatMap { productCombinationItem ->
+                productService.getProductById(ProductParam(productCombinationItem.productId?.toHexString()))
+                    .map { productCombinationItemsMapper.productCombinationItemToProductCombinationItemResponse(productCombinationItem).copy(product = it) }
+            }
+
 
     override fun getAllProductCombinationItemsByProductCombinationId(productCombinationItemsParam: ProductCombinationItemsParam): Flux<ProductCombinationItemResponse> =
         productCombinationItemsRepository.findProductCombinationItemsByProductCombinationId(ObjectId(productCombinationItemsParam.productCombinationId))
-            .map { productCombinationItemsMapper.productCombinationItemToProductCombinationItemResponse(it) }
+            .flatMap { productCombinationItem ->
+                productService.getProductById(ProductParam(productCombinationItem.productId?.toHexString()))
+                    .map { productCombinationItemsMapper.productCombinationItemToProductCombinationItemResponse(productCombinationItem).copy(product = it) }
+            }
 
     override fun getAllProductCombinationItems(): Flux<ProductCombinationItemResponse> =
         productCombinationItemsRepository.findAllProductCombinationItems()
-            .map { productCombinationItemsMapper.productCombinationItemToProductCombinationItemResponse(it) }
+            .flatMap { productCombinationItem ->
+                productService.getProductById(ProductParam(productCombinationItem.productId?.toHexString()))
+                    .map { productCombinationItemsMapper.productCombinationItemToProductCombinationItemResponse(productCombinationItem).copy(product = it) }
+            }
 
     override fun updateProductCombinationItem(productCombinationItemsArg: ProductCombinationItemsArg): Mono<ProductCombinationItemResponse> =
         findProductCombinationItemById(productCombinationItemsArg.productsCombinationParam?.productCombinationItemId)
