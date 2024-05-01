@@ -13,7 +13,7 @@ object ApiVersion {
         const val USERS_API = "0.0.1"
         const val PRODUCTS_API = "0.0.1"
         const val STOCKS_API = "0.0.1"
-        const val COMBO_API = "0.0.1"
+        const val PRODUCTS_COMBINATION_API = "0.0.1"
         const val ROLES_API = "0.0.1"
     }
 
@@ -21,6 +21,8 @@ object ApiVersion {
         const val AUTH = "0.0.1"
         const val USERS = "0.0.1"
         const val PRODUCTS = "0.0.1"
+        const val PRODUCTS_COMBINATION = "0.0.1"
         const val ROLES = "0.0.1"
+        const val MOUNTABLE_PRODUCTS = "0.0.1"
     }
 }

@@ -1,6 +1,7 @@
-package com.finapp.api.combo
+package com.finapp.api.products_combination.data
 
-import com.finapp.api.combo.ProductsCombination.Companion.COLLECTION_NAME
+import com.finapp.api.products_combination.model.ProductsCombinationType
+import com.finapp.api.products_combination.data.ProductsCombination.Companion.COLLECTION_NAME
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
@@ -21,7 +22,8 @@ data class ProductsCombination(
     @Field(ACTIVE_FIELD) val isActive: Boolean,
     @Field(TYPE_FIELD) val type: ProductsCombinationType,
     @Field(CATEGORY_FIELD) val category: String,
-    @Field(PRODUCTS_FIELD) val products: List<ObjectId>? = null,
+
+    @Field(PRODUCTS_FIELD) val products: List<ProductCombinationItems>? = null,
 
     @CreatedDate @Field(CREATED_DATE_FIELD) val createdDate: LocalDateTime? = null,
     @LastModifiedDate @Field(LAST_MODIFIED_DATE_FIELD) var lastModifiedDate: LocalDateTime? = null,

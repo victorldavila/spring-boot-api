@@ -6,6 +6,7 @@ import com.finapp.api.mountable_products.model.*
 import com.finapp.api.mountable_products.repository.MountableStepRepository
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -41,6 +42,7 @@ class MountableStepServiceImpl(
                     .map { mountableStepMapper.mountableStepToMountableStepResponse(mountableStep).copy(items = it) }
             }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun createMountableStep(mountableStepArg: MountableStepArg): Mono<MountableStepResponse> =
         Mono.justOrEmpty(mountableStepArg.request)
             .map { mountableStepMapper.mountableStepRequestToMountableStep(it!!, mountableStepArg = mountableStepArg) }

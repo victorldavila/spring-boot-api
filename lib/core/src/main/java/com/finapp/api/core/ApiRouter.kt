@@ -18,6 +18,12 @@ object ApiRouter {
             .and(RequestPredicates.accept(MediaType.APPLICATION_JSON))
             .and(RequestPredicates.contentType(MediaType.APPLICATION_JSON))
 
+    fun apiPATCH(path: String): RequestPredicate =
+        RequestPredicates.method(HttpMethod.PATCH)
+            .and(RequestPredicates.path(path))
+            .and(RequestPredicates.accept(MediaType.APPLICATION_JSON))
+            .and(RequestPredicates.contentType(MediaType.APPLICATION_JSON))
+
     fun apiDELETE(path: String): RequestPredicate =
         RequestPredicates.method(HttpMethod.DELETE)
             .and(RequestPredicates.path(path))
@@ -26,10 +32,5 @@ object ApiRouter {
     fun apiGET(path: String): RequestPredicate =
         RequestPredicates.method(HttpMethod.GET)
             .and(RequestPredicates.path(path))
-            .and(RequestPredicates.accept(MediaType.APPLICATION_JSON))
-
-    fun apiRSocket(path: String): RequestPredicate =
-        RequestPredicates
-            .path(path)
             .and(RequestPredicates.accept(MediaType.APPLICATION_JSON))
 }

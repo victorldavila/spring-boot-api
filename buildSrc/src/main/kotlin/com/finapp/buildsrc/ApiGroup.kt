@@ -6,7 +6,9 @@ object ApiGroup {
     object Feature {
         const val USERS = "$BASE.users"
         const val PRODUCTS = "$BASE.products"
+        const val PRODUCTS_COMBINATION = "$BASE.products_combination"
         const val AUTH = "$BASE.auth"
+        const val MOUNTABLE_PRODUCTS = "$BASE.mountable_products"
     }
 
     object Lib {
@@ -16,10 +18,10 @@ object ApiGroup {
         const val KAFKA = "$BASE.kafka"
         const val AUTHORIZE = "$BASE.authorize"
         const val SECURITY = "$BASE.security"
-        const val role = "$BASE.role"
-        const val token = "$BASE.token"
+        const val ROLE = "$BASE.role"
+        const val TOKEN = "$BASE.token"
         const val USERS_API = "$BASE.users"
         const val PRODUCTS_API = "$BASE.products"
-        const val COMBO_API = "$BASE.combo"
+        const val PRODUCTS_COMBINATION_API = "$BASE.products_combination"
     }
 }

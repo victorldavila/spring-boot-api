@@ -14,6 +14,7 @@ import com.finapp.api.products.model.ProductResponse
 import com.finapp.api.products.repository.ProductRepository
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.switchIfEmpty
@@ -42,6 +43,7 @@ class ProductServiceImpl(
             .flatMap { productRepository.saveProduct(it) }
             .flatMap { savedProduct -> getMountableSteps(savedProduct) }
 
+    @Transactional(rollbackFor = [Exception::class])
     override fun createProduct(productRequest: ProductRequest): Mono<ProductResponse> =
         Mono.just(productRequest)
             .map { productMapper.productRequestToProduct(it) }

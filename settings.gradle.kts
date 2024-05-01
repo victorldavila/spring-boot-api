@@ -12,6 +12,7 @@ rootProject.name = "finapp"
 include("feature:auth")
 include("feature:users")
 include("feature:products")
+include("feature:products-combination")
 include("feature:mountable-products")
 include("feature:roles")
 
