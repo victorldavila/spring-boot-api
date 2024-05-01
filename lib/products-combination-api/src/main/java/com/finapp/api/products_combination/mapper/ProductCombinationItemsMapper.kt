@@ -14,7 +14,11 @@ class ProductCombinationItemsMapper {
         productCombinationItemsParam: ProductCombinationItemsParam?
     ) = ProductCombinationItems(
         name = productCombinationItemRequest?.name,
-        price = productCombinationItemRequest?.price,
+        price = if (productCombinationItemRequest?.isVariable == true) {
+            productCombinationItemRequest.price
+        } else {
+            null
+        },
         quantity = productCombinationItemRequest?.quantity,
         productId = ObjectId(productCombinationItemRequest?.productId),
         productsCombinationId = ObjectId(productCombinationItemsParam?.productCombinationId)
@@ -26,7 +30,11 @@ class ProductCombinationItemsMapper {
     ) =
         productCombinationItems.copy(
             name = productCombinationItemRequest?.name ?: productCombinationItems.name,
-            price = productCombinationItemRequest?.price ?: productCombinationItems.price,
+            price = if (productCombinationItemRequest?.isVariable == true) {
+                productCombinationItemRequest.price ?: productCombinationItems.price
+            } else {
+                null
+            },
             quantity = productCombinationItemRequest?.quantity ?: productCombinationItems.quantity,
             productId = productCombinationItemRequest?.productId?.let { ObjectId(it) } ?: productCombinationItems.productId
         )

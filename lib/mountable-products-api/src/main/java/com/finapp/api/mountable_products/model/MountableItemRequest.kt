@@ -12,6 +12,7 @@ import java.math.BigDecimal
 data class MountableItemRequest(
     @field:NotBlank(groups = [ OnCreate::class ], message = "step item name can not be blanked")
     @JsonProperty("name") val name: String?,
+    @field:NotNull(groups = [ OnCreate::class ], message = "step item isVariable can not be null")
     @JsonProperty("isVariable") val isVariable: Boolean?,
     @JsonProperty("price") val price: BigDecimal?,
     @field:NotNull(groups = [ OnCreate::class ], message = "step isActive can not be null")

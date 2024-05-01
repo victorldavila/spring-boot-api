@@ -15,6 +15,7 @@ data class ProductRequest (
     @JsonProperty("price") val price: BigDecimal?,
     @field:NotNull(groups = [ OnCreate::class ], message = "isActive can not be null")
     @JsonProperty("isActive") val isActive: Boolean?,
+    @field:NotNull(groups = [ OnCreate::class ], message = "isVariable can not be null")
     @JsonProperty("isVariable") val isVariable: Boolean?,
     @field:ProductType(groups = [ OnCreate::class ])
     @JsonProperty("type") val type: String?,
