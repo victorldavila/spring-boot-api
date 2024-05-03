@@ -13,6 +13,7 @@ import com.finapp.api.products.model.ProductRequest
 import com.finapp.api.products.model.ProductResponse
 import com.finapp.api.products.repository.ProductRepository
 import org.bson.types.ObjectId
+import org.springframework.http.codec.multipart.Part
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
@@ -56,6 +57,17 @@ class ProductServiceImpl(
         findProductById(productParam?.productId)
             .flatMap { productRepository.deleteProduct(it) }
             .map { it.wasAcknowledged() }
+
+    override fun updateProductImage(files: List<Part>?, productParam: ProductParam): Mono<ProductResponse> =
+        Flux.fromIterable(files)
+            .flatMap { productRepository.saveProductImage(it) }
+            .collectList()
+            .flatMap { fileIds ->
+                findProductById(productParam.productId)
+                    .flatMap { productRepository.saveProduct(it.copy(images = fileIds)) }
+                    .flatMap { savedProduct -> getMountableSteps(savedProduct) }
+            }
+
 
     private fun createMountableStep(productRequest: ProductRequest, savedProduct: Product) =
         Flux.fromIterable(productRequest.steps ?: emptyList())

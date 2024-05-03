@@ -8,10 +8,12 @@ import com.finapp.api.products.model.ProductRequest
 import com.finapp.api.products.model.ProductResponse
 import com.finapp.api.products.service.ProductService
 import com.finapp.api.products.service.ProductServiceImpl
+import org.springframework.http.codec.multipart.FilePart
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.reactive.function.server.awaitMultipartData
 import reactor.core.publisher.Mono
 
 @Component
@@ -39,6 +41,13 @@ class ProductHandler(
                     .map { ProductArg(getProductParam(serverRequest), it) }
             }
             .flatMap { productsService.updateProduct(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    fun updateProductImage(serverRequest: ServerRequest): Mono<ServerResponse> =
+        Mono.just(serverRequest)
+            .flatMap { it.multipartData() }
+            .flatMap { productsService.updateProductImage(it["file"], getProductParam(serverRequest)) }
             .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
             .onErrorResume { errorResponse(it) }
 

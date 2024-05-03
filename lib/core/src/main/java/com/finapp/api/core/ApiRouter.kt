@@ -18,6 +18,12 @@ object ApiRouter {
             .and(RequestPredicates.accept(MediaType.APPLICATION_JSON))
             .and(RequestPredicates.contentType(MediaType.APPLICATION_JSON))
 
+    fun apiImagePUT(path: String): RequestPredicate =
+        RequestPredicates.method(HttpMethod.PUT)
+            .and(RequestPredicates.path(path))
+            .and(RequestPredicates.accept(MediaType.APPLICATION_JSON))
+            .and(RequestPredicates.contentType(MediaType.MULTIPART_FORM_DATA))
+
     fun apiPATCH(path: String): RequestPredicate =
         RequestPredicates.method(HttpMethod.PATCH)
             .and(RequestPredicates.path(path))

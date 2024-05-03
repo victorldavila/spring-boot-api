@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.isEqualTo
+import org.springframework.data.mongodb.gridfs.ReactiveGridFsTemplate
+import org.springframework.http.codec.multipart.FilePart
+import org.springframework.http.codec.multipart.Part
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Repository
 import reactor.core.publisher.Flux
@@ -14,7 +17,8 @@ import reactor.core.publisher.Mono
 
 @Repository
 class ProductRepositoryImpl(
-    private val template: ReactiveMongoTemplate
+    private val template: ReactiveMongoTemplate,
+    private val gridFsTemplate: ReactiveGridFsTemplate
 ): ProductRepository {
     override fun findProductById(productId: ObjectId?): Mono<Product> =
         template.findById(productId, Product::class.java)
@@ -24,6 +28,9 @@ class ProductRepositoryImpl(
 
     override fun saveProduct(product: Product): Mono<Product> =
         template.save(product)
+
+    override fun saveProductImage(part: Part): Mono<ObjectId> =
+        gridFsTemplate.store(part.content(), part.name())
 
     override fun deleteProduct(product: Product): Mono<DeleteResult> =
         template.remove(product)

@@ -17,7 +17,9 @@ class ProductRouter(
 ) {
     @Bean
     fun productsRoutes(): RouterFunction<ServerResponse> =
-        route(ApiRouter.apiGET("/v1/products/{productId}"), productHandler::getProductById)
+        route(ApiRouter.apiImagePUT("/v1/products/{productId}/images"), productHandler::updateProductImage)
+            .filter(getProductUpdateAuthorizationFilter())
+        .andRoute(ApiRouter.apiGET("/v1/products/{productId}"), productHandler::getProductById)
             .filter(getProductReadAuthorizationFilter())
         .andRoute(ApiRouter.apiGET("/v1/products"), productHandler::getAllProducts)
             .filter(getProductReadAuthorizationFilter())
