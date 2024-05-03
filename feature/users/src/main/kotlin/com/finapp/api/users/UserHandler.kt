@@ -32,13 +32,13 @@ class UserHandler(
 
     fun completeUpdateUser(serverRequest: ServerRequest): Mono<ServerResponse> =
         updateUserArg(serverRequest)
-            .flatMap { userService.updateUser(it) }
+            .flatMap { userService.completeUpdateUser(it) }
             .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
             .onErrorResume { errorResponse(it) }
 
     fun partialUpdateUser(serverRequest: ServerRequest): Mono<ServerResponse> =
         updateUserArg(serverRequest)
-            .flatMap { userService.updateUser(it) }
+            .flatMap { userService.partialUpdateUser(it) }
             .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
             .onErrorResume { errorResponse(it) }
 
