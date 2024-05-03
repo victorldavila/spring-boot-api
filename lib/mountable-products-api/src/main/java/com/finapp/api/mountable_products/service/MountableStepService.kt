@@ -16,7 +16,9 @@ interface MountableStepService {
     @Validated(OnReadItems::class)
     fun getMountableStepByProductId(@Valid mountableStepParam: MountableStepParam): Flux<MountableStepResponse>
     @Validated(OnUpdate::class)
-    fun updateMountableStep(@Valid mountableStepArg: MountableStepArg): Mono<MountableStepResponse>
+    fun completeUpdateMountableStep(@Valid mountableStepArg: MountableStepArg): Mono<MountableStepResponse>
+    @Validated(OnPartialUpdate::class)
+    fun partialUpdateMountableStep(@Valid mountableStepArg: MountableStepArg): Mono<MountableStepResponse>
     @Validated(OnCreate::class)
     fun createMountableStep(@Valid mountableStepArg: MountableStepArg): Mono<MountableStepResponse>
     @Validated(OnDeleteItems::class)

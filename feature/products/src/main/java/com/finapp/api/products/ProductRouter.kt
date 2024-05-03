@@ -17,15 +17,17 @@ class ProductRouter(
 ) {
     @Bean
     fun productsRoutes(): RouterFunction<ServerResponse> =
-        route(ApiRouter.apiImagePUT("/v1/products/{productId}/images"), productHandler::updateProductImage)
-            .filter(getProductUpdateAuthorizationFilter())
-        .andRoute(ApiRouter.apiGET("/v1/products/{productId}"), productHandler::getProductById)
+        route(ApiRouter.apiGET("/v1/products/{productId}"), productHandler::getProductById)
             .filter(getProductReadAuthorizationFilter())
         .andRoute(ApiRouter.apiGET("/v1/products"), productHandler::getAllProducts)
             .filter(getProductReadAuthorizationFilter())
         .andRoute(ApiRouter.apiPOST("/v1/products"), productHandler::createProduct)
             .filter(getProductWriteAuthorizationFilter())
-        .andRoute(ApiRouter.apiPUT("/v1/products/{productId}"), productHandler::updateProduct)
+        .andRoute(ApiRouter.apiPUT("/v1/products/{productId}"), productHandler::completeUpdateProduct)
+            .filter(getProductUpdateAuthorizationFilter())
+        .andRoute(ApiRouter.apiPATCH("/v1/products/{productId}"), productHandler::partialUpdateProduct)
+            .filter(getProductUpdateAuthorizationFilter())
+        .andRoute(ApiRouter.apiImagePUT("/v1/products/{productId}/images"), productHandler::updateProductImage)
             .filter(getProductUpdateAuthorizationFilter())
         .andRoute(ApiRouter.apiDELETE("/v1/products/{productId}"), productHandler::deleteProduct)
             .filter(getProductsDeleteAuthorizationFilter())

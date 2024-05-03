@@ -13,7 +13,9 @@ interface ProductCombinationItemsService {
     fun getAllProductCombinationItemsByProductCombinationId(productCombinationItemsParam: ProductCombinationItemsParam): Flux<ProductCombinationItemResponse>
     fun getAllProductCombinationItems(): Flux<ProductCombinationItemResponse>
     @Validated(OnUpdate::class)
-    fun updateProductCombinationItem(productCombinationItemsArg: ProductCombinationItemsArg): Mono<ProductCombinationItemResponse>
+    fun completeUpdateProductCombinationItem(productCombinationItemsArg: ProductCombinationItemsArg): Mono<ProductCombinationItemResponse>
+    @Validated(OnPartialUpdate::class)
+    fun partialUpdateProductCombinationItem(productCombinationItemsArg: ProductCombinationItemsArg): Mono<ProductCombinationItemResponse>
     @Validated(OnCreate::class)
     fun createProductCombinationItem(productCombinationItemsArg: ProductCombinationItemsArg): Mono<ProductCombinationItemResponse>
     @Validated(OnDelete::class)

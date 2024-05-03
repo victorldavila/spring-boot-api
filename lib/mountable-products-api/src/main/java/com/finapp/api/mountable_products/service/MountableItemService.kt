@@ -14,7 +14,9 @@ interface MountableItemService {
     @Validated(OnReadItems::class)
     fun getMountableItemsByMountableStepId(@Valid mountableItemParam: MountableItemParam): Flux<MountableItemResponse>
     @Validated(OnUpdate::class)
-    fun updateMountableItem(@Valid mountableItemArg: MountableItemArg): Mono<MountableItemResponse>
+    fun completeUpdateMountableItem(@Valid mountableItemArg: MountableItemArg): Mono<MountableItemResponse>
+    @Validated(OnPartialUpdate::class)
+    fun partialUpdateMountableItem(@Valid mountableItemArg: MountableItemArg): Mono<MountableItemResponse>
     @Validated(OnCreate::class)
     fun createMountableItem(@Valid mountableItemArg: MountableItemArg): Mono<MountableItemResponse>
     @Validated(OnDelete::class)

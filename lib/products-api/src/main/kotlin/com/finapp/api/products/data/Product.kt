@@ -18,7 +18,7 @@ data class Product(
     @Field(TYPE_FIELD) val type: ProductType,
     @Field(CATEGORY_FIELD) val category: String,
 
-    @Field(IMAGES_ID_FIELD) val images: List<ObjectId>? = null,
+    @Field(IMAGES_ID_FIELD) val imageId: ObjectId? = null,
 
     @CreatedDate @Field(CREATED_DATE_FIELD) val createdDate: LocalDateTime? = null,
     @LastModifiedDate @Field(LAST_MODIFIED_DATE_FIELD) var lastModifiedDate: LocalDateTime? = null,
@@ -33,7 +33,7 @@ data class Product(
         const val ACTIVE_FIELD = "is_active"
         const val TYPE_FIELD = "type"
         const val CATEGORY_FIELD = "category"
-        const val IMAGES_ID_FIELD = "images"
+        const val IMAGES_ID_FIELD = "image_id"
         const val COMPOSE_FIELD = "compose"
 
         const val CREATED_DATE_FIELD = "created_date"

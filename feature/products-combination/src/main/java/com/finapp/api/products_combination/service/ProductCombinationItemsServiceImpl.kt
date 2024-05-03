@@ -49,7 +49,13 @@ class ProductCombinationItemsServiceImpl(
                     .map { productCombinationItemsMapper.productCombinationItemToProductCombinationItemResponse(productCombinationItem).copy(product = it) }
             }
 
-    override fun updateProductCombinationItem(productCombinationItemsArg: ProductCombinationItemsArg): Mono<ProductCombinationItemResponse> =
+    override fun completeUpdateProductCombinationItem(productCombinationItemsArg: ProductCombinationItemsArg): Mono<ProductCombinationItemResponse> =
+        updateProductCombinationItem(productCombinationItemsArg)
+
+    override fun partialUpdateProductCombinationItem(productCombinationItemsArg: ProductCombinationItemsArg): Mono<ProductCombinationItemResponse> =
+        updateProductCombinationItem(productCombinationItemsArg)
+
+    private fun updateProductCombinationItem(productCombinationItemsArg: ProductCombinationItemsArg): Mono<ProductCombinationItemResponse> =
         findProductCombinationItemById(productCombinationItemsArg.productsCombinationParam?.productCombinationItemId)
             .map { productCombinationItemsMapper.productCombinationItemRequestToProductCombinationItem(productCombinationItemsArg.request, it) }
             .flatMap { productCombinationItemsRepository.saveProductCombinationItem(it) }

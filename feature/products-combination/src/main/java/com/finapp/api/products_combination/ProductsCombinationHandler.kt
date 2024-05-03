@@ -3,11 +3,6 @@ package com.finapp.api.products_combination
 import com.finapp.api.core.error.BaseHandler
 import com.finapp.api.core.error.ValidationHandler
 import com.finapp.api.core.tryGetPathVariable
-import com.finapp.api.products.model.ProductArg
-import com.finapp.api.products.model.ProductParam
-import com.finapp.api.products.model.ProductRequest
-import com.finapp.api.products.model.ProductResponse
-import com.finapp.api.products.service.ProductService
 import com.finapp.api.products_combination.model.*
 import com.finapp.api.products_combination.service.ProductCombinationItemsService
 import com.finapp.api.products_combination.service.ProductsCombinationService
@@ -36,15 +31,24 @@ class ProductsCombinationHandler(
             .body(productsCombinationService.getAllProductsCombination(), ProductsCombinationResponse::class.java)
             .onErrorResume { errorResponse(it) }
 
-    fun updateProductCombination(serverRequest: ServerRequest): Mono<ServerResponse> =
+    fun completeUpdateProductCombination(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateProductCombinationParam(serverRequest)
+            .flatMap { productsCombinationService.updateProductsCombination(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    fun partialUpdateProductCombination(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateProductCombinationParam(serverRequest)
+            .flatMap { productsCombinationService.updateProductsCombination(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    private fun updateProductCombinationParam(serverRequest: ServerRequest): Mono<ProductsCombinationArg> =
         Mono.just(serverRequest)
             .flatMap { serverRequest ->
                 serverRequest.bodyToMono(ProductsCombinationRequest::class.java)
                     .map { ProductsCombinationArg(getProductsCombinationParam(serverRequest), it) }
             }
-            .flatMap { productsCombinationService.updateProductsCombination(it) }
-            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
-            .onErrorResume { errorResponse(it) }
 
     fun createProductCombination(serverRequest: ServerRequest): Mono<ServerResponse> =
         Mono.just(serverRequest)
@@ -79,15 +83,24 @@ class ProductsCombinationHandler(
             }
             .onErrorResume { errorResponse(it) }
 
-    fun updateProductCombinationItem(serverRequest: ServerRequest): Mono<ServerResponse> =
+    fun completeUpdateProductCombinationItem(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateProductCombinationItemArg(serverRequest)
+            .flatMap { productCombinationItemsService.completeUpdateProductCombinationItem(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    fun partialUpdateProductCombinationItem(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateProductCombinationItemArg(serverRequest)
+            .flatMap { productCombinationItemsService.partialUpdateProductCombinationItem(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    private fun updateProductCombinationItemArg(serverRequest: ServerRequest): Mono<ProductCombinationItemsArg> =
         Mono.just(serverRequest)
             .flatMap { serverRequest ->
                 serverRequest.bodyToMono(ProductCombinationItemRequest::class.java)
                     .map { ProductCombinationItemsArg(getProductCombinationItemsParam(serverRequest), it) }
             }
-            .flatMap { productCombinationItemsService.updateProductCombinationItem(it) }
-            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
-            .onErrorResume { errorResponse(it) }
 
     fun createProductCombinationItem(serverRequest: ServerRequest): Mono<ServerResponse> =
         Mono.just(serverRequest)

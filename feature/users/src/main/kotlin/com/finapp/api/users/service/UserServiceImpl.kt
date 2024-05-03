@@ -29,7 +29,13 @@ class UserServiceImpl(
         userRepository.findAllUsers()
             .map { userMapper.userToUserResponse(it) }
 
-    override fun updateUser(userArg: UserArg): Mono<UserResponse> =
+    override fun completeUpdateUser(userArg: UserArg): Mono<UserResponse> =
+        updateUser(userArg)
+
+    override fun partialUpdateUser(userArg: UserArg): Mono<UserResponse> =
+        updateUser(userArg)
+
+    private fun updateUser(userArg: UserArg): Mono<UserResponse> =
         findUserById(userArg.userParam?.userId)
             .map { userMapper.userRequestToUser(it, userArg.request) }
             .flatMap { userRepository.saveUser(it) }

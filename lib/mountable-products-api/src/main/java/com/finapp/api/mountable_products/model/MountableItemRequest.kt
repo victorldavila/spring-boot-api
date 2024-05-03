@@ -10,17 +10,17 @@ import org.springframework.data.mongodb.core.aggregation.ArrayOperators.Reduce.V
 import java.math.BigDecimal
 
 data class MountableItemRequest(
-    @field:NotBlank(groups = [ OnCreate::class ], message = "step item name can not be blanked")
+    @field:NotBlank(groups = [ OnCreate::class, OnUpdate::class ], message = "step item name can not be blanked")
     @JsonProperty("name") val name: String?,
-    @field:NotNull(groups = [ OnCreate::class ], message = "step item isVariable can not be null")
+    @field:NotNull(groups = [ OnCreate::class, OnUpdate::class ], message = "step item isVariable can not be null")
     @JsonProperty("isVariable") val isVariable: Boolean?,
     @JsonProperty("price") val price: BigDecimal?,
-    @field:NotNull(groups = [ OnCreate::class ], message = "step isActive can not be null")
+    @field:NotNull(groups = [ OnCreate::class, OnUpdate::class ], message = "step isActive can not be null")
     @JsonProperty("isActive") val isActive: Boolean?,
-    @field:NotNull(groups = [ OnCreate::class ], message = "step item maximum quantity can not be null")
+    @field:NotNull(groups = [ OnCreate::class, OnUpdate::class ], message = "step item maximum quantity can not be null")
     @JsonProperty("maximumQuantity") val maximumQuantity: Int?,
-    @field:NotNull(groups = [ OnCreate::class ], message = "step item subtraction quantity can not be null")
+    @field:NotNull(groups = [ OnCreate::class, OnUpdate::class ], message = "step item subtraction quantity can not be null")
     @JsonProperty("subtractionQuantity") val subtractionQuantity: Int?,
-    @field:NotBlank(groups = [ OnCreate::class ], message = "step item measure can not be blanked")
+    @field:NotBlank(groups = [ OnCreate::class, OnUpdate::class ], message = "step item measure can not be blanked")
     @JsonProperty("measure") val measure: String?
 )

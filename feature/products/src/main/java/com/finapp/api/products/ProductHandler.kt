@@ -7,13 +7,10 @@ import com.finapp.api.products.model.ProductParam
 import com.finapp.api.products.model.ProductRequest
 import com.finapp.api.products.model.ProductResponse
 import com.finapp.api.products.service.ProductService
-import com.finapp.api.products.service.ProductServiceImpl
-import org.springframework.http.codec.multipart.FilePart
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
-import org.springframework.web.reactive.function.server.awaitMultipartData
 import reactor.core.publisher.Mono
 
 @Component
@@ -34,15 +31,24 @@ class ProductHandler(
             .body(productsService.getAllProducts(), ProductResponse::class.java)
             .onErrorResume { errorResponse(it) }
 
-    fun updateProduct(serverRequest: ServerRequest): Mono<ServerResponse> =
+    fun completeUpdateProduct(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateProductArg(serverRequest)
+            .flatMap { productsService.completeUpdateProduct(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    fun partialUpdateProduct(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateProductArg(serverRequest)
+            .flatMap { productsService.partialUpdateProduct(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    private fun updateProductArg(serverRequest: ServerRequest): Mono<ProductArg> =
         Mono.just(serverRequest)
             .flatMap { serverRequest ->
                 serverRequest.bodyToMono(ProductRequest::class.java)
                     .map { ProductArg(getProductParam(serverRequest), it) }
             }
-            .flatMap { productsService.updateProduct(it) }
-            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
-            .onErrorResume { errorResponse(it) }
 
     fun updateProductImage(serverRequest: ServerRequest): Mono<ServerResponse> =
         Mono.just(serverRequest)

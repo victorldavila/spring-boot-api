@@ -32,7 +32,13 @@ class MountableStepServiceImpl(
                     .map { mountableStepMapper.mountableStepToMountableStepResponse(mountableStep).copy(items = it) }
             }
 
-    override fun updateMountableStep(mountableStepArg: MountableStepArg): Mono<MountableStepResponse> =
+    override fun completeUpdateMountableStep(mountableStepArg: MountableStepArg): Mono<MountableStepResponse> =
+        updateMountableStep(mountableStepArg)
+
+    override fun partialUpdateMountableStep(mountableStepArg: MountableStepArg): Mono<MountableStepResponse> =
+        updateMountableStep(mountableStepArg)
+
+    private fun updateMountableStep(mountableStepArg: MountableStepArg): Mono<MountableStepResponse> =
         mountableStepRepository.findMountableStepById(ObjectId(mountableStepArg.mountableStepParam?.mountableStepId))
             .map { mountableStepMapper.mountableStepRequestToMountableStep(mountableStepArg.request!!, it) }
             .flatMap { mountableStepRepository.saveMountableStep(it) }

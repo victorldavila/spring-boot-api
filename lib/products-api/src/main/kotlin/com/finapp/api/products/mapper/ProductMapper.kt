@@ -28,6 +28,7 @@ class ProductMapper {
         name = product.name,
         price = product.price,
         isActive = product.isActive,
+        imageId = product.imageId?.toHexString(),
         category = product.category,
         type = product.type.name
     )

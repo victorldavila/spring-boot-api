@@ -33,16 +33,24 @@ class MountableProductHandler(
             .flatMap { ServerResponse.ok().body(mountableStepService.getMountableStepByProductId(it), ProductResponse::class.java) }
             .onErrorResume { errorResponse(it) }
 
+    fun completeUpdateMountableStep(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateMountableStepArg(serverRequest)
+            .flatMap { mountableStepService.completeUpdateMountableStep(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
 
-    fun updateMountableStep(serverRequest: ServerRequest): Mono<ServerResponse> =
+    fun partialUpdateMountableStep(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateMountableStepArg(serverRequest)
+            .flatMap { mountableStepService.partialUpdateMountableStep(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    private fun updateMountableStepArg(serverRequest: ServerRequest): Mono<MountableStepArg> =
         Mono.just(serverRequest)
             .flatMap { serverRequest ->
                 serverRequest.bodyToMono(MountableStepRequest::class.java)
                     .map { MountableStepArg(getMountableStepParam(serverRequest), it) }
             }
-            .flatMap { mountableStepService.updateMountableStep(it) }
-            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
-            .onErrorResume { errorResponse(it) }
 
     fun createMountableStep(serverRequest: ServerRequest): Mono<ServerResponse> =
         Mono.just(serverRequest)
@@ -74,15 +82,24 @@ class MountableProductHandler(
             .flatMap { ServerResponse.ok().body(mountableItemService.getMountableItemsByMountableStepId(it), ProductResponse::class.java) }
 
 
-    fun updateMountableItem(serverRequest: ServerRequest): Mono<ServerResponse> =
+    fun completeUpdateMountableItem(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateMountableItemArg(serverRequest)
+            .flatMap { mountableItemService.completeUpdateMountableItem(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    fun partialUpdateMountableItem(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateMountableItemArg(serverRequest)
+            .flatMap { mountableItemService.partialUpdateMountableItem(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    private fun updateMountableItemArg(serverRequest: ServerRequest): Mono<MountableItemArg> =
         Mono.just(serverRequest)
             .flatMap { serverRequest ->
                 serverRequest.bodyToMono(MountableItemRequest::class.java)
                     .map { MountableItemArg(getMountableItemParam(serverRequest), it) }
             }
-            .flatMap { mountableItemService.updateMountableItem(it) }
-            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
-            .onErrorResume { errorResponse(it) }
 
     fun createMountableItem(serverRequest: ServerRequest): Mono<ServerResponse> =
         Mono.just(serverRequest)

@@ -12,6 +12,7 @@ data class ProductResponse(
     @JsonProperty("price") val price: BigDecimal?,
     @JsonProperty("isActive") val isActive: Boolean,
     @JsonProperty("type") val type: String,
+    @JsonProperty("imageId") val imageId: String? = null,
     @JsonProperty("category") val category: String,
 
     @JsonProperty("mountableSteps") val steps: List<MountableStepResponse>? = null

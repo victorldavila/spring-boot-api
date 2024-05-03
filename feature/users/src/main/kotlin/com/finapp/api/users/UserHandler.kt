@@ -30,15 +30,24 @@ class UserHandler(
         ServerResponse.ok()
             .body(userService.getAllUsers(), UserResponse::class.java)
 
-    fun updateUser(serverRequest: ServerRequest): Mono<ServerResponse> =
+    fun completeUpdateUser(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateUserArg(serverRequest)
+            .flatMap { userService.updateUser(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    fun partialUpdateUser(serverRequest: ServerRequest): Mono<ServerResponse> =
+        updateUserArg(serverRequest)
+            .flatMap { userService.updateUser(it) }
+            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
+            .onErrorResume { errorResponse(it) }
+
+    private fun updateUserArg(serverRequest: ServerRequest): Mono<UserArg> =
         Mono.just(serverRequest)
             .flatMap { serverRequest ->
                 serverRequest.bodyToMono(UserRequest::class.java)
                     .map { UserArg(getUserParam(serverRequest), it) }
             }
-            .flatMap { userService.updateUser(it) }
-            .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
-            .onErrorResume { errorResponse(it) }
 
     fun createUser(serverRequest: ServerRequest): Mono<ServerResponse> =
         Mono.just(serverRequest)

@@ -38,7 +38,13 @@ class ProductServiceImpl(
         productRepository.findAllProducts()
             .flatMap { product -> getMountableSteps(product) }
 
-    override fun updateProduct(productArg: ProductArg): Mono<ProductResponse> =
+    override fun completeUpdateProduct(productArg: ProductArg): Mono<ProductResponse> =
+        updateProduct(productArg)
+
+    override fun partialUpdateProduct(productArg: ProductArg): Mono<ProductResponse> =
+        updateProduct(productArg)
+
+    private fun updateProduct(productArg: ProductArg): Mono<ProductResponse> =
         findProductById(productArg.productParam?.productId)
             .map { productMapper.productRequestToProduct(productArg.request, it) }
             .flatMap { productRepository.saveProduct(it) }
@@ -59,12 +65,11 @@ class ProductServiceImpl(
             .map { it.wasAcknowledged() }
 
     override fun updateProductImage(files: List<Part>?, productParam: ProductParam): Mono<ProductResponse> =
-        Flux.fromIterable(files)
-            .flatMap { productRepository.saveProductImage(it) }
-            .collectList()
-            .flatMap { fileIds ->
+       Mono.justOrEmpty(files?.firstOrNull())
+            .flatMap { productRepository.saveProductImage(it!!) }
+            .flatMap { fileId ->
                 findProductById(productParam.productId)
-                    .flatMap { productRepository.saveProduct(it.copy(images = fileIds)) }
+                    .flatMap { productRepository.saveProduct(it.copy(imageId = fileId)) }
                     .flatMap { savedProduct -> getMountableSteps(savedProduct) }
             }
 
