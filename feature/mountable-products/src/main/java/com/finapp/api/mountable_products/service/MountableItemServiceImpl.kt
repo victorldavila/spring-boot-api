@@ -23,7 +23,13 @@ class MountableItemServiceImpl(
         mountableItemRepository.findMountableItemsByMountableStepId(ObjectId(mountableItemParam.mountableStepId))
             .map { mountableItemMapper.mountableItemToMountableItemResponse(it) }
 
-    override fun updateMountableItem(mountableItemArg: MountableItemArg): Mono<MountableItemResponse> =
+    override fun completeUpdateMountableItem(mountableItemArg: MountableItemArg): Mono<MountableItemResponse> =
+        updateMountableItem(mountableItemArg)
+
+    override fun partialUpdateMountableItem(mountableItemArg: MountableItemArg): Mono<MountableItemResponse> =
+        updateMountableItem(mountableItemArg)
+
+    private fun updateMountableItem(mountableItemArg: MountableItemArg): Mono<MountableItemResponse> =
         mountableItemRepository.findMountableItemById(ObjectId(mountableItemArg.mountableItemParam?.mountableItemId))
             .map{ mountableItemMapper.mountableItemRequestToMountableItem(mountableItemArg.request!!, it) }
             .flatMap { mountableItemRepository.saveMountableItem(it) }
