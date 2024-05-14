@@ -1,8 +1,5 @@
+import com.finapp.buildsrc.*
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import com.finapp.buildsrc.ApiGroup
-import com.finapp.buildsrc.ApiVersion
-import com.finapp.buildsrc.baseLibsImplementation
-import com.finapp.buildsrc.userLibImplementation
 
 plugins {
     id("org.springframework.boot")
@@ -36,6 +33,7 @@ dependencies {
     implementation(project(":lib:mountable-products-api"))
 
     baseLibsImplementation()
+    springBootSecurityImplementation()
 }
 
 tasks.withType<KotlinCompile> {

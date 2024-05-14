@@ -6,6 +6,8 @@ object ApiDeps {
         val webFlux by lazy { "org.springframework.boot:spring-boot-starter-webflux" }
         val reactiveMongoDb by lazy { "org.springframework.boot:spring-boot-starter-data-mongodb-reactive" }
         val security by lazy { "org.springframework.boot:spring-boot-starter-security" }
+        val oAuth2ResourceServer by lazy { "org.springframework.boot:spring-boot-starter-oauth2-resource-server" }
+        val oAuth2Jose by lazy { "org.springframework.security:spring-security-oauth2-jose:6.2.1" }
         val actuator by lazy { "org.springframework.boot:spring-boot-starter-actuator" }
         val rsocket by lazy { "org.springframework.boot:spring-boot-starter-rsocket" }
         val cloudStream by lazy { "org.springframework.cloud:spring-cloud-stream:4.1.1" }

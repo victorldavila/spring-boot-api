@@ -1,23 +1,31 @@
 package com.finapp.api.security
 
-import com.finapp.api.security.repository.SecurityContextRepository
+import com.nimbusds.jose.jwk.JWKSet
+import com.nimbusds.jose.jwk.RSAKey
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
-import org.springframework.security.authentication.ReactiveAuthenticationManager
+import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
-import org.springframework.security.config.web.server.SecurityWebFiltersOrder
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity.AuthorizeExchangeSpec
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator
+import org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames
+import org.springframework.security.oauth2.core.OAuth2TokenValidator
+import org.springframework.security.oauth2.jwt.*
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint
+import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler
 import org.springframework.security.web.server.SecurityWebFilterChain
-import org.springframework.security.web.server.authentication.AuthenticationWebFilter
-import org.springframework.security.web.server.authentication.ServerAuthenticationConverter
+import org.springframework.security.web.server.ServerAuthenticationEntryPoint
+import org.springframework.security.web.server.authorization.ServerAccessDeniedHandler
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.reactive.CorsConfigurationSource
@@ -27,7 +35,7 @@ import java.security.SecureRandom
 
 
 @EnableWebFluxSecurity
-@EnableReactiveMethodSecurity
+@EnableReactiveMethodSecurity(useAuthorizationManager = true)
 @Configuration
 class SecurityConfig {
 
@@ -41,20 +49,14 @@ class SecurityConfig {
     @Order(2)
     fun securityWebFilterChain(
         http: ServerHttpSecurity,
-        reactiveAuthenticationManager: ReactiveAuthenticationManager,
-        jwtAuthenticationConverter: ServerAuthenticationConverter,
-        securityContextRepository: SecurityContextRepository
+        jwtAuthenticationConverter: JwtAuthenticationConverter
     ): SecurityWebFilterChain {
-
-        val authenticationWebFilter = AuthenticationWebFilter(reactiveAuthenticationManager).apply {
-            setServerAuthenticationConverter(jwtAuthenticationConverter)
-        }
-
         http.cors { it.configurationSource(corsWebFilter()) }
             .csrf { it.disable() }
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
             .logout { it.disable() }
+            .oauth2ResourceServer { it.jwt(Customizer.withDefaults()) }
             .securityMatcher {
                 ServerWebExchangeMatchers.matchers(
                     ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, "/**"),
@@ -65,11 +67,14 @@ class SecurityConfig {
             }
             .authorizeExchange { it.anyExchange().authenticated() }
             .exceptionHandling {
-                it.authenticationEntryPoint { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.UNAUTHORIZED } }
-                it.accessDeniedHandler { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.FORBIDDEN } }
+                it.authenticationEntryPoint(BearerTokenAuthenticationEntryPoint() as? ServerAuthenticationEntryPoint)
+                it.accessDeniedHandler(BearerTokenAccessDeniedHandler() as? ServerAccessDeniedHandler)
             }
-            .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
-            .securityContextRepository(securityContextRepository)
+//            .oauth2ResourceServer { oauth2 ->
+//                oauth2.jwt { it.jwtAuthenticationConverter(jwtAuthenticationConverter) }
+//                oauth2.authenticationEntryPoint { exchange, _ -> Mono.fromRunnable { exchange.response.statusCode = HttpStatus.UNAUTHORIZED } }
+//                oauth2.accessDeniedHandler { exchange, _ -> Mono.fromRunnable { exchange.response.statusCode = HttpStatus.FORBIDDEN } }
+//            }
 
         return http.build()
     }
@@ -78,32 +83,94 @@ class SecurityConfig {
     @Order(1)
     fun openSecurityWebFilterChain(
         http: ServerHttpSecurity,
-        authManager: ReactiveAuthenticationManager,
-        authConverter: ServerAuthenticationConverter,
-        securityContextRepository: SecurityContextRepository
+        jwtAuthenticationConverter: JwtAuthenticationConverter
     ): SecurityWebFilterChain {
-        val authenticationWebFilter = AuthenticationWebFilter(authManager).apply {
-            setServerAuthenticationConverter(authConverter)
-        }
-
         http
             .cors { it.configurationSource(corsWebFilter()) }
             .csrf { it.disable() }
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
             .logout { it.disable() }
+            .oauth2ResourceServer {
+                it.jwt(Customizer.withDefaults())
+            }
             .authorizeExchange{ authorizeSwaggerPaths(it) }
             .authorizeExchange { authorizeApiPaths(it) }
             .authorizeExchange { it.anyExchange().authenticated() }
             .exceptionHandling {
-                it.authenticationEntryPoint { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.UNAUTHORIZED } }
-                it.accessDeniedHandler { swe, _ -> Mono.fromRunnable { swe.response.statusCode = HttpStatus.FORBIDDEN } }
+                it.authenticationEntryPoint(BearerTokenAuthenticationEntryPoint() as? ServerAuthenticationEntryPoint)
+                it.accessDeniedHandler(BearerTokenAccessDeniedHandler() as? ServerAccessDeniedHandler)
             }
-            .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
-            .securityContextRepository(securityContextRepository)
+
+//            .oauth2ResourceServer { oauth2 ->
+//                oauth2.jwt { it.jwtAuthenticationConverter(jwtAuthenticationConverter) }
+//                oauth2.authenticationEntryPoint { exchange, _ -> Mono.fromRunnable { exchange.response.statusCode = HttpStatus.UNAUTHORIZED } }
+//                oauth2.accessDeniedHandler { exchange, _ -> Mono.fromRunnable { exchange.response.statusCode = HttpStatus.FORBIDDEN } }
+//            }
 
         return http.build()
     }
+
+    @Bean
+    @Primary
+    fun jwtAccessTokenDecoder(keyUtils: KeyUtils): ReactiveJwtDecoder =
+        NimbusReactiveJwtDecoder.withPublicKey(keyUtils.accessTokenPublicKey()).build().apply {
+            this.setJwtValidator(tokenValidator())
+        }
+
+    @Bean
+    @Primary
+    fun jwtAccessTokenEncoder(keyUtils: KeyUtils): JwtEncoder {
+        val jwk = RSAKey
+            .Builder(keyUtils.accessTokenPublicKey())
+            .privateKey(keyUtils.accessTokenPrivateKey())
+            .build()
+
+        return NimbusJwtEncoder(ImmutableJWKSet(JWKSet(jwk)))
+    }
+
+    @Bean
+    @Qualifier("jwtRefreshTokenDecoder")
+    fun jwtRefreshTokenDecoder(keyUtils: KeyUtils): JwtDecoder =
+        NimbusJwtDecoder.withPublicKey(keyUtils.refreshTokenPublicKey()).build()
+
+    @Bean
+    @Qualifier("jwtRefreshTokenEncoder")
+    fun jwtRefreshTokenEncoder(keyUtils: KeyUtils): JwtEncoder {
+        val jwk = RSAKey
+            .Builder(keyUtils.refreshTokenPublicKey())
+            .privateKey(keyUtils.refreshTokenPrivateKey())
+            .build()
+
+        return NimbusJwtEncoder(ImmutableJWKSet(JWKSet(jwk)))
+    }
+
+    private fun tokenValidator(): OAuth2TokenValidator<Jwt> {
+        val validators: List<OAuth2TokenValidator<Jwt>> =
+            listOf(
+                JwtTimestampValidator(),
+                JwtIssuerValidator("easyTap"),
+            )
+
+        return DelegatingOAuth2TokenValidator(validators)
+    }
+
+
+//    @Bean
+//    @Qualifier("jwtRefreshTokenAuthProvider")
+//    fun jwtRefreshTokenAuthProvider(): JwtAuthenticationProvider {
+//        val provider: JwtAuthenticationProvider = JwtAuthenticationProvider(jwtRefreshTokenDecoder())
+//        provider.setJwtAuthenticationConverter(jwtToUserConverter)
+//        return provider
+//    }
+//
+//    @Bean
+//    fun daoAuthenticationProvider(): DaoAuthenticationProvider {
+//        val provider = DaoAuthenticationProvider()
+//        provider.setPasswordEncoder(passwordEncoder())
+//        provider.setUserDetailsService(userDetailsManager)
+//        return provider
+//    }
 
     private fun authorizeApiPaths(auth: AuthorizeExchangeSpec) {
         auth.pathMatchers(HttpMethod.GET,"/health").permitAll()

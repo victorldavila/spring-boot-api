@@ -2,6 +2,7 @@ package com.finapp.api.users.service
 
 import com.finapp.api.core.error.BadRequestError
 import com.finapp.api.role.repository.RoleRepository
+import com.finapp.api.security.TokenGenerator
 import com.finapp.api.security.jwt.JwtHelper
 import com.finapp.api.users.data.User
 import com.finapp.api.users.repository.UserRepository
@@ -14,7 +15,8 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 
 @Component
 class TokenServiceImpl(
-    private val jwtHelper: JwtHelper,
+    //private val jwtHelper: JwtHelper,
+    private val generator: TokenGenerator,
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
     private val tokenRepository: TokenRepository
@@ -24,14 +26,14 @@ class TokenServiceImpl(
             .flatMap { roleRepository.findRolesByUserId(it.id) }
             .map { listOf(it.roleItems ?: emptyList(), it.featureToggles ?: emptyList()) }
             .map { it.flatten() }
-            .map { Pair(jwtHelper.generateToken(user, it), jwtHelper.generateToken(user, it, true)) }
+            .map { Pair(generator.createAccessToken(user, it), generator.createRefreshToken(user)) }
             .map { Token(it.first, it.second) }
             .flatMap { tokenRepository.saveToken(user, it) }
 
     override fun generateNewTokenByRefreshToken(refreshToken: String): Mono<User> =
         Mono.just(refreshToken)
             .flatMap { validateToken(it) }
-            .map { jwtHelper.getUserIdFromJwtToken(it) }
+            .map { generator.getUserIdByToken(it) }
             .flatMap { getUserByUserId(it) }
             .flatMap { joinUserAndRefreshToken(it, refreshToken) }
             .flatMap { tokenRepository.deleteToken(it.first, it.second) }
@@ -40,7 +42,7 @@ class TokenServiceImpl(
     override fun deleteToken(accessToken: String): Mono<User> =
         Mono.just(accessToken)
             .flatMap { validateToken(it) }
-            .map { jwtHelper.getUserIdFromJwtToken(it) }
+            .map { generator.getUserIdByToken(it) }
             .flatMap { getUserByUserId(it) }
             .flatMap { joinUserAndAccessToken(it, accessToken)}
             .flatMap { tokenRepository.deleteToken(it.first, it.second) }
@@ -61,7 +63,7 @@ class TokenServiceImpl(
 
     private fun validateToken(token: String) =
         Mono.just(token)
-            .filter { jwtHelper.validateJwtToken(it) }
+            .filter { generator.validateToken(it) }
             .switchIfEmpty { Mono.error(BadRequestError("Token is not valid")) }
 
     private fun getUserByUserId(userId: String): Mono<User> =

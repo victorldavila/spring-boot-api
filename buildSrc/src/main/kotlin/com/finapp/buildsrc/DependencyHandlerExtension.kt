@@ -38,6 +38,8 @@ fun DependencyHandler.springBootKafkaImplementation() {
 
 fun DependencyHandler.springBootSecurityImplementation() {
     this.add("implementation", ApiDeps.SpringBoot.security)
+    this.add("implementation", ApiDeps.SpringBoot.oAuth2ResourceServer)
+    this.add("implementation", ApiDeps.SpringBoot.oAuth2Jose)
 }
 
 fun DependencyHandler.projectReactorImplementation() {
