@@ -34,7 +34,6 @@ dependencies {
     implementation(project(":lib:products-api"))
     implementation(project(":lib:products-combination-api"))
 
-    implementation(project(":lib:authorize"))
     implementation(project(":lib:security"))
     implementation(project(":lib:core"))
 

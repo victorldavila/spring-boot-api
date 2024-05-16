@@ -34,7 +34,6 @@ dependencies {
     implementation(project(":lib:users-api"))
     implementation(project(":lib:roles-api"))
 
-    implementation(project(":lib:authorize"))
     implementation(project(":lib:security"))
     implementation(project(":lib:core"))
 

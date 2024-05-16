@@ -17,7 +17,6 @@ include("feature:mountable-products")
 include("feature:roles")
 
 include("lib:security")
-include("lib:authorize")
 include("lib:core")
 include("lib:swagger")
 include("lib:kafka")

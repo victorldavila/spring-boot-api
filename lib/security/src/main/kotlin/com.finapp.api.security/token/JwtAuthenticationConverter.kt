@@ -1,4 +1,4 @@
-package com.finapp.api.security
+package com.finapp.api.security.token
 
 import com.finapp.api.users.repository.UserRepository
 import org.bson.types.ObjectId

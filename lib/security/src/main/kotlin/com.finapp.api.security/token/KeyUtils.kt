@@ -1,4 +1,4 @@
-package com.finapp.api.security
+package com.finapp.api.security.token
 
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value

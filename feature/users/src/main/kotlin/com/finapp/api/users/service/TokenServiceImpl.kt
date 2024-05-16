@@ -2,8 +2,7 @@ package com.finapp.api.users.service
 
 import com.finapp.api.core.error.BadRequestError
 import com.finapp.api.role.repository.RoleRepository
-import com.finapp.api.security.TokenGenerator
-import com.finapp.api.security.jwt.JwtHelper
+import com.finapp.api.security.token.TokenGenerator
 import com.finapp.api.users.data.User
 import com.finapp.api.users.repository.UserRepository
 import com.finapp.api.users.data.Token
@@ -15,7 +14,6 @@ import reactor.kotlin.core.publisher.switchIfEmpty
 
 @Component
 class TokenServiceImpl(
-    //private val jwtHelper: JwtHelper,
     private val generator: TokenGenerator,
     private val userRepository: UserRepository,
     private val roleRepository: RoleRepository,
@@ -32,8 +30,8 @@ class TokenServiceImpl(
 
     override fun generateNewTokenByRefreshToken(refreshToken: String): Mono<User> =
         Mono.just(refreshToken)
-            .flatMap { validateToken(it) }
-            .map { generator.getUserIdByToken(it) }
+            .flatMap { validateRefreshToken(it) }
+            .flatMap { generator.getUserIdByRefreshToken(it) }
             .flatMap { getUserByUserId(it) }
             .flatMap { joinUserAndRefreshToken(it, refreshToken) }
             .flatMap { tokenRepository.deleteToken(it.first, it.second) }
@@ -41,8 +39,8 @@ class TokenServiceImpl(
 
     override fun deleteToken(accessToken: String): Mono<User> =
         Mono.just(accessToken)
-            .flatMap { validateToken(it) }
-            .map { generator.getUserIdByToken(it) }
+            .flatMap { validateAccessToken(it) }
+            .flatMap { generator.getUserIdByAccessToken(it) }
             .flatMap { getUserByUserId(it) }
             .flatMap { joinUserAndAccessToken(it, accessToken)}
             .flatMap { tokenRepository.deleteToken(it.first, it.second) }
@@ -61,9 +59,16 @@ class TokenServiceImpl(
             }
             .switchIfEmpty { Mono.error(BadRequestError("Token is not valid")) }
 
-    private fun validateToken(token: String) =
-        Mono.just(token)
-            .filter { generator.validateToken(it) }
+    private fun validateAccessToken(token: String) =
+        generator.validateAccessToken(token)
+            .filter { it }
+            .map { token }
+            .switchIfEmpty { Mono.error(BadRequestError("Token is not valid")) }
+
+    private fun validateRefreshToken(token: String) =
+        generator.validateRefreshToken(token)
+            .filter { it }
+            .map { token }
             .switchIfEmpty { Mono.error(BadRequestError("Token is not valid")) }
 
     private fun getUserByUserId(userId: String): Mono<User> =

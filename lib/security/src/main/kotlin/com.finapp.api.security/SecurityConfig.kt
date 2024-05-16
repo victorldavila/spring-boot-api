@@ -1,5 +1,7 @@
 package com.finapp.api.security
 
+import com.finapp.api.security.token.JwtAuthenticationConverter
+import com.finapp.api.security.token.KeyUtils
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet
@@ -9,7 +11,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpMethod
-import org.springframework.http.HttpStatus
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
@@ -18,7 +19,6 @@ import org.springframework.security.config.web.server.ServerHttpSecurity.Authori
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator
-import org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames
 import org.springframework.security.oauth2.core.OAuth2TokenValidator
 import org.springframework.security.oauth2.jwt.*
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint
@@ -30,7 +30,6 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.reactive.CorsConfigurationSource
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource
-import reactor.core.publisher.Mono
 import java.security.SecureRandom
 
 
@@ -49,6 +48,7 @@ class SecurityConfig {
     @Order(2)
     fun securityWebFilterChain(
         http: ServerHttpSecurity,
+        //securityContextRepository: SecurityContextRepository,
         jwtAuthenticationConverter: JwtAuthenticationConverter
     ): SecurityWebFilterChain {
         http.cors { it.configurationSource(corsWebFilter()) }
@@ -70,11 +70,7 @@ class SecurityConfig {
                 it.authenticationEntryPoint(BearerTokenAuthenticationEntryPoint() as? ServerAuthenticationEntryPoint)
                 it.accessDeniedHandler(BearerTokenAccessDeniedHandler() as? ServerAccessDeniedHandler)
             }
-//            .oauth2ResourceServer { oauth2 ->
-//                oauth2.jwt { it.jwtAuthenticationConverter(jwtAuthenticationConverter) }
-//                oauth2.authenticationEntryPoint { exchange, _ -> Mono.fromRunnable { exchange.response.statusCode = HttpStatus.UNAUTHORIZED } }
-//                oauth2.accessDeniedHandler { exchange, _ -> Mono.fromRunnable { exchange.response.statusCode = HttpStatus.FORBIDDEN } }
-//            }
+            //.securityContextRepository(securityContextRepository)
 
         return http.build()
     }
@@ -83,6 +79,7 @@ class SecurityConfig {
     @Order(1)
     fun openSecurityWebFilterChain(
         http: ServerHttpSecurity,
+        //securityContextRepository: SecurityContextRepository,
         jwtAuthenticationConverter: JwtAuthenticationConverter
     ): SecurityWebFilterChain {
         http
@@ -101,12 +98,7 @@ class SecurityConfig {
                 it.authenticationEntryPoint(BearerTokenAuthenticationEntryPoint() as? ServerAuthenticationEntryPoint)
                 it.accessDeniedHandler(BearerTokenAccessDeniedHandler() as? ServerAccessDeniedHandler)
             }
-
-//            .oauth2ResourceServer { oauth2 ->
-//                oauth2.jwt { it.jwtAuthenticationConverter(jwtAuthenticationConverter) }
-//                oauth2.authenticationEntryPoint { exchange, _ -> Mono.fromRunnable { exchange.response.statusCode = HttpStatus.UNAUTHORIZED } }
-//                oauth2.accessDeniedHandler { exchange, _ -> Mono.fromRunnable { exchange.response.statusCode = HttpStatus.FORBIDDEN } }
-//            }
+            //.securityContextRepository(securityContextRepository)
 
         return http.build()
     }
@@ -131,8 +123,8 @@ class SecurityConfig {
 
     @Bean
     @Qualifier("jwtRefreshTokenDecoder")
-    fun jwtRefreshTokenDecoder(keyUtils: KeyUtils): JwtDecoder =
-        NimbusJwtDecoder.withPublicKey(keyUtils.refreshTokenPublicKey()).build()
+    fun jwtRefreshTokenDecoder(keyUtils: KeyUtils): ReactiveJwtDecoder =
+        NimbusReactiveJwtDecoder.withPublicKey(keyUtils.refreshTokenPublicKey()).build()
 
     @Bean
     @Qualifier("jwtRefreshTokenEncoder")
@@ -154,23 +146,6 @@ class SecurityConfig {
 
         return DelegatingOAuth2TokenValidator(validators)
     }
-
-
-//    @Bean
-//    @Qualifier("jwtRefreshTokenAuthProvider")
-//    fun jwtRefreshTokenAuthProvider(): JwtAuthenticationProvider {
-//        val provider: JwtAuthenticationProvider = JwtAuthenticationProvider(jwtRefreshTokenDecoder())
-//        provider.setJwtAuthenticationConverter(jwtToUserConverter)
-//        return provider
-//    }
-//
-//    @Bean
-//    fun daoAuthenticationProvider(): DaoAuthenticationProvider {
-//        val provider = DaoAuthenticationProvider()
-//        provider.setPasswordEncoder(passwordEncoder())
-//        provider.setUserDetailsService(userDetailsManager)
-//        return provider
-//    }
 
     private fun authorizeApiPaths(auth: AuthorizeExchangeSpec) {
         auth.pathMatchers(HttpMethod.GET,"/health").permitAll()

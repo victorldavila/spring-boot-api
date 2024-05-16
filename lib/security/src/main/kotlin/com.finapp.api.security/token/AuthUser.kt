@@ -1,4 +1,4 @@
-package com.finapp.api.security
+package com.finapp.api.security.token
 
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
