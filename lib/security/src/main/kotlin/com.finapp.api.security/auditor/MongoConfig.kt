@@ -1,4 +1,4 @@
-package com.finapp.api.security
+package com.finapp.api.security.auditor
 
 import org.bson.types.ObjectId
 import org.springframework.context.annotation.Bean
@@ -11,10 +11,6 @@ import reactor.core.publisher.Mono
 class MongoConfig(
     private val auditorAware: ApiReactiveAuditorAware
 ) {
-
-    @Bean
-    fun userCascadingMongoEventListener(): UserCascadeDeleteMongoEventListener = UserCascadeDeleteMongoEventListener()
-
     @Bean
     fun getCurrentAuditor(): Mono<ObjectId?> {
         return auditorAware.currentAuditor
