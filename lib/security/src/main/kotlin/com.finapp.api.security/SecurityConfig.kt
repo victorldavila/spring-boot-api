@@ -70,7 +70,6 @@ class SecurityConfig {
                 it.authenticationEntryPoint(BearerTokenAuthenticationEntryPoint() as? ServerAuthenticationEntryPoint)
                 it.accessDeniedHandler(BearerTokenAccessDeniedHandler() as? ServerAccessDeniedHandler)
             }
-            //.securityContextRepository(securityContextRepository)
 
         return http.build()
     }
@@ -98,53 +97,8 @@ class SecurityConfig {
                 it.authenticationEntryPoint(BearerTokenAuthenticationEntryPoint() as? ServerAuthenticationEntryPoint)
                 it.accessDeniedHandler(BearerTokenAccessDeniedHandler() as? ServerAccessDeniedHandler)
             }
-            //.securityContextRepository(securityContextRepository)
 
         return http.build()
-    }
-
-    @Bean
-    @Primary
-    fun jwtAccessTokenDecoder(keyUtils: KeyUtils): ReactiveJwtDecoder =
-        NimbusReactiveJwtDecoder.withPublicKey(keyUtils.accessTokenPublicKey()).build().apply {
-            this.setJwtValidator(tokenValidator())
-        }
-
-    @Bean
-    @Primary
-    fun jwtAccessTokenEncoder(keyUtils: KeyUtils): JwtEncoder {
-        val jwk = RSAKey
-            .Builder(keyUtils.accessTokenPublicKey())
-            .privateKey(keyUtils.accessTokenPrivateKey())
-            .build()
-
-        return NimbusJwtEncoder(ImmutableJWKSet(JWKSet(jwk)))
-    }
-
-    @Bean
-    @Qualifier("jwtRefreshTokenDecoder")
-    fun jwtRefreshTokenDecoder(keyUtils: KeyUtils): ReactiveJwtDecoder =
-        NimbusReactiveJwtDecoder.withPublicKey(keyUtils.refreshTokenPublicKey()).build()
-
-    @Bean
-    @Qualifier("jwtRefreshTokenEncoder")
-    fun jwtRefreshTokenEncoder(keyUtils: KeyUtils): JwtEncoder {
-        val jwk = RSAKey
-            .Builder(keyUtils.refreshTokenPublicKey())
-            .privateKey(keyUtils.refreshTokenPrivateKey())
-            .build()
-
-        return NimbusJwtEncoder(ImmutableJWKSet(JWKSet(jwk)))
-    }
-
-    private fun tokenValidator(): OAuth2TokenValidator<Jwt> {
-        val validators: List<OAuth2TokenValidator<Jwt>> =
-            listOf(
-                JwtTimestampValidator(),
-                JwtIssuerValidator("easyTap"),
-            )
-
-        return DelegatingOAuth2TokenValidator(validators)
     }
 
     private fun authorizeApiPaths(auth: AuthorizeExchangeSpec) {
