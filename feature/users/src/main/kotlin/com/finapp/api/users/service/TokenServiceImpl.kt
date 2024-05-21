@@ -25,7 +25,7 @@ class TokenServiceImpl(
             .map { listOf(it.roleItems ?: emptyList(), it.featureToggles ?: emptyList()) }
             .map { it.flatten() }
             .map { Pair(generator.createAccessToken(user, it), generator.createRefreshToken(user)) }
-            .map { Token(it.first, it.second) }
+            .map { Token("Bearer", it.first, it.second) }
             .flatMap { tokenRepository.saveToken(user, it) }
 
     override fun generateNewTokenByRefreshToken(refreshToken: String): Mono<User> =

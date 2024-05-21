@@ -18,8 +18,8 @@ class TokenBlackListValidator(
         val response = tokenRepository.findTokenByUserId(token?.subject ?: "")
             .collectList()
             .map { it.map { userToken -> userToken.access }.contains(token?.tokenValue) }
-            .map { if (it) OAuth2TokenValidatorResult.success() else OAuth2TokenValidatorResult.failure(OAuth2Error("666")) }
-            .switchIfEmpty { Mono.just(OAuth2TokenValidatorResult.failure(OAuth2Error("666"))) }
+            .map { if (it) OAuth2TokenValidatorResult.success() else OAuth2TokenValidatorResult.failure(OAuth2Error("1")) }
+            .switchIfEmpty { Mono.just(OAuth2TokenValidatorResult.failure(OAuth2Error("1"))) }
             .toFuture()
 
         return response.get()
