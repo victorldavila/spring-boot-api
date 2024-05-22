@@ -15,5 +15,6 @@ data class ProductArg(
 
 data class ProductParam(
     @field:ObjectId(groups = [ OnUpdate::class, OnDelete::class, OnRead::class ], message = "product id must be valid")
-    val productId: String?
+    val productId: String?,
+    val isFull: Boolean = false
 )

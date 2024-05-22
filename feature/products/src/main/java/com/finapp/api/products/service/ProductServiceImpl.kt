@@ -29,14 +29,30 @@ class ProductServiceImpl(
     override fun getProductById(productParam: ProductParam): Mono<ProductResponse> =
         findProductById(productParam.productId)
             .flatMap { product ->
-                mountableStepService.getMountableStepByProductId(getMountableParam(product))
-                    .collectList()
+                Mono.just(product)
+                    .filter { productParam.isFull }
+                    .flatMap {
+                        mountableStepService.getMountableStepByProductId(getMountableParam(it))
+                            .collectList()
+                    }
                     .map { productMapper.productToProductResponse(product).copy(steps = it) }
+                    .switchIfEmpty {
+                        Mono.just(product)
+                            .map { productMapper.productToProductResponse(it) }
+                    }
             }
 
-    override fun getAllProducts(): Flux<ProductResponse> =
+    override fun getAllProducts(isFull: Boolean): Flux<ProductResponse> =
         productRepository.findAllProducts()
-            .flatMap { product -> getMountableSteps(product) }
+            .flatMap { product ->
+                Mono.just(product)
+                    .filter { isFull }
+                    .flatMap { getMountableSteps(it) }
+                    .switchIfEmpty {
+                        Mono.just(product)
+                            .map { productMapper.productToProductResponse(it) }
+                    }
+            }
 
     override fun completeUpdateProduct(productArg: ProductArg): Mono<ProductResponse> =
         updateProduct(productArg)

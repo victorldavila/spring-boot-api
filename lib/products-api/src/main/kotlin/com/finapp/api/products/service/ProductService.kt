@@ -18,7 +18,7 @@ interface ProductService {
     @PreAuthorize("hasAuthority('SCOPE_ADMIN_READ')")
     fun getProductById(@Valid productParam: ProductParam): Mono<ProductResponse>
     @PreAuthorize("hasAuthority('SCOPE_ADMIN_READ')")
-    fun getAllProducts(): Flux<ProductResponse>
+    fun getAllProducts(isFull: Boolean): Flux<ProductResponse>
     @Validated(OnUpdate::class)
     @PreAuthorize("hasAuthority('SCOPE_ADMIN_UPDATE')")
     fun completeUpdateProduct(@Valid productArg: ProductArg): Mono<ProductResponse>

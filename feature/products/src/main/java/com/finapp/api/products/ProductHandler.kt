@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
+import kotlin.jvm.optionals.getOrNull
 
 @Component
 class ProductHandler(
@@ -26,10 +27,13 @@ class ProductHandler(
             .flatMap { ServerResponse.ok().body(BodyInserters.fromValue(it)) }
             .onErrorResume { errorResponse(it) }
 
-    fun getAllProducts(serverRequest: ServerRequest): Mono<ServerResponse> =
-        ServerResponse.ok()
-            .body(productsService.getAllProducts(), ProductResponse::class.java)
+    fun getAllProducts(serverRequest: ServerRequest): Mono<ServerResponse> {
+        val isFull = serverRequest.queryParam("isFull")
+
+        return ServerResponse.ok()
+            .body(productsService.getAllProducts(isFull.getOrNull().toBoolean()), ProductResponse::class.java)
             .onErrorResume { errorResponse(it) }
+    }
 
     fun completeUpdateProduct(serverRequest: ServerRequest): Mono<ServerResponse> =
         updateProductArg(serverRequest)
@@ -45,7 +49,7 @@ class ProductHandler(
 
     private fun updateProductArg(serverRequest: ServerRequest): Mono<ProductArg> =
         Mono.just(serverRequest)
-            .flatMap { serverRequest ->
+            .flatMap {
                 serverRequest.bodyToMono(ProductRequest::class.java)
                     .map { ProductArg(getProductParam(serverRequest), it) }
             }
@@ -73,7 +77,8 @@ class ProductHandler(
 
     private fun getProductParam(serverRequest: ServerRequest): ProductParam {
         val productId = serverRequest.pathVariable("productId")
+        val isFull = serverRequest.queryParam("isFull")
 
-        return ProductParam(productId)
+        return ProductParam(productId, isFull.get().toBoolean())
     }
 }

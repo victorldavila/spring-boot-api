@@ -32,6 +32,7 @@ class UserMapper {
 
     private fun Token.toTokenResponse(): TokenResponse = TokenResponse(
         accessToken = this.access,
-        refreshToken = this.refresh
+        refreshToken = this.refresh,
+        type = "Bearer"
     )
 }
