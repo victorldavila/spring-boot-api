@@ -47,9 +47,7 @@ class SecurityConfig {
     @Bean
     @Order(2)
     fun securityWebFilterChain(
-        http: ServerHttpSecurity,
-        //securityContextRepository: SecurityContextRepository,
-        jwtAuthenticationConverter: JwtAuthenticationConverter
+        http: ServerHttpSecurity
     ): SecurityWebFilterChain {
         http.cors { it.configurationSource(corsWebFilter()) }
             .csrf { it.disable() }
@@ -77,9 +75,7 @@ class SecurityConfig {
     @Bean
     @Order(1)
     fun openSecurityWebFilterChain(
-        http: ServerHttpSecurity,
-        //securityContextRepository: SecurityContextRepository,
-        jwtAuthenticationConverter: JwtAuthenticationConverter
+        http: ServerHttpSecurity
     ): SecurityWebFilterChain {
         http
             .cors { it.configurationSource(corsWebFilter()) }
